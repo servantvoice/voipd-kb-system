@@ -274,7 +274,8 @@ The pipeline worker sends one email per crawl run with article counts.
 1. Create a Postmark account and server
 2. Verify your sender domain (DNS records)
 3. Get the Server API Token
-4. Set as `POSTMARK_API_TOKEN` secret
+4. Set `POSTMARK_API_TOKEN` in `.env.private`
+5. Optionally set `POSTMARK_MESSAGE_STREAM` if you created a custom transactional stream (defaults to `outbound`)
 
 **Pros:** Best deliverability, detailed bounce/spam tracking, webhook support
 
