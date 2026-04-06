@@ -41,18 +41,38 @@ function isExcluded(urlPath: string): boolean {
   return false;
 }
 
-const BATCH_SIZE = 50;
-const INITIAL_POLL_DELAY = "3 minutes";
-const POLL_INTERVAL = "2 minutes";
-const INTER_BATCH_DELAY = "1 minute";
+// Defaults — overridable via env vars for tuning without redeploying
+const DEFAULT_BATCH_SIZE = 25;
+const DEFAULT_RETRY_BATCH_SIZE = 10;
+const DEFAULT_MAX_RETRY_ROUNDS = 3;
+const DEFAULT_INITIAL_POLL_DELAY = "5 minutes";
+const DEFAULT_POLL_INTERVAL = "2 minutes";
+const DEFAULT_INTER_BATCH_DELAY = "1 minute";
 const WRITE_CHUNK_SIZE = 50;
-const RETRY_BATCH_SIZE = 25;
-const MAX_RETRY_ROUNDS = 2;
+
+interface CrawlTuning {
+  batchSize: number;
+  retryBatchSize: number;
+  maxRetryRounds: number;
+  initialPollDelay: string;
+  pollInterval: string;
+  interBatchDelay: string;
+}
 
 export class CrawlWorkflow extends WorkflowEntrypoint<Env, CrawlParams> {
   async run(event: WorkflowEvent<CrawlParams>, step: WorkflowStep) {
     const params = event.payload;
     const crawlUrl = params.url ?? "https://voipdocs.io/";
+
+    // Read tuning from env (allows adjustment without redeploying)
+    const tuning: CrawlTuning = {
+      batchSize: parseInt(this.env.CRAWL_BATCH_SIZE || "", 10) || DEFAULT_BATCH_SIZE,
+      retryBatchSize: parseInt(this.env.CRAWL_RETRY_BATCH_SIZE || "", 10) || DEFAULT_RETRY_BATCH_SIZE,
+      maxRetryRounds: parseInt(this.env.CRAWL_MAX_RETRY_ROUNDS || "", 10) || DEFAULT_MAX_RETRY_ROUNDS,
+      initialPollDelay: this.env.CRAWL_INITIAL_POLL_DELAY || DEFAULT_INITIAL_POLL_DELAY,
+      pollInterval: this.env.CRAWL_POLL_INTERVAL || DEFAULT_POLL_INTERVAL,
+      interBatchDelay: this.env.CRAWL_INTER_BATCH_DELAY || DEFAULT_INTER_BATCH_DELAY,
+    };
     const apiBase = `https://api.cloudflare.com/client/v4/accounts/${this.env.CF_ACCOUNT_ID}/browser-rendering`;
 
     const timestamp = new Date().toISOString();
@@ -78,11 +98,11 @@ export class CrawlWorkflow extends WorkflowEntrypoint<Env, CrawlParams> {
       filteredUrls.sort();
 
       const batches: string[][] = [];
-      for (let i = 0; i < filteredUrls.length; i += BATCH_SIZE) {
-        batches.push(filteredUrls.slice(i, i + BATCH_SIZE));
+      for (let i = 0; i < filteredUrls.length; i += tuning.batchSize) {
+        batches.push(filteredUrls.slice(i, i + tuning.batchSize));
       }
 
-      console.log(`Sitemap: ${allUrls.length} total, ${filteredUrls.length} after filtering, ${batches.length} batches of ${BATCH_SIZE}`);
+      console.log(`Sitemap: ${allUrls.length} total, ${filteredUrls.length} after filtering, ${batches.length} batches of ${tuning.batchSize}`);
 
       return {
         totalUrls: allUrls.length,
@@ -100,14 +120,14 @@ export class CrawlWorkflow extends WorkflowEntrypoint<Env, CrawlParams> {
     // Step 2+: Run each batch
     for (let batchIndex = 0; batchIndex < sitemapResult.batchCount; batchIndex++) {
       if (batchIndex > 0) {
-        await step.sleep(`inter-batch-delay-${batchIndex}`, INTER_BATCH_DELAY);
+        await step.sleep(`inter-batch-delay-${batchIndex}`, tuning.interBatchDelay as WorkflowSleepDuration);
       }
 
       const batch = sitemapResult.batches[batchIndex];
       console.log(`\n── Batch ${batchIndex + 1}/${sitemapResult.batchCount} (${batch.size} URLs) ──`);
 
       const batchResult = await this.runCrawlBatch(
-        step, `batch-${batchIndex}`, batch.urls, crawlUrl, apiBase, params, datePrefix
+        step, `batch-${batchIndex}`, batch.urls, crawlUrl, apiBase, params, datePrefix, tuning
       );
 
       allJobIds.push(batchResult.jobId);
@@ -123,25 +143,25 @@ export class CrawlWorkflow extends WorkflowEntrypoint<Env, CrawlParams> {
     if (missingUrls.length > 0) {
       console.log(`\n── Retry: ${missingUrls.length} URLs missing markdown ──`);
 
-      for (let retryRound = 0; retryRound < MAX_RETRY_ROUNDS && missingUrls.length > 0; retryRound++) {
+      for (let retryRound = 0; retryRound < tuning.maxRetryRounds && missingUrls.length > 0; retryRound++) {
         const currentMissing = sitemapResult.filteredUrls.filter((url: string) => !writtenUrlSet.has(url));
         if (currentMissing.length === 0) break;
 
         const retryBatches: string[][] = [];
-        for (let i = 0; i < currentMissing.length; i += RETRY_BATCH_SIZE) {
-          retryBatches.push(currentMissing.slice(i, i + RETRY_BATCH_SIZE));
+        for (let i = 0; i < currentMissing.length; i += tuning.retryBatchSize) {
+          retryBatches.push(currentMissing.slice(i, i + tuning.retryBatchSize));
         }
 
-        console.log(`Retry round ${retryRound + 1}: ${currentMissing.length} missing URLs, ${retryBatches.length} batches of ${RETRY_BATCH_SIZE}`);
+        console.log(`Retry round ${retryRound + 1}: ${currentMissing.length} missing URLs, ${retryBatches.length} batches of ${tuning.retryBatchSize}`);
 
         for (let retryBatchIndex = 0; retryBatchIndex < retryBatches.length; retryBatchIndex++) {
-          await step.sleep(`retry-${retryRound}-delay-${retryBatchIndex}`, INTER_BATCH_DELAY);
+          await step.sleep(`retry-${retryRound}-delay-${retryBatchIndex}`, tuning.interBatchDelay as WorkflowSleepDuration);
 
           const retryBatch = retryBatches[retryBatchIndex];
           const stepPrefix = `retry-${retryRound}-batch-${retryBatchIndex}`;
 
           const retryResult = await this.runCrawlBatch(
-            step, stepPrefix, retryBatch, crawlUrl, apiBase, params, datePrefix
+            step, stepPrefix, retryBatch, crawlUrl, apiBase, params, datePrefix, tuning
           );
 
           allJobIds.push(retryResult.jobId);
@@ -239,7 +259,8 @@ export class CrawlWorkflow extends WorkflowEntrypoint<Env, CrawlParams> {
     crawlUrl: string,
     apiBase: string,
     params: CrawlParams,
-    datePrefix: string
+    datePrefix: string,
+    tuning: CrawlTuning
   ): Promise<{
     jobId: string;
     writtenCount: number;
@@ -296,8 +317,8 @@ export class CrawlWorkflow extends WorkflowEntrypoint<Env, CrawlParams> {
     const maxPolls = 30;
 
     while (!isComplete && pollCount < maxPolls) {
-      const delay = pollCount === 0 ? INITIAL_POLL_DELAY : POLL_INTERVAL;
-      await step.sleep(`${stepPrefix}-poll-wait-${pollCount}`, delay);
+      const delay = pollCount === 0 ? tuning.initialPollDelay : tuning.pollInterval;
+      await step.sleep(`${stepPrefix}-poll-wait-${pollCount}`, delay as WorkflowSleepDuration);
 
       const pollStatus = await step.do(`${stepPrefix}-poll-${pollCount}`, async () => {
         const resp = await fetch(`${apiBase}/crawl/${crawlJob.jobId}`, {
@@ -358,7 +379,7 @@ export class CrawlWorkflow extends WorkflowEntrypoint<Env, CrawlParams> {
 
         cursor = data.result.cursor;
         pageNum++;
-      } while (cursor && pageNum < maxPages && records.length < BATCH_SIZE * 5);
+      } while (cursor && pageNum < maxPages && records.length < tuning.batchSize * 5);
 
       console.log(`${stepPrefix}: fetched ${records.length} records, ${records.filter(r => r.markdown).length} with markdown`);
       return { records };

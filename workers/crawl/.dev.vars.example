@@ -4,3 +4,10 @@ CF_API_TOKEN=your-cf-api-token
 CRAWL_SECRET=your-shared-secret
 # Pipeline worker URL — crawl worker POSTs here after crawl completes
 PIPELINE_URL=https://your-pipeline-worker.workers.dev
+# Crawl tuning (optional — defaults shown, smaller batches improve success rate)
+# CRAWL_BATCH_SIZE=25
+# CRAWL_RETRY_BATCH_SIZE=10
+# CRAWL_MAX_RETRY_ROUNDS=3
+# CRAWL_INITIAL_POLL_DELAY=5 minutes
+# CRAWL_POLL_INTERVAL=2 minutes
+# CRAWL_INTER_BATCH_DELAY=1 minute
