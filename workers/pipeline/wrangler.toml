@@ -1,5 +1,5 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "kb-pipeline"  # Change to your worker name
+name = "cf-pipeline"  # Change to your worker name
 main = "src/index.ts"
 compatibility_date = "2026-03-25"
 
@@ -18,9 +18,9 @@ invocation_logs = true
 
 [[r2_buckets]]
 binding = "KB_BUCKET"
-bucket_name = "your-kb-bucket"  # Change to your R2 bucket name
+bucket_name = "servant-voice-kb"  # Change to your R2 bucket name
 
 [[workflows]]
 binding = "PIPELINE_WORKFLOW"
-name = "kb-pipeline-workflow"
+name = "cf-pipeline-workflow"
 class_name = "PipelineWorkflow"
