@@ -1,150 +1,84 @@
 #!/usr/bin/env bash
 #
-# Pushes environment variables to Cloudflare Workers.
+# Pushes environment variables to Cloudflare Workers using `wrangler secret bulk`.
+# This uploads all vars (both secrets and non-secrets) as encrypted values.
 #
 # Usage:
-#   bash scripts/push-vars.sh              # push non-secret vars only
-#   bash scripts/push-vars.sh --secrets    # push secrets via wrangler secret put
-#   bash scripts/push-vars.sh --all        # push both vars and secrets
+#   bash scripts/push-vars.sh           # push all vars to all workers
+#   bash scripts/push-vars.sh crawl     # push to a single worker
 #
-# Reads from .env.private (or pass a custom path as second arg).
-# Requires: wrangler CLI logged in, CLOUDFLARE_ACCOUNT_ID set or wrangler prompts.
+# Prerequisites:
+#   1. Run `bash scripts/setup-env.sh` first to generate .dev.vars files
+#   2. Workers must be deployed first (`npm run deploy:all`)
+#   3. Wrangler must be logged in
+#
+# Note: CF Pages variables (HUGO_*, R2_*, KB_DOMAIN_URL) must be set
+# in the CF Pages dashboard manually — wrangler does not support Pages.
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-MODE="${1:---vars}"
-ENV_FILE="${2:-.env.private}"
+TARGET="${1:-all}"
 
-if [[ "$ENV_FILE" != /* ]]; then
-  ENV_FILE="$REPO_ROOT/$ENV_FILE"
-fi
-
-if [[ ! -f "$ENV_FILE" ]]; then
-  echo "Error: $ENV_FILE not found."
-  exit 1
-fi
-
-# Get a variable's value from the env file
-get_var() {
-  local key="$1"
-  grep -m1 "^${key}=" "$ENV_FILE" 2>/dev/null | sed "s/^${key}=//" || true
-}
-
-# Push a non-secret var to a worker
-push_var() {
+push_worker() {
   local worker_dir="$1"
-  local var_name="$2"
-  local val
-  val="$(get_var "$var_name")"
-  [[ -z "$val" ]] && return 0
+  local worker_name="$2"
+  local dev_vars="$REPO_ROOT/$worker_dir/.dev.vars"
 
-  echo "  $var_name"
-  (cd "$REPO_ROOT/$worker_dir" && npx wrangler vars set "$var_name" "$val" 2>/dev/null) || {
-    echo "    WARNING: failed to set $var_name on $worker_dir"
+  if [[ ! -f "$dev_vars" ]]; then
+    echo "  SKIP: $dev_vars not found (run scripts/setup-env.sh first)"
+    return
+  fi
+
+  # Filter out comments and blank lines for display
+  local var_count
+  var_count=$(grep -c '=' "$dev_vars" 2>/dev/null || echo 0)
+  echo "  Pushing $var_count vars from $worker_dir/.dev.vars..."
+
+  (cd "$REPO_ROOT/$worker_dir" && npx wrangler secret bulk "$dev_vars") || {
+    echo "  ERROR: failed to push vars to $worker_name"
+    return 1
   }
+  echo ""
 }
 
-# Push a secret to a worker
-push_secret() {
-  local worker_dir="$1"
-  local var_name="$2"
-  local val
-  val="$(get_var "$var_name")"
-  [[ -z "$val" ]] && return 0
+echo "Pushing variables to Cloudflare Workers via 'wrangler secret bulk'..."
+echo "(All vars are stored encrypted — both secrets and non-secrets.)"
+echo ""
 
-  echo "  $var_name"
-  echo "$val" | (cd "$REPO_ROOT/$worker_dir" && npx wrangler secret put "$var_name" 2>/dev/null) || {
-    echo "    WARNING: failed to set secret $var_name on $worker_dir"
-  }
-}
+case "$TARGET" in
+  all)
+    echo "=== workers/crawl ==="
+    push_worker workers/crawl cf-crawl
 
-# ─── Non-secret variables ────────────────────────────────────────────
+    echo "=== workers/pipeline ==="
+    push_worker workers/pipeline cf-pipeline
 
-push_worker_vars() {
-  echo ""
-  echo "=== workers/crawl ==="
-  push_var workers/crawl CF_ACCOUNT_ID
+    echo "=== workers/internal ==="
+    push_worker workers/internal cf-internal
 
-  echo ""
-  echo "=== workers/pipeline ==="
-  for v in KB_DOMAIN INTERNAL_KB_DOMAIN IMAGE_DOMAIN MANAGER_PORTAL_URL \
-           SOURCE_IMAGE_CDN BRAND_NAME CONNECT_NAME CONNECT_DESKTOP_NAME \
-           NOTIFICATION_TO NOTIFICATION_FROM PAGES_DEPLOY_HOOK IMAGE_SYNC_URL \
-           POSTMARK_MESSAGE_STREAM; do
-    push_var workers/pipeline "$v"
-  done
-
-  echo ""
-  echo "=== workers/internal ==="
-  for v in KB_DOMAIN INTERNAL_KB_DOMAIN ADMIN_EMAILS EDITOR_EMAILS \
-           VIEWER_EMAILS PAGES_DEPLOY_HOOK BRAND_NAME SITE_TITLE; do
-    push_var workers/internal "$v"
-  done
-
-  echo ""
-  echo "=== workers/images ==="
-  for v in IMAGE_DOMAIN SOURCE_IMAGE_CDN ADDITIONAL_IMAGE_SOURCES \
-           REVALIDATE_HOURS MAX_CONCURRENT; do
-    push_var workers/images "$v"
-  done
-}
-
-# ─── Secrets ──────────────────────────────────────────────────────────
-
-push_worker_secrets() {
-  echo ""
-  echo "=== Secrets: workers/crawl ==="
-  push_secret workers/crawl CRAWL_SECRET
-  push_secret workers/crawl CF_API_TOKEN
-
-  echo ""
-  echo "=== Secrets: workers/pipeline ==="
-  push_secret workers/pipeline CRAWL_SECRET
-  push_secret workers/pipeline POSTMARK_API_TOKEN
-  push_secret workers/pipeline RESEND_API_KEY
-
-  echo ""
-  echo "=== Secrets: workers/internal ==="
-  push_secret workers/internal CRAWL_SECRET
-
-  echo ""
-  echo "=== Secrets: workers/images ==="
-  push_secret workers/images CRAWL_SECRET
-}
-
-# ─── Main ─────────────────────────────────────────────────────────────
-
-echo "Reading from $ENV_FILE"
-
-case "$MODE" in
-  --vars)
-    echo "Pushing non-secret variables to Cloudflare Workers..."
-    push_worker_vars
-    echo ""
-    echo "Done. Secrets were NOT pushed — run with --secrets or --all to push them."
-    echo ""
-    echo "NOTE: CF Pages variables (HUGO_*, R2_*, KB_DOMAIN_URL) must be set"
-    echo "in the CF Pages dashboard manually — wrangler does not support Pages vars."
+    echo "=== workers/images ==="
+    push_worker workers/images cf-images
     ;;
-  --secrets)
-    echo "Pushing secrets to Cloudflare Workers..."
-    push_worker_secrets
-    echo ""
-    echo "Done. Non-secret vars were NOT pushed — run with --vars or --all."
+  crawl)
+    push_worker workers/crawl cf-crawl
     ;;
-  --all)
-    echo "Pushing all variables and secrets to Cloudflare Workers..."
-    push_worker_vars
-    push_worker_secrets
-    echo ""
-    echo "Done."
-    echo ""
-    echo "NOTE: CF Pages variables (HUGO_*, R2_*, KB_DOMAIN_URL) must be set"
-    echo "in the CF Pages dashboard manually — wrangler does not support Pages vars."
+  pipeline)
+    push_worker workers/pipeline cf-pipeline
+    ;;
+  internal)
+    push_worker workers/internal cf-internal
+    ;;
+  images)
+    push_worker workers/images cf-images
     ;;
   *)
-    echo "Usage: bash scripts/push-vars.sh [--vars|--secrets|--all] [env-file]"
+    echo "Usage: bash scripts/push-vars.sh [all|crawl|pipeline|internal|images]"
     exit 1
     ;;
 esac
+
+echo "Done."
+echo ""
+echo "NOTE: CF Pages variables (HUGO_*, R2_*, KB_DOMAIN_URL) must be set"
+echo "in the CF Pages dashboard manually — wrangler does not support Pages vars."
