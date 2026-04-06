@@ -1,9 +1,6 @@
 node_modules/
 dist/
 .DS_Store
-CLAUDE.md
 .claude/
-.claude/settings.local.json
-.claude/settings.json
-./claude/hooks/*
 .wrangler/
+.dev.vars
