@@ -15,7 +15,7 @@ invocation_logs = true
 
 # No [vars] — use .dev.vars (local) or CF dashboard (production)
 # Required vars: CF_ACCOUNT_ID
-# Secrets: CF_API_TOKEN, CRAWL_SECRET, PIPELINE_URL (or N8N_WEBHOOK_URL)
+# Secrets: CF_API_TOKEN, CRAWL_SECRET, PIPELINE_URL
 
 [[r2_buckets]]
 binding = "KB_BUCKET"

@@ -7,6 +7,4 @@ interface Env {
   // Pipeline trigger — use service binding or HTTP URL
   PIPELINE_WORKER?: Fetcher;
   PIPELINE_URL?: string;
-  // Legacy n8n fallback (transition period)
-  N8N_WEBHOOK_URL?: string;
 }

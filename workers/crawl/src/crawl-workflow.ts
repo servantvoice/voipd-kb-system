@@ -183,7 +183,7 @@ export class CrawlWorkflow extends WorkflowEntrypoint<Env, CrawlParams> {
       console.log(`Manifest: ${totalWritten}/${sitemapResult.filteredCount} pages written, ${manifest.missedUrls.length} missed`);
     });
 
-    // Notify downstream — prefer service binding > PIPELINE_URL > N8N_WEBHOOK_URL
+    // Notify downstream — prefer service binding > PIPELINE_URL
     const notifyPayload = {
       batchCount: sitemapResult.batchCount,
       jobIds: allJobIds,
@@ -198,37 +198,21 @@ export class CrawlWorkflow extends WorkflowEntrypoint<Env, CrawlParams> {
 
     const pipelineWorker = (this.env as Env).PIPELINE_WORKER;
     const pipelineUrl = (this.env as Env).PIPELINE_URL;
-    const webhookUrl = params.webhookUrl ?? (this.env as Env).N8N_WEBHOOK_URL;
 
-    const targetUrl = pipelineWorker
-      ? "https://pipeline/process"
-      : pipelineUrl
-        ? `${pipelineUrl}/process`
-        : webhookUrl;
-
-    if (targetUrl || pipelineWorker) {
+    if (pipelineWorker || pipelineUrl) {
       await step.do(
         "notify-downstream",
         { retries: { limit: 3, delay: "30 seconds" } },
         async () => {
-          const fetchTarget = pipelineWorker ?? fetch;
-          const resp = await (pipelineWorker
-            ? pipelineWorker.fetch("https://pipeline/process", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  "X-Crawl-Secret": this.env.CRAWL_SECRET,
-                },
-                body: JSON.stringify(notifyPayload),
-              })
-            : fetch(targetUrl!, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  "X-Crawl-Secret": this.env.CRAWL_SECRET,
-                },
-                body: JSON.stringify(notifyPayload),
-              }));
+          const headers = {
+            "Content-Type": "application/json",
+            "X-Crawl-Secret": this.env.CRAWL_SECRET,
+          };
+          const body = JSON.stringify(notifyPayload);
+
+          const resp = pipelineWorker
+            ? await pipelineWorker.fetch("https://pipeline/process", { method: "POST", headers, body })
+            : await fetch(`${pipelineUrl}/process`, { method: "POST", headers, body });
 
           if (!resp.ok) {
             throw new Error(`Downstream notify returned ${resp.status}: ${await resp.text()}`);
