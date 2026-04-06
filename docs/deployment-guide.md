@@ -101,7 +101,8 @@ Key variables:
 | `ADMIN_EMAILS` | `["admin@example.com"]` | internal |
 | `NOTIFICATION_TO` | `admin@example.com` | pipeline |
 | `NOTIFICATION_FROM` | `noreply@yourdomain.com` | pipeline |
-| `PAGES_DEPLOY_HOOK` | CF Pages webhook URL | pipeline |
+| `PIPELINE_URL` | `https://your-pipeline-worker.workers.dev` | crawl |
+| `PAGES_DEPLOY_HOOK` | CF Pages webhook URL (created in step 7c) | pipeline |
 | `IMAGE_SYNC_URL` | `https://your-images-worker.workers.dev/sync` | pipeline |
 
 ### 3c. Set Cloudflare Account ID
@@ -141,6 +142,12 @@ npm run deploy:pipeline    # needs R2 bucket, email API token
 npm run deploy:internal    # needs R2 bucket
 npm run deploy:crawl       # needs pipeline URL or service binding
 ```
+
+After deploying, update the inter-worker URLs in `.env.private` now that you know the worker names:
+- `PIPELINE_URL` — `https://<your-pipeline-worker>.workers.dev` (set on crawl worker, tells it where to POST after crawl)
+- `IMAGE_SYNC_URL` — `https://<your-images-worker>.workers.dev/sync` (set on pipeline worker, triggers image sync)
+
+Then re-run `bash scripts/setup-env.sh && bash scripts/push-vars.sh` to distribute the updated values.
 
 ## 6. Push Production Environment Variables
 
