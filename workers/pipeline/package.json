@@ -1,0 +1,16 @@
+{
+  "name": "@sv-kb/pipeline",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CF Worker + Workflow that processes crawled articles — replaces the n8n pipeline",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "cf-typegen": "wrangler types"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260301.0",
+    "typescript": "^5.7.0",
+    "wrangler": "^4.0.0"
+  }
+}

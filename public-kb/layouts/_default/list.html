@@ -1,0 +1,18 @@
+{{ define "main" }}
+<h1>{{ .Title }}</h1>
+{{ .Content }}
+
+{{ $pages := .Pages }}
+{{ if $pages }}
+<div class="article-list">
+  {{ range $pages }}
+  <article>
+    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+    {{ with .Summary }}<p>{{ . }}</p>{{ end }}
+  </article>
+  {{ end }}
+</div>
+{{ else }}
+<p>No articles found.</p>
+{{ end }}
+{{ end }}

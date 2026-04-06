@@ -1,0 +1,15 @@
+# Copy to .dev.vars — NEVER commit .dev.vars
+KB_DOMAIN=docs.example.com
+INTERNAL_KB_DOMAIN=internal.example.com
+IMAGE_DOMAIN=images.example.com
+MANAGER_PORTAL_URL=https://manage.example.com
+SOURCE_IMAGE_CDN=cdn.elev.io
+BRAND_NAME=Your Company
+CONNECT_NAME=Your App Connect
+CONNECT_DESKTOP_NAME=Your App Connect Desktop
+NOTIFICATION_TO=admin@example.com
+NOTIFICATION_FROM=noreply@example.com
+PAGES_DEPLOY_HOOK=https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/YOUR-HOOK-ID
+IMAGE_SYNC_URL=https://your-images-worker.workers.dev/sync
+CRAWL_SECRET=your-shared-secret
+POSTMARK_API_TOKEN=your-postmark-server-token

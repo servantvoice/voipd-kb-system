@@ -1,0 +1,7 @@
+# Copy to .dev.vars — NEVER commit .dev.vars
+CF_ACCOUNT_ID=your-cloudflare-account-id
+CF_API_TOKEN=your-cf-api-token
+CRAWL_SECRET=your-shared-secret
+# Use one of these to notify downstream after crawl:
+# PIPELINE_URL=https://your-pipeline-worker.workers.dev/process
+# N8N_WEBHOOK_URL=https://your-n8n.example.com/webhook/sv-kb-post-crawl

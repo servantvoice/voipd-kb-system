@@ -1,0 +1,18 @@
+{{- $url := .Destination -}}
+{{- $text := .Text -}}
+{{- $siteHost := .Page.Site.BaseURL -}}
+{{- $isExternal := and (strings.HasPrefix $url "http") (not (strings.HasPrefix $url $siteHost)) -}}
+{{- if or (hasPrefix $url "/articles/") (and (strings.HasPrefix $url $siteHost) (strings.Contains $url "/articles/")) -}}
+  {{- $path := $url -}}
+  {{- if strings.HasPrefix $url "http" -}}
+    {{- $path = replaceRE `^https?://[^/]+` "" $url -}}
+  {{- end -}}
+  {{- $page := site.GetPage $path -}}
+  {{- if $page -}}
+    <a href="{{ $path }}">{{ $text }}</a>
+  {{- else -}}
+    {{ $text }} <em>(contact support for more information)</em>
+  {{- end -}}
+{{- else -}}
+  <a href="{{ $url }}"{{ if $isExternal }} target="_blank" rel="noopener"{{ end }}>{{ $text }}</a>
+{{- end -}}

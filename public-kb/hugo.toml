@@ -1,0 +1,26 @@
+baseURL = "https://example.com/"
+languageCode = "en-us"
+title = "Knowledge Base"
+
+[params]
+  description = "Knowledge base documentation."
+  # Set these via HUGO_PARAMS_* environment variables in CF Pages:
+  # internalKbUrl = ""
+  # logoUrl = ""
+  # companyName = ""
+  # companyUrl = ""
+  # managerPortalUrl = ""
+  # billingPortalUrl = ""
+  # statusUrl = ""
+
+[taxonomies]
+  category = "categories"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[outputs]
+  home = ["HTML"]
+  section = ["HTML"]

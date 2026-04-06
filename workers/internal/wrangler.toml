@@ -1,0 +1,24 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "kb-internal"  # Change to your worker name
+main = "src/index.ts"
+compatibility_date = "2026-03-25"
+
+[observability]
+enabled = true
+
+[observability.logs]
+enabled = true
+invocation_logs = true
+
+# No [vars] — use .dev.vars (local) or CF dashboard (production)
+# Required vars: KB_DOMAIN, INTERNAL_KB_DOMAIN, ADMIN_EMAILS, EDITOR_EMAILS,
+#   VIEWER_EMAILS, PAGES_DEPLOY_HOOK, BRAND_NAME, SITE_TITLE
+# Secrets: CRAWL_SECRET
+
+[[r2_buckets]]
+binding = "KB_BUCKET"
+bucket_name = "your-kb-bucket"  # Change to your R2 bucket name
+
+[[routes]]
+pattern = "internal-kb.example.com"  # Change to your internal KB domain
+custom_domain = true

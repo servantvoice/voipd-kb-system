@@ -1,0 +1,26 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "kb-pipeline"  # Change to your worker name
+main = "src/index.ts"
+compatibility_date = "2026-03-25"
+
+[observability]
+enabled = true
+
+[observability.logs]
+enabled = true
+invocation_logs = true
+
+# No [vars] — use .dev.vars (local) or CF dashboard (production)
+# Required vars: KB_DOMAIN, INTERNAL_KB_DOMAIN, IMAGE_DOMAIN, MANAGER_PORTAL_URL,
+#   SOURCE_IMAGE_CDN, BRAND_NAME, CONNECT_NAME, CONNECT_DESKTOP_NAME,
+#   NOTIFICATION_TO, NOTIFICATION_FROM, PAGES_DEPLOY_HOOK, IMAGE_SYNC_URL
+# Secrets: CRAWL_SECRET, POSTMARK_API_TOKEN (or RESEND_API_KEY)
+
+[[r2_buckets]]
+binding = "KB_BUCKET"
+bucket_name = "your-kb-bucket"  # Change to your R2 bucket name
+
+[[workflows]]
+binding = "PIPELINE_WORKFLOW"
+name = "kb-pipeline-workflow"
+class_name = "PipelineWorkflow"

@@ -1,0 +1,11 @@
+{{ define "main" }}
+{{ partial "breadcrumbs.html" . }}
+
+<article>
+  <hgroup>
+    <h1>{{ .Title }}</h1>
+  </hgroup>
+
+  {{ .Content }}
+</article>
+{{ end }}

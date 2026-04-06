@@ -1,0 +1,18 @@
+{{ define "main" }}
+<h1>{{ .Site.Title }}</h1>
+<p>{{ .Site.Params.description }}</p>
+
+<h2>Browse by Category</h2>
+<div class="category-grid">
+{{ range .Site.Taxonomies.categories }}
+  <div class="category-card">
+    <a href="{{ .Page.RelPermalink }}">{{ .Page.Title }}</a>
+    <span>{{ .Count }} {{ if eq .Count 1 }}article{{ else }}articles{{ end }}</span>
+  </div>
+{{ end }}
+</div>
+
+{{ if not .Site.Taxonomies.categories }}
+<p>No articles yet. Content will appear after the first crawl and processing cycle.</p>
+{{ end }}
+{{ end }}

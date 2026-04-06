@@ -1,0 +1,32 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "kb-crawler"  # Change to your worker name
+main = "src/index.ts"
+compatibility_date = "2026-03-25"
+
+[triggers]
+crons = ["0 2 * * SUN"]
+
+[observability]
+enabled = true
+
+[observability.logs]
+enabled = true
+invocation_logs = true
+
+# No [vars] — use .dev.vars (local) or CF dashboard (production)
+# Required vars: CF_ACCOUNT_ID
+# Secrets: CF_API_TOKEN, CRAWL_SECRET, PIPELINE_URL (or N8N_WEBHOOK_URL)
+
+[[r2_buckets]]
+binding = "KB_BUCKET"
+bucket_name = "your-kb-bucket"  # Change to your R2 bucket name
+
+[[workflows]]
+binding = "CRAWL_WORKFLOW"
+name = "crawl-workflow"
+class_name = "CrawlWorkflow"
+
+# Optional: service binding to pipeline worker (uncomment after pipeline is deployed)
+# [[services]]
+# binding = "PIPELINE_WORKER"
+# service = "kb-pipeline"

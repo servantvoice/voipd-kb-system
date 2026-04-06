@@ -1,0 +1,10 @@
+# Copy to .dev.vars — NEVER commit .dev.vars
+KB_DOMAIN=docs.example.com
+INTERNAL_KB_DOMAIN=internal.example.com
+ADMIN_EMAILS=["admin@example.com"]
+EDITOR_EMAILS=[]
+VIEWER_EMAILS=[]
+PAGES_DEPLOY_HOOK=https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/YOUR-HOOK-ID
+BRAND_NAME=Your Company
+SITE_TITLE=Your Company KB
+CRAWL_SECRET=your-shared-secret

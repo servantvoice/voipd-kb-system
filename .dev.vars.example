@@ -1,0 +1,43 @@
+# Copy this file to .dev.vars in each worker directory.
+# .dev.vars is gitignored and provides env vars for local development.
+# In production, set these via the CF dashboard or `wrangler vars set`.
+
+# ─── Domains ────────────────────────────────────────────────────────
+KB_DOMAIN=docs.example.com
+INTERNAL_KB_DOMAIN=internal.example.com
+IMAGE_DOMAIN=images.example.com
+MANAGER_PORTAL_URL=https://manage.example.com
+UPSTREAM_DOCS_URL=https://voipdocs.io
+
+# ─── Branding ───────────────────────────────────────────────────────
+BRAND_NAME=Your Company
+CONNECT_NAME=Your App Connect
+CONNECT_DESKTOP_NAME=Your App Connect Desktop
+
+# ─── Upstream image CDNs ────────────────────────────────────────────
+SOURCE_IMAGE_CDN=cdn.elev.io
+# JSON array of additional image CDN sources:
+# ADDITIONAL_IMAGE_SOURCES=[{"hostname":"static.helpjuice.com","pathPrefix":""},{"hostname":"t24555569.p.clickup-attachments.com","pathPrefix":"clickup/"}]
+
+# ─── Admin ──────────────────────────────────────────────────────────
+ADMIN_EMAILS=["admin@example.com"]
+EDITOR_EMAILS=[]
+VIEWER_EMAILS=[]
+NOTIFICATION_TO=admin@example.com
+NOTIFICATION_FROM=noreply@example.com
+
+# ─── Infrastructure ─────────────────────────────────────────────────
+CF_ACCOUNT_ID=your-cloudflare-account-id
+PAGES_DEPLOY_HOOK=https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/YOUR-HOOK-ID
+IMAGE_SYNC_URL=https://your-images-worker.workers.dev/sync
+
+# ─── Image sync tuning ──────────────────────────────────────────────
+REVALIDATE_HOURS=24
+MAX_CONCURRENT=5
+
+# ─── Secrets (also set via `wrangler secret put` for production) ────
+CRAWL_SECRET=your-shared-secret
+CF_API_TOKEN=your-cf-api-token
+POSTMARK_API_TOKEN=your-postmark-server-token
+# Or if using Resend instead of Postmark:
+# RESEND_API_KEY=your-resend-api-key

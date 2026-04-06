@@ -4,3 +4,10 @@ dist/
 .claude/
 .wrangler/
 .dev.vars
+.env.private
+
+# Hugo build artifacts (generated at build time)
+public-kb/content/articles/
+public-kb/public/
+public-kb/resources/
+public-kb/static/js/search-index.json

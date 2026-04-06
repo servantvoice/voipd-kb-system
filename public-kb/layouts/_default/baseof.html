@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ if .Title }}{{ .Title }} — {{ end }}{{ .Site.Title }}</title>
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="/css/custom.css">
+</head>
+<body>
+  <header class="container">
+    <nav>
+      <ul>
+        <li>
+          {{ with .Site.Params.logoUrl }}
+            <a href="{{ $.Site.Params.companyUrl | default "/" }}" target="_blank" rel="noopener"><img src="{{ . }}" alt="{{ $.Site.Params.companyName | default "Home" }}" style="height:40px;vertical-align:middle;"></a>
+          {{ else }}
+            <a href="/"><strong>{{ .Site.Params.companyName | default .Site.Title }}</strong></a>
+          {{ end }}
+        </li>
+      </ul>
+      <ul>
+        <li><a href="/">Home</a></li>
+        {{ with .Site.Params.managerPortalUrl }}<li><a href="{{ . }}" target="_blank" rel="noopener">Manager Portal</a></li>{{ end }}
+        {{ with .Site.Params.billingPortalUrl }}<li><a href="{{ . }}" target="_blank" rel="noopener">Billing Portal</a></li>{{ end }}
+        {{ with .Site.Params.statusUrl }}<li><a href="{{ . }}" target="_blank" rel="noopener">Service Status</a></li>{{ end }}
+        <li><a href="/search/">Search</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  <footer class="container">
+    <hr>
+    <p><small>&copy; {{ now.Year }} {{ with .Site.Params.companyName }}<a href="{{ $.Site.Params.companyUrl | default "#" }}">{{ . }}</a>{{ else }}Knowledge Base{{ end }}, or used by permission.</small></p>
+  </footer>
+
+  {{ block "scripts" . }}{{ end }}
+</body>
+</html>

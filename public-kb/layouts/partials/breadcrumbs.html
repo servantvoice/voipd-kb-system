@@ -1,0 +1,10 @@
+<nav aria-label="breadcrumb">
+  <ul>
+    <li><a href="/">{{ .Site.Title | default "Docs" }}</a></li>
+    {{ with .Params.categories }}
+      {{ range . }}
+        <li><a href="/categories/{{ . | urlize }}/">{{ . }}</a></li>
+      {{ end }}
+    {{ end }}
+  </ul>
+</nav>

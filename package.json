@@ -1,0 +1,20 @@
+{
+  "name": "sv-kb-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "White-label knowledge base system — crawls upstream docs, transforms content, and serves via Cloudflare Workers + R2",
+  "workspaces": [
+    "shared",
+    "workers/*"
+  ],
+  "scripts": {
+    "typecheck": "tsc -b",
+    "deploy:crawl": "cd workers/crawl && npx wrangler deploy",
+    "deploy:pipeline": "cd workers/pipeline && npx wrangler deploy",
+    "deploy:internal": "cd workers/internal && npx wrangler deploy",
+    "deploy:images": "cd workers/images && npx wrangler deploy",
+    "deploy:all": "npm run deploy:images && npm run deploy:pipeline && npm run deploy:internal && npm run deploy:crawl",
+    "build:site": "cd public-kb && npm run build",
+    "dev:site": "cd public-kb && npm run dev"
+  }
+}

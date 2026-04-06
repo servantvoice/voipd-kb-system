@@ -1,0 +1,24 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "kb-images"  # Change to your worker name
+main = "src/index.ts"
+compatibility_date = "2026-03-25"
+
+[observability]
+enabled = true
+
+[observability.logs]
+enabled = true
+invocation_logs = true
+
+# No [vars] — use .dev.vars (local) or CF dashboard (production)
+# Required vars: IMAGE_DOMAIN, SOURCE_CDN, REVALIDATE_HOURS, MAX_CONCURRENT
+# Optional: ADDITIONAL_IMAGE_SOURCES (JSON array)
+# Secrets: CRAWL_SECRET
+
+[[r2_buckets]]
+binding = "KB_BUCKET"
+bucket_name = "your-kb-bucket"  # Change to your R2 bucket name
+
+[[r2_buckets]]
+binding = "IMAGE_BUCKET"
+bucket_name = "your-kb-images-bucket"  # Change to your images R2 bucket name

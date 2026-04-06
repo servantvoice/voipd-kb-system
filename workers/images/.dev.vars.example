@@ -1,0 +1,8 @@
+# Copy to .dev.vars — NEVER commit .dev.vars
+IMAGE_DOMAIN=images.example.com
+SOURCE_CDN=cdn.elev.io
+REVALIDATE_HOURS=24
+MAX_CONCURRENT=5
+CRAWL_SECRET=your-shared-secret
+# JSON array of additional CDN sources to scan for:
+# ADDITIONAL_IMAGE_SOURCES=[{"hostname":"static.helpjuice.com","pathPrefix":""},{"hostname":"t24555569.p.clickup-attachments.com","pathPrefix":"clickup/"}]

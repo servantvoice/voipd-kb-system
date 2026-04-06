@@ -1,0 +1,20 @@
+# R2 credentials for the fetch script (CF Pages build environment)
+R2_ACCESS_KEY_ID=your-r2-access-key
+R2_SECRET_ACCESS_KEY=your-r2-secret-key
+R2_ENDPOINT=https://your-account-id.r2.cloudflarestorage.com
+R2_BUCKET=your-kb-bucket
+
+# Hugo configuration — set in CF Pages environment variables
+# Hugo reads HUGO_TITLE as the site title
+HUGO_TITLE=Your Company Documentation
+HUGO_PARAMS_DESCRIPTION=Knowledge base to help customers use the service.
+HUGO_PARAMS_INTERNALKBURL=https://internal.example.com
+HUGO_PARAMS_LOGOURL=https://example.com/logo.png
+HUGO_PARAMS_COMPANYNAME=Your Company
+HUGO_PARAMS_COMPANYURL=https://example.com
+HUGO_PARAMS_MANAGERPORTALURL=https://manage.example.com
+HUGO_PARAMS_BILLINGPORTALURL=https://billing.example.com
+HUGO_PARAMS_STATUSURL=https://status.example.com
+
+# Used by the build script: hugo --baseURL $KB_DOMAIN_URL
+KB_DOMAIN_URL=https://docs.example.com/

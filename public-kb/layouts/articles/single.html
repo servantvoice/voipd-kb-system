@@ -1,0 +1,17 @@
+{{ define "main" }}
+{{ partial "breadcrumbs.html" . }}
+
+<article>
+  {{- $content := .Content -}}
+  {{- /* Public-only: replace "the client/customer" with "your" for customer-facing clarity */ -}}
+  {{- $content = replaceRE `(?i)\bthe client[''\x{2019}]s\b` "your" $content -}}
+  {{- $content = replaceRE `(?i)\bthe client&#8217;s\b` "your" $content -}}
+  {{- $content = replaceRE `(?i)\bthe client&rsquo;s\b` "your" $content -}}
+  {{- $content = replaceRE `(?i)\bthe customer[''\x{2019}]s\b` "your" $content -}}
+  {{- $content = replaceRE `(?i)\bthe customer&#8217;s\b` "your" $content -}}
+  {{- $content = replaceRE `(?i)\bthe customer&rsquo;s\b` "your" $content -}}
+  {{- $content = replaceRE `(?i)\bthe client\b` "your" $content -}}
+  {{- $content = replaceRE `(?i)\bthe customer\b` "your" $content -}}
+  {{ $content | safeHTML }}
+</article>
+{{ end }}
