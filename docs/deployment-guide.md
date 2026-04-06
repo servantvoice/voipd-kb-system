@@ -113,62 +113,70 @@ export CLOUDFLARE_ACCOUNT_ID=your-account-id
 
 Or omit this and Wrangler will prompt you to select an account.
 
-## 4. Set Secrets
-
-Secrets are encrypted values that never appear in `.dev.vars` in production. Set them per-worker:
-
-```bash
-# Shared auth token for inter-worker calls
-cd workers/crawl && npx wrangler secret put CRAWL_SECRET
-cd workers/pipeline && npx wrangler secret put CRAWL_SECRET
-cd workers/internal && npx wrangler secret put CRAWL_SECRET
-cd workers/images && npx wrangler secret put CRAWL_SECRET
-
-# Crawl worker needs a CF API token with Browser Rendering permissions
-cd workers/crawl && npx wrangler secret put CF_API_TOKEN
-
-# Pipeline needs an email API token (choose one)
-cd workers/pipeline && npx wrangler secret put POSTMARK_API_TOKEN
-# OR: npx wrangler secret put RESEND_API_KEY
-```
-
-## 5. Deploy Workers
+## 4. Deploy Workers
 
 Deploy in this order (dependencies flow left to right):
 
 ```bash
-npm run deploy:images      # no dependencies
-npm run deploy:pipeline    # needs R2 bucket, email API token
-npm run deploy:internal    # needs R2 bucket
-npm run deploy:crawl       # needs pipeline URL or service binding
+npm run deploy:all
 ```
+
+This runs: `deploy:images` > `deploy:pipeline` > `deploy:internal` > `deploy:crawl`.
+
+Or deploy individually:
+```bash
+npm run deploy:images      # no dependencies
+npm run deploy:pipeline    # needs R2 bucket
+npm run deploy:internal    # needs R2 bucket
+npm run deploy:crawl       # needs pipeline URL
+```
+
+## 5. Push Environment Variables to Cloudflare
 
 After deploying, update the inter-worker URLs in `.env.private` now that you know the worker names:
 - `PIPELINE_URL` — `https://<your-pipeline-worker>.workers.dev` (set on crawl worker, tells it where to POST after crawl)
 - `IMAGE_SYNC_URL` — `https://<your-images-worker>.workers.dev/sync` (set on pipeline worker, triggers image sync)
 
-Then re-run `bash scripts/setup-env.sh && bash scripts/push-vars.sh` to distribute the updated values.
-
-## 6. Push Production Environment Variables
-
-`.dev.vars` only works for local development. For production, use the push script:
+Then distribute and push all variables (including secrets) to Cloudflare:
 
 ```bash
-# Push non-secret vars to all workers
-bash scripts/push-vars.sh
-
-# Push secrets (CRAWL_SECRET, API tokens) — prompts for confirmation
-bash scripts/push-vars.sh --secrets
-
-# Push everything at once
-bash scripts/push-vars.sh --all
+bash scripts/setup-env.sh    # distributes .env.private to each worker's .dev.vars
+bash scripts/push-vars.sh    # pushes all vars to CF via wrangler secret bulk
 ```
 
-The script reads your `.env.private` and pushes the correct variables to each worker via `wrangler vars set` (non-secrets) or `wrangler secret put` (secrets).
+The push script uploads each worker's `.dev.vars` file using `wrangler secret bulk`, which stores all values encrypted. You can also push to a single worker:
 
-**CF Pages variables** (HUGO_*, R2_*, KB_DOMAIN_URL) must be set manually in the CF Pages dashboard — Wrangler does not currently support pushing variables to Pages projects.
+```bash
+bash scripts/push-vars.sh crawl       # push to crawl worker only
+bash scripts/push-vars.sh pipeline    # push to pipeline worker only
+bash scripts/push-vars.sh internal    # push to internal worker only
+bash scripts/push-vars.sh images      # push to images worker only
+```
 
-Alternatively, set variables individually via the CF dashboard (Workers & Pages > your worker > Settings > Variables).
+**CF Pages variables** (HUGO_*, R2_*, KB_DOMAIN_URL) must be set manually in the CF Pages dashboard — Wrangler does not support pushing variables to Pages projects.
+
+<details>
+<summary>Manual alternative (without scripts)</summary>
+
+If you prefer not to use the scripts, you can set variables individually:
+
+```bash
+# Per-worker secrets
+cd workers/crawl && npx wrangler secret put CRAWL_SECRET
+cd workers/crawl && npx wrangler secret put CF_API_TOKEN
+cd workers/pipeline && npx wrangler secret put CRAWL_SECRET
+cd workers/pipeline && npx wrangler secret put POSTMARK_API_TOKEN
+cd workers/internal && npx wrangler secret put CRAWL_SECRET
+cd workers/images && npx wrangler secret put CRAWL_SECRET
+```
+
+Or set all variables for a worker at once from a JSON file:
+```bash
+cd workers/crawl && npx wrangler secret bulk .dev.vars
+```
+
+Non-secret variables can also be set via the CF dashboard (Workers & Pages > worker > Settings > Variables).
+</details>
 
 ## 7. Public Site (CF Pages)
 
