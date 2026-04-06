@@ -218,7 +218,11 @@ In the Pages project settings (Settings > Environment variables), add:
 1. In Pages project settings > Builds & Deployments > Deploy hooks
 2. Create a hook (name it anything, e.g., "pipeline-trigger")
 3. Copy the hook URL
-4. Set it as the `PAGES_DEPLOY_HOOK` env var on the pipeline worker
+4. Update `PAGES_DEPLOY_HOOK` in your `.env.private`, then push to the pipeline worker:
+   ```bash
+   bash scripts/setup-env.sh
+   bash scripts/push-vars.sh pipeline
+   ```
 
 ### 7d. Custom domain (optional)
 
