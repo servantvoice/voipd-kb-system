@@ -17,6 +17,7 @@ interface Env {
 
   // Notification
   POSTMARK_API_TOKEN?: string;
+  POSTMARK_MESSAGE_STREAM?: string;
   RESEND_API_KEY?: string;
   NOTIFICATION_TO: string;
   NOTIFICATION_FROM: string;

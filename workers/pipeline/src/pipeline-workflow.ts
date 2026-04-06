@@ -326,6 +326,7 @@ async function sendNotificationEmail(env: Env, data: NotifyData): Promise<void> 
         To: env.NOTIFICATION_TO,
         Subject: subject,
         HtmlBody: html,
+        MessageStream: env.POSTMARK_MESSAGE_STREAM || "outbound",
       }),
     });
 

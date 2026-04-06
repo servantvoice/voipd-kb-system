@@ -13,3 +13,5 @@ PAGES_DEPLOY_HOOK=https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hoo
 IMAGE_SYNC_URL=https://your-images-worker.workers.dev/sync
 CRAWL_SECRET=your-shared-secret
 POSTMARK_API_TOKEN=your-postmark-server-token
+# Postmark message stream (default: "outbound"). Set if you created a custom stream.
+# POSTMARK_MESSAGE_STREAM=outbound

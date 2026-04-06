@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Pushes environment variables to Cloudflare Workers and Pages.
+# Pushes environment variables to Cloudflare Workers.
 #
 # Usage:
 #   bash scripts/push-vars.sh              # push non-secret vars only
@@ -25,31 +25,19 @@ if [[ ! -f "$ENV_FILE" ]]; then
   exit 1
 fi
 
-# Parse env file
-declare -A VARS
-while IFS= read -r line; do
-  [[ "$line" =~ ^[[:space:]]*# ]] && continue
-  [[ -z "${line// }" ]] && continue
-  if [[ "$line" =~ ^([A-Za-z_][A-Za-z0-9_]*)=(.*) ]]; then
-    VARS["${BASH_REMATCH[1]}"]="${BASH_REMATCH[2]}"
-  fi
-done < "$ENV_FILE"
-
-# Helper: get a var value or skip if empty
+# Get a variable's value from the env file
 get_var() {
-  local val="${VARS[$1]:-}"
-  if [[ -z "$val" ]]; then
-    return 1
-  fi
-  echo "$val"
+  local key="$1"
+  grep -m1 "^${key}=" "$ENV_FILE" 2>/dev/null | sed "s/^${key}=//" || true
 }
 
-# Helper: push a non-secret var to a worker
+# Push a non-secret var to a worker
 push_var() {
   local worker_dir="$1"
   local var_name="$2"
   local val
-  val="$(get_var "$var_name")" || return 0
+  val="$(get_var "$var_name")"
+  [[ -z "$val" ]] && return 0
 
   echo "  $var_name"
   (cd "$REPO_ROOT/$worker_dir" && npx wrangler vars set "$var_name" "$val" 2>/dev/null) || {
@@ -57,12 +45,13 @@ push_var() {
   }
 }
 
-# Helper: push a secret to a worker
+# Push a secret to a worker
 push_secret() {
   local worker_dir="$1"
   local var_name="$2"
   local val
-  val="$(get_var "$var_name")" || return 0
+  val="$(get_var "$var_name")"
+  [[ -z "$val" ]] && return 0
 
   echo "  $var_name"
   echo "$val" | (cd "$REPO_ROOT/$worker_dir" && npx wrangler secret put "$var_name" 2>/dev/null) || {
@@ -81,7 +70,8 @@ push_worker_vars() {
   echo "=== workers/pipeline ==="
   for v in KB_DOMAIN INTERNAL_KB_DOMAIN IMAGE_DOMAIN MANAGER_PORTAL_URL \
            SOURCE_IMAGE_CDN BRAND_NAME CONNECT_NAME CONNECT_DESKTOP_NAME \
-           NOTIFICATION_TO NOTIFICATION_FROM PAGES_DEPLOY_HOOK IMAGE_SYNC_URL; do
+           NOTIFICATION_TO NOTIFICATION_FROM PAGES_DEPLOY_HOOK IMAGE_SYNC_URL \
+           POSTMARK_MESSAGE_STREAM; do
     push_var workers/pipeline "$v"
   done
 
