@@ -343,37 +343,6 @@ crons = ["0 2 * * SUN"]
 
 ---
 
-## Cutover from Existing System
-
-If you're migrating from the multi-repo + n8n setup, follow this checklist.
-
-### Pre-cutover (no disruption — test alongside existing system)
-
-1. [ ] Deploy new workers with different names alongside old ones (same R2 bucket)
-2. [ ] Set all env vars and secrets on each new worker via CF dashboard
-3. [ ] Set up CF Pages project for `public-kb/` with R2 credentials and Hugo env vars
-4. [ ] Test new pipeline manually: `POST /process` with a recent `crawlDatePrefix`
-5. [ ] Verify `processed/` output matches n8n output (diff in R2)
-6. [ ] Verify email, Pages deploy hook, and image sync all trigger correctly
-7. [ ] Test new internal worker on a test domain — verify rendering, search, admin UI
-
-### Cutover (brief disruption window)
-
-8. [ ] Update crawl worker to notify new pipeline (`PIPELINE_URL` env var)
-9. [ ] Switch DNS for internal KB domain to point at new internal worker
-10. [ ] Switch CF Pages project to use `voipd-kb-system` repo (if not already)
-11. [ ] Trigger a manual crawl and verify the full pipeline end-to-end
-
-### Post-cutover cleanup
-
-12. [ ] Decommission n8n pipeline (disable or delete workflows)
-13. [ ] Delete old workers (or leave idle — no cost if not invoked)
-14. [ ] Archive old repos with READMEs pointing to the monorepo
-15. [ ] Rotate `CRAWL_SECRET` (old value may be in n8n config or test files)
-16. [ ] Remove `noindex` robots meta when ready to go public
-
----
-
 ## Troubleshooting
 
 - **Wrangler can't find account:** Set `CLOUDFLARE_ACCOUNT_ID` env var
