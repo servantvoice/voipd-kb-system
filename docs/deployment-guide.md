@@ -128,8 +128,12 @@ Or deploy individually:
 npm run deploy:images      # no dependencies
 npm run deploy:pipeline    # needs R2 bucket
 npm run deploy:internal    # needs R2 bucket
-npm run deploy:crawl       # needs pipeline URL
+npm run deploy:crawl       # needs pipeline deployed first (service binding)
 ```
+
+**Important:** The crawl worker has a service binding to the pipeline worker (`[[services]]` in `workers/crawl/wrangler.toml`). This means the pipeline worker must be deployed before the crawl worker. The `deploy:all` script handles this automatically. If you deploy individually, deploy `cf-pipeline` before `cf-crawl`.
+
+If you need to deploy the crawl worker before the pipeline (e.g., different accounts), comment out the `[[services]]` section in `workers/crawl/wrangler.toml` and use the `PIPELINE_URL` environment variable instead.
 
 ## 5. Push Environment Variables to Cloudflare
 
@@ -290,18 +294,19 @@ The pipeline worker sends one email per crawl run with article counts.
 
 Either works — the pipeline just does a single HTTP POST.
 
-## 11. Wire Up Service Bindings (Optional)
+## 11. Service Binding (Crawl → Pipeline)
 
-For lower latency between workers in the same account, use service bindings instead of HTTP calls:
+The crawl worker uses a service binding to call the pipeline worker directly (no public internet hop). This is already enabled in `workers/crawl/wrangler.toml`:
 
-In `workers/crawl/wrangler.toml`, uncomment:
 ```toml
 [[services]]
 binding = "PIPELINE_WORKER"
-service = "your-pipeline-worker-name"
+service = "cf-pipeline"  # must match your pipeline worker name
 ```
 
-This avoids the public internet hop. The crawl worker automatically prefers the service binding when available.
+If you changed the pipeline worker name in `workers/pipeline/wrangler.toml`, update the `service` value here to match.
+
+The crawl worker also accepts a `PIPELINE_URL` env var as a fallback. If both are configured, the service binding takes priority. If you need to run the workers in separate CF accounts, comment out the `[[services]]` section and use `PIPELINE_URL` instead.
 
 ## 12. Test the Full Pipeline
 
