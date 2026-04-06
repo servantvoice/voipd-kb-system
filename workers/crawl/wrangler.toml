@@ -26,7 +26,8 @@ binding = "CRAWL_WORKFLOW"
 name = "cf-crawl-workflow"
 class_name = "CrawlWorkflow"
 
-# Optional: service binding to pipeline worker (uncomment after pipeline is deployed)
-# [[services]]
-# binding = "PIPELINE_WORKER"
-# service = "cf-pipeline"
+# Service binding to pipeline worker (lower latency than HTTP, requires same CF account)
+# Comment out if deploying crawl before pipeline, or if workers are in different accounts.
+[[services]]
+binding = "PIPELINE_WORKER"
+service = "cf-pipeline"
