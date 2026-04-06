@@ -29,61 +29,87 @@ A white-label knowledge base system that crawls an upstream documentation site, 
 | `public-kb/` | Hugo static site for the public KB, deployed to CF Pages |
 | `shared/` | Categorization rules, branding transforms, configuration — imported by all workers |
 
+## Prerequisites
+
+- **Cloudflare account** with Workers Paid plan ($5/month) — required for Workflows
+- **Domain managed by Cloudflare DNS** — required for custom domains and CF Access
+- **Node.js 18+**, npm, git
+- **Wrangler CLI** — `npm install -g wrangler`
+- **Hugo** — for local public site development
+
+See [docs/deployment-guide.md](docs/deployment-guide.md) for full details on prerequisites.
+
 ## Quick Start
 
 ```bash
 git clone <this-repo>
-cd sv-kb-system
+cd voipd-kb-system
 npm install && cd public-kb && npm install && cd ..
-
-# 1. Edit wrangler.toml in each worker:
-#    Change `name`, `bucket_name`, and `pattern` placeholders
-
-# 2. Configure all environment variables from one file:
-cp .env.example .env.private
-# Edit .env.private with your values (domains, branding, emails, etc.)
-bash scripts/setup-env.sh    # distributes to each worker's .dev.vars
-
-# 3. Set CLOUDFLARE_ACCOUNT_ID (or let Wrangler prompt)
-export CLOUDFLARE_ACCOUNT_ID=your-account-id
-
-# 4. Deploy workers and push env vars to Cloudflare
-npm run deploy:images
-npm run deploy:pipeline
-npm run deploy:internal
-npm run deploy:crawl
-bash scripts/push-vars.sh --all   # push vars + secrets to CF
 ```
 
-See [docs/deployment-guide.md](docs/deployment-guide.md) for the full from-scratch setup guide.
+### 1. Edit wrangler.toml placeholders
+
+Each worker's `wrangler.toml` has placeholder values for `name`, `bucket_name`, and (for internal) `pattern`. Edit these to match your deployment.
+
+### 2. Configure environment variables
+
+All deployment-specific values (domains, branding, emails, API tokens) live in a single `.env.private` file:
+
+```bash
+cp .env.example .env.private
+# Edit .env.private with your values
+bash scripts/setup-env.sh        # distributes to each worker's .dev.vars
+```
+
+### 3. Deploy workers
+
+```bash
+export CLOUDFLARE_ACCOUNT_ID=your-account-id
+npm run deploy:all               # deploys images, pipeline, internal, crawl (in order)
+bash scripts/push-vars.sh        # pushes all vars to Cloudflare via wrangler secret bulk
+```
+
+### 4. Set up CF Pages
+
+Create a CF Pages project connected to this repo with root directory `public-kb/`. Set the R2 credentials and Hugo branding vars in the Pages environment. See [step 7 in the deployment guide](docs/deployment-guide.md#7-public-site-cf-pages).
+
+### 5. Test
+
+```bash
+curl -X POST https://your-crawl-worker.workers.dev/crawl \
+  -H "X-Crawl-Secret: your-secret" \
+  -H "Content-Type: application/json"
+```
 
 ## Configuration
 
-All deployment-specific values live in environment variables, not in committed files. This means the repo contains no domain names, company names, account IDs, or email addresses.
+All deployment-specific values live in environment variables, not in committed files. No domain names, company names, account IDs, or email addresses in the codebase.
 
-**Three places to configure:**
+**Single source of truth:** `.env.private` (gitignored) contains all variables for all workers and the Hugo site. Two scripts manage distribution:
 
-1. **`wrangler.toml`** — Edit `name`, `bucket_name`, and `pattern` placeholders (8 edits across 4 workers)
-2. **`.dev.vars`** — All env vars for local development (gitignored)
-3. **CF Dashboard** — Production env vars and secrets
+| Script | Purpose |
+|--------|---------|
+| `bash scripts/setup-env.sh` | Reads `.env.private`, writes the correct subset to each worker's `.dev.vars` and `public-kb/.dev.vars` |
+| `bash scripts/push-vars.sh` | Pushes all vars to Cloudflare Workers via `wrangler secret bulk` |
+| `bash scripts/push-vars.sh crawl` | Push to a single worker only |
 
-See `.dev.vars.example` in each worker directory for the complete variable list.
+CF Pages variables must be set in the CF dashboard manually (Wrangler doesn't support Pages).
 
 ## Email Notifications
 
 The pipeline worker sends a completion email after each crawl. Two providers are supported:
 
-- **Postmark** — Set `POSTMARK_API_TOKEN` secret
-- **Resend** — Set `RESEND_API_KEY` secret
+- **Postmark** — Set `POSTMARK_API_TOKEN` and optionally `POSTMARK_MESSAGE_STREAM` (defaults to `outbound`)
+- **Resend** — Set `RESEND_API_KEY`
 
-Either works — the pipeline does a single HTTP POST per run.
+Both require `NOTIFICATION_TO` and `NOTIFICATION_FROM` (sender/recipient email addresses). Either provider works — the pipeline does a single HTTP POST per run.
 
 ## Public Site (Hugo)
 
 The `public-kb/` directory contains a Hugo static site deployed to CF Pages. It fetches public articles from R2 at build time and generates a static site. The pipeline worker triggers a Pages rebuild after each crawl run via a deploy hook.
 
-See `public-kb/.dev.vars.example` for the required CF Pages environment variables (R2 credentials, Hugo branding vars, base URL).
+All branding is configured via `HUGO_PARAMS_*` environment variables in the CF Pages project (company name, logo URL, portal links, etc.).
 
 ## Deployment Guide
 
-See [docs/deployment-guide.md](docs/deployment-guide.md) for the full from-scratch setup guide including all prerequisites, worker deployment, CF Pages setup, and cutover from an existing system.
+See [docs/deployment-guide.md](docs/deployment-guide.md) for the comprehensive from-scratch setup guide including all prerequisites, worker deployment, CF Pages setup, DNS, CF Access, email API, and cutover from an existing system.

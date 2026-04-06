@@ -51,7 +51,7 @@ Also create an **R2 API token** (R2 > Manage R2 API Tokens > Create API Token) w
 
 ```bash
 git clone <this-repo>
-cd sv-kb-system
+cd voipd-kb-system
 npm install
 cd public-kb && npm install && cd ..
 ```
@@ -341,7 +341,7 @@ If you're migrating from the multi-repo + n8n setup, follow this checklist.
 
 8. [ ] Update crawl worker to notify new pipeline (`PIPELINE_URL` env var)
 9. [ ] Switch DNS for internal KB domain to point at new internal worker
-10. [ ] Switch CF Pages project to use `sv-kb-system` repo (if not already)
+10. [ ] Switch CF Pages project to use `voipd-kb-system` repo (if not already)
 11. [ ] Trigger a manual crawl and verify the full pipeline end-to-end
 
 ### Post-cutover cleanup

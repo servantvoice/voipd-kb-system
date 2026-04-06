@@ -1,5 +1,5 @@
 {
-  "name": "sv-kb-system",
+  "name": "voipd-kb-system",
   "version": "1.0.0",
   "private": true,
   "description": "White-label knowledge base system — crawls upstream docs, transforms content, and serves via Cloudflare Workers + R2",
