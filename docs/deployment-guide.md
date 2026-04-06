@@ -243,6 +243,8 @@ The site ships with `<meta name="robots" content="noindex, nofollow">` to preven
 1. In CF DNS, add a CNAME record for your internal KB domain pointing to your worker
 2. Or use the Workers route configured in `wrangler.toml`
 
+**Note:** As soon as the custom domain is active, the internal KB will be reachable. The worker returns a 401 "Unauthorized" page to unauthenticated visitors (it won't expose article content), but the domain will be live. Configure CF Access (step 9) promptly after setting up the domain, or set up Access first if you prefer.
+
 ### Image CDN domain
 
 Already configured via R2 Public Access (step 1).
