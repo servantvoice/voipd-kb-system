@@ -13,6 +13,8 @@ interface PipelineParams {
   missedPages: number;
   sitemapTotal: number;
   filteredTotal: number;
+  limitWarning?: boolean;
+  crawlTruncated?: boolean;
 }
 
 interface ManifestData {
@@ -20,6 +22,8 @@ interface ManifestData {
   writtenPages: number;
   missedUrls: string[];
   crawlUrl: string;
+  limitWarning?: boolean;
+  crawlTruncated?: boolean;
 }
 
 interface ProcessedArticle {
@@ -42,7 +46,12 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
       if (!obj) throw new Error(`Manifest not found: ${key}`);
       const data = JSON.parse(await obj.text()) as ManifestData;
       console.log(`Manifest: ${data.urls.length} URLs to process`);
-      return { urls: data.urls, crawlUrl: data.crawlUrl };
+      return {
+        urls: data.urls,
+        crawlUrl: data.crawlUrl,
+        limitWarning: data.limitWarning ?? false,
+        crawlTruncated: data.crawlTruncated ?? false,
+      };
     });
 
     // Convert full URLs to relative paths
@@ -281,6 +290,8 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
           processedCount: allProcessed.length,
           imageSyncResult,
           notifyErrors: errors.length > 0 ? errors : null,
+          limitWarning: manifest.limitWarning,
+          crawlTruncated: manifest.crawlTruncated,
         });
         console.log("Notification email sent");
       } catch (err) {
@@ -324,6 +335,8 @@ interface NotifyData {
   processedCount: number;
   imageSyncResult: ImageSyncResult | null;
   notifyErrors: string[] | null;
+  limitWarning?: boolean;
+  crawlTruncated?: boolean;
 }
 
 async function sendNotificationEmail(env: Env, data: NotifyData): Promise<void> {
@@ -348,6 +361,15 @@ async function sendNotificationEmail(env: Env, data: NotifyData): Promise<void> 
     imageSyncHtml = `<h3>Image Sync</h3><p><em>No results (sync timed out or was not triggered).</em></p>`;
   }
 
+  let crawlWarningHtml = "";
+  if (data.crawlTruncated) {
+    crawlWarningHtml = `
+    <p style="color:#c00;font-weight:bold;">&#9888; Crawl truncated: the crawler hit the page limit and may have dropped URLs. Increase CRAWL_PAGE_LIMIT on the crawl worker.</p>`;
+  } else if (data.limitWarning) {
+    crawlWarningHtml = `
+    <p style="color:#c00;font-weight:bold;">&#9888; Crawl limit warning: filtered URL count is approaching CRAWL_PAGE_LIMIT. Consider increasing it before the next crawl.</p>`;
+  }
+
   let errorsHtml = "";
   if (data.notifyErrors && data.notifyErrors.length > 0) {
     errorsHtml = `
@@ -358,6 +380,7 @@ async function sendNotificationEmail(env: Env, data: NotifyData): Promise<void> 
   const html = `
     <h2>KB Refresh Complete</h2>
     <p>Crawl date: <strong>${data.crawlDatePrefix}</strong></p>
+    ${crawlWarningHtml}
     <h3>Articles</h3>
     <ul>
       <li>Processed: ${data.processedCount}</li>

@@ -64,12 +64,8 @@ write_dev_vars "$REPO_ROOT/workers/crawl/.dev.vars" \
   CF_API_TOKEN \
   CRAWL_SECRET \
   PIPELINE_URL \
-  CRAWL_BATCH_SIZE \
-  CRAWL_RETRY_BATCH_SIZE \
-  CRAWL_MAX_RETRY_ROUNDS \
-  CRAWL_INITIAL_POLL_DELAY \
-  CRAWL_POLL_INTERVAL \
-  CRAWL_INTER_BATCH_DELAY
+  CRAWL_PAGE_LIMIT \
+  CRAWL_MAX_AGE_SECONDS
 
 # ─── workers/pipeline/.dev.vars ──────────────────────────────────────
 write_dev_vars "$REPO_ROOT/workers/pipeline/.dev.vars" \

@@ -41,39 +41,24 @@ function isExcluded(urlPath: string): boolean {
   return false;
 }
 
-// Defaults — overridable via env vars for tuning without redeploying
-const DEFAULT_BATCH_SIZE = 50;
-const DEFAULT_RETRY_BATCH_SIZE = 25;
-const DEFAULT_MAX_RETRY_ROUNDS = 3;
-const DEFAULT_INITIAL_POLL_DELAY = "5 minutes";
-const DEFAULT_POLL_INTERVAL = "2 minutes";
-const DEFAULT_INTER_BATCH_DELAY = "1 minute";
-const WRITE_CHUNK_SIZE = 50;
-
-interface CrawlTuning {
-  batchSize: number;
-  retryBatchSize: number;
-  maxRetryRounds: number;
-  initialPollDelay: string;
-  pollInterval: string;
-  interBatchDelay: string;
-}
+// Defaults — overridable via env vars
+const DEFAULT_CRAWL_PAGE_LIMIT = 1000;
+const DEFAULT_CRAWL_MAX_AGE_SECONDS = 86400; // 24 hours
 
 export class CrawlWorkflow extends WorkflowEntrypoint<Env, CrawlParams> {
   async run(event: WorkflowEvent<CrawlParams>, step: WorkflowStep) {
     const params = event.payload;
     const crawlUrl = params.url ?? "https://voipdocs.io/";
 
-    // Read tuning from env (allows adjustment without redeploying)
-    const tuning: CrawlTuning = {
-      batchSize: parseInt(this.env.CRAWL_BATCH_SIZE || "", 10) || DEFAULT_BATCH_SIZE,
-      retryBatchSize: parseInt(this.env.CRAWL_RETRY_BATCH_SIZE || "", 10) || DEFAULT_RETRY_BATCH_SIZE,
-      maxRetryRounds: parseInt(this.env.CRAWL_MAX_RETRY_ROUNDS || "", 10) || DEFAULT_MAX_RETRY_ROUNDS,
-      initialPollDelay: this.env.CRAWL_INITIAL_POLL_DELAY || DEFAULT_INITIAL_POLL_DELAY,
-      pollInterval: this.env.CRAWL_POLL_INTERVAL || DEFAULT_POLL_INTERVAL,
-      interBatchDelay: this.env.CRAWL_INTER_BATCH_DELAY || DEFAULT_INTER_BATCH_DELAY,
-    };
+    const crawlPageLimit = parseInt(this.env.CRAWL_PAGE_LIMIT || "", 10) || DEFAULT_CRAWL_PAGE_LIMIT;
+    const crawlMaxAge = parseInt(this.env.CRAWL_MAX_AGE_SECONDS || "", 10);
+    const maxAgeSeconds = isNaN(crawlMaxAge) ? DEFAULT_CRAWL_MAX_AGE_SECONDS : crawlMaxAge;
+
     const apiBase = `https://api.cloudflare.com/client/v4/accounts/${this.env.CF_ACCOUNT_ID}/browser-rendering`;
+    const authHeaders = {
+      Authorization: `Bearer ${this.env.CF_API_TOKEN}`,
+      "Content-Type": "application/json",
+    };
 
     const timestamp = new Date().toISOString();
     const datePrefix = timestamp.split("T")[0];
@@ -97,97 +82,178 @@ export class CrawlWorkflow extends WorkflowEntrypoint<Env, CrawlParams> {
 
       filteredUrls.sort();
 
-      const batches: string[][] = [];
-      for (let i = 0; i < filteredUrls.length; i += tuning.batchSize) {
-        batches.push(filteredUrls.slice(i, i + tuning.batchSize));
+      const limitWarning = filteredUrls.length >= crawlPageLimit * 0.9;
+      if (limitWarning) {
+        console.warn(
+          `⚠️ Crawl limit warning: ${filteredUrls.length} filtered URLs is >= 90% of CRAWL_PAGE_LIMIT (${crawlPageLimit}). ` +
+          `Increase CRAWL_PAGE_LIMIT env var if the sitemap keeps growing.`
+        );
       }
 
-      console.log(`Sitemap: ${allUrls.length} total, ${filteredUrls.length} after filtering, ${batches.length} batches of ${tuning.batchSize}`);
+      console.log(`Sitemap: ${allUrls.length} total, ${filteredUrls.length} after filtering`);
 
       return {
         totalUrls: allUrls.length,
         filteredCount: filteredUrls.length,
         filteredUrls,
-        batchCount: batches.length,
-        batches: batches.map((batch) => ({ size: batch.length, urls: batch })),
+        limitWarning,
       };
     });
 
-    const writtenUrlSet = new Set<string>();
-    let totalRecords = 0;
-    const allJobIds: string[] = [];
+    // Step 2: Submit single crawl job for all URLs
+    // Note: includePatterns is limited to 100 entries by the API — we use excludePatterns only
+    // and rely on source: "sitemaps" to scope the crawl to the sitemap's URL set.
+    const crawlJob = await step.do("submit-crawl", async () => {
+      const crawlConfig: Record<string, unknown> = {
+        url: crawlUrl,
+        formats: ["markdown"],
+        render: false,
+        source: "sitemaps",
+        limit: crawlPageLimit,
+        crawlPurposes: ["search"],
+        options: {
+          excludePatterns: EXCLUDE_PREFIXES.map((p) => `**${p}**`),
+        },
+      };
 
-    // Step 2+: Run each batch
-    for (let batchIndex = 0; batchIndex < sitemapResult.batchCount; batchIndex++) {
-      if (batchIndex > 0) {
-        await step.sleep(`inter-batch-delay-${batchIndex}`, tuning.interBatchDelay as WorkflowSleepDuration);
+      if (maxAgeSeconds > 0) {
+        crawlConfig.maxAge = maxAgeSeconds;
       }
 
-      const batch = sitemapResult.batches[batchIndex];
-      console.log(`\n── Batch ${batchIndex + 1}/${sitemapResult.batchCount} (${batch.size} URLs) ──`);
+      if (params.modifiedSince) {
+        crawlConfig.modifiedSince = params.modifiedSince;
+      }
 
-      const batchResult = await this.runCrawlBatch(
-        step, `batch-${batchIndex}`, batch.urls, crawlUrl, apiBase, params, datePrefix, tuning
+      const resp = await fetch(`${apiBase}/crawl`, {
+        method: "POST",
+        headers: authHeaders,
+        body: JSON.stringify(crawlConfig),
+      });
+
+      const data = (await resp.json()) as CrawlInitResponse;
+      console.log(`Submit crawl: success=${data.success}, jobId=${data.result}`);
+
+      if (!data.success) {
+        console.error("Submit crawl failed:", JSON.stringify(data.errors));
+        throw new Error(
+          `Crawl submit failed: ${data.errors?.map((e) => e.message).join(", ") ?? "unknown"}`
+        );
+      }
+
+      return { jobId: data.result };
+    });
+
+    const jobId = crawlJob.jobId;
+
+    // Step 3: Wait for crawl completion (polls inline; retries give 5×13 = 65 min total)
+    const completionResult = await step.do(
+      "wait-for-completion",
+      { retries: { limit: 5, delay: "10 seconds" } },
+      async () => {
+        // Give the crawler a head start before polling
+        await new Promise((r) => setTimeout(r, 60_000)); // 1 min initial wait
+
+        const startTime = Date.now();
+        const MAX_WALL = 13 * 60 * 1000; // 13 min, 2-min buffer before CF 15-min step limit
+
+        while (Date.now() - startTime < MAX_WALL) {
+          const resp = await fetch(`${apiBase}/crawl/${jobId}?limit=1`, {
+            headers: { Authorization: `Bearer ${this.env.CF_API_TOKEN}` },
+          });
+          const data = (await resp.json()) as CrawlPollResponse;
+
+          const status = data.result?.status;
+          const total = data.result?.total ?? 0;
+          const finished = data.result?.finished ?? 0;
+
+          console.log(`Poll: status=${status}, total=${total}, finished=${finished}`);
+
+          if (status === "completed" || status === "errored") {
+            if (status === "errored") {
+              console.error("Crawl job errored.");
+            }
+            return { status, total, finished };
+          }
+
+          await new Promise((r) => setTimeout(r, 30_000)); // 30s between polls
+        }
+
+        // Still running — throw to trigger retry with fresh 13-min window
+        throw new Error(`Crawl still running after 13 minutes — will retry (jobId: ${jobId})`);
+      }
+    );
+
+    const crawlTruncated = completionResult.total >= crawlPageLimit;
+    if (crawlTruncated) {
+      console.warn(
+        `⚠️ Crawl truncation detected: total=${completionResult.total} >= CRAWL_PAGE_LIMIT=${crawlPageLimit}. ` +
+        `Some URLs may have been dropped. Increase CRAWL_PAGE_LIMIT env var.`
       );
-
-      allJobIds.push(batchResult.jobId);
-      totalRecords += batchResult.totalRecords;
-      for (const url of batchResult.writtenUrls) writtenUrlSet.add(url);
-
-      console.log(`Batch ${batchIndex} done: ${batchResult.writtenCount}/${batchResult.totalRecords} pages written (${writtenUrlSet.size} total so far)`);
     }
 
-    // Retry pass
-    const missingUrls = sitemapResult.filteredUrls.filter((url: string) => !writtenUrlSet.has(url));
+    // Step 4: Fetch all results and write to R2
+    const writeResult = await step.do("fetch-and-write", async () => {
+      const writtenUrls: string[] = [];
+      let cursor: number | undefined;
+      let pageNum = 0;
+      const maxPages = 20;
 
-    if (missingUrls.length > 0) {
-      console.log(`\n── Retry: ${missingUrls.length} URLs missing markdown ──`);
+      do {
+        const fetchUrl = new URL(`${apiBase}/crawl/${jobId}`);
+        fetchUrl.searchParams.set("limit", "500");
+        if (cursor !== undefined) fetchUrl.searchParams.set("cursor", String(cursor));
 
-      for (let retryRound = 0; retryRound < tuning.maxRetryRounds && missingUrls.length > 0; retryRound++) {
-        const currentMissing = sitemapResult.filteredUrls.filter((url: string) => !writtenUrlSet.has(url));
-        if (currentMissing.length === 0) break;
+        const resp = await fetch(fetchUrl.toString(), {
+          headers: { Authorization: `Bearer ${this.env.CF_API_TOKEN}` },
+        });
+        const data = (await resp.json()) as CrawlPollResponse;
 
-        const retryBatches: string[][] = [];
-        for (let i = 0; i < currentMissing.length; i += tuning.retryBatchSize) {
-          retryBatches.push(currentMissing.slice(i, i + tuning.retryBatchSize));
+        if (!data.success || !data.result.records) {
+          throw new Error(`Fetch page ${pageNum} failed: ${JSON.stringify(data.errors)}`);
         }
 
-        console.log(`Retry round ${retryRound + 1}: ${currentMissing.length} missing URLs, ${retryBatches.length} batches of ${tuning.retryBatchSize}`);
+        for (const record of data.result.records) {
+          if (!record.markdown) continue;
 
-        for (let retryBatchIndex = 0; retryBatchIndex < retryBatches.length; retryBatchIndex++) {
-          await step.sleep(`retry-${retryRound}-delay-${retryBatchIndex}`, tuning.interBatchDelay as WorkflowSleepDuration);
+          let urlPath = record.url
+            .replace(/^https?:\/\/voipdocs\.io\/?/, "")
+            .replace(/\/$/, "");
+          if (!urlPath) urlPath = "index";
 
-          const retryBatch = retryBatches[retryBatchIndex];
-          const stepPrefix = `retry-${retryRound}-batch-${retryBatchIndex}`;
+          let md = record.markdown;
+          md = md.replace(/_!\[/g, "![");
+          md = md.replace(/(\!\[[^\]]*\]\([^)]+\))_/g, "$1");
 
-          const retryResult = await this.runCrawlBatch(
-            step, stepPrefix, retryBatch, crawlUrl, apiBase, params, datePrefix, tuning
-          );
-
-          allJobIds.push(retryResult.jobId);
-          totalRecords += retryResult.totalRecords;
-          for (const url of retryResult.writtenUrls) writtenUrlSet.add(url);
-
-          console.log(`Retry batch done: ${retryResult.writtenCount} new pages (${writtenUrlSet.size} total)`);
+          const key = `crawls/${datePrefix}/${urlPath}/index.md`;
+          await this.env.KB_BUCKET.put(key, md);
+          writtenUrls.push(record.url);
         }
-      }
-    }
 
-    const totalWritten = writtenUrlSet.size;
+        cursor = data.result.cursor;
+        pageNum++;
+      } while (cursor && pageNum < maxPages);
 
-    // Write combined manifest
+      console.log(`Fetched and wrote ${writtenUrls.length} pages`);
+      return { writtenUrls, count: writtenUrls.length };
+    });
+
+    const writtenUrlSet = new Set(writeResult.writtenUrls);
+
+    // Step 5: Write manifest
     await step.do("write-manifest", async () => {
       const manifest = {
         crawlUrl,
         timestamp,
         datePrefix,
+        jobId,
         sitemapTotal: sitemapResult.totalUrls,
         filteredTotal: sitemapResult.filteredCount,
-        batchCount: sitemapResult.batchCount,
-        jobIds: allJobIds,
-        totalRecords,
-        writtenPages: totalWritten,
-        missedPages: sitemapResult.filteredCount - totalWritten,
+        limitWarning: sitemapResult.limitWarning,
+        crawlTruncated,
+        crawlTotal: completionResult.total,
+        crawlFinished: completionResult.finished,
+        writtenPages: writtenUrlSet.size,
+        missedPages: sitemapResult.filteredCount - writtenUrlSet.size,
         modifiedSince: params.modifiedSince ?? null,
         urls: Array.from(writtenUrlSet).sort(),
         missedUrls: sitemapResult.filteredUrls
@@ -200,17 +266,23 @@ export class CrawlWorkflow extends WorkflowEntrypoint<Env, CrawlParams> {
         JSON.stringify(manifest, null, 2)
       );
 
-      console.log(`Manifest: ${totalWritten}/${sitemapResult.filteredCount} pages written, ${manifest.missedUrls.length} missed`);
+      console.log(
+        `Manifest: ${writtenUrlSet.size}/${sitemapResult.filteredCount} pages written, ` +
+        `${manifest.missedUrls.length} missed` +
+        (manifest.limitWarning ? " [LIMIT WARNING]" : "") +
+        (manifest.crawlTruncated ? " [TRUNCATED]" : "")
+      );
     });
 
-    // Notify downstream — prefer service binding > PIPELINE_URL
+    // Step 6: Notify downstream — prefer service binding > PIPELINE_URL
     const notifyPayload = {
-      batchCount: sitemapResult.batchCount,
-      jobIds: allJobIds,
-      pageCount: totalWritten,
-      missedPages: sitemapResult.filteredCount - totalWritten,
+      jobId,
+      pageCount: writtenUrlSet.size,
+      missedPages: sitemapResult.filteredCount - writtenUrlSet.size,
       sitemapTotal: sitemapResult.totalUrls,
       filteredTotal: sitemapResult.filteredCount,
+      limitWarning: sitemapResult.limitWarning,
+      crawlTruncated,
       crawlDatePrefix: datePrefix,
       timestamp: new Date().toISOString(),
       modifiedSince: params.modifiedSince ?? null,
@@ -243,189 +315,14 @@ export class CrawlWorkflow extends WorkflowEntrypoint<Env, CrawlParams> {
 
     return {
       success: true,
-      batchCount: sitemapResult.batchCount,
+      jobId,
       sitemapTotal: sitemapResult.totalUrls,
       filteredTotal: sitemapResult.filteredCount,
-      pagesWritten: totalWritten,
-      missedPages: sitemapResult.filteredCount - totalWritten,
+      pagesWritten: writtenUrlSet.size,
+      missedPages: sitemapResult.filteredCount - writtenUrlSet.size,
+      limitWarning: sitemapResult.limitWarning,
+      crawlTruncated,
       crawlDatePrefix: datePrefix,
-    };
-  }
-
-  private async runCrawlBatch(
-    step: WorkflowStep,
-    stepPrefix: string,
-    urls: string[],
-    crawlUrl: string,
-    apiBase: string,
-    params: CrawlParams,
-    datePrefix: string,
-    tuning: CrawlTuning
-  ): Promise<{
-    jobId: string;
-    writtenCount: number;
-    writtenUrls: string[];
-    totalRecords: number;
-  }> {
-    const includePatterns = urls.map((url: string) => {
-      const path = new URL(url).pathname.replace(/^\//, "").replace(/\/$/, "");
-      return `**/${path}`;
-    });
-
-    const crawlJob = await step.do(`${stepPrefix}-initiate`, async () => {
-      const crawlConfig: Record<string, unknown> = {
-        url: crawlUrl,
-        formats: ["markdown"],
-        render: false,
-        source: "sitemaps",
-        limit: urls.length,
-        crawlPurposes: ["search"],
-        options: {
-          includePatterns,
-          excludePatterns: EXCLUDE_PREFIXES.map((p) => `**${p}**`),
-        },
-      };
-
-      if (params.modifiedSince) {
-        crawlConfig.modifiedSince = params.modifiedSince;
-      }
-
-      const resp = await fetch(`${apiBase}/crawl`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${this.env.CF_API_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(crawlConfig),
-      });
-
-      const data = (await resp.json()) as CrawlInitResponse;
-      console.log(`${stepPrefix}: initiate success=${data.success}, jobId=${data.result}`);
-
-      if (!data.success) {
-        console.error(`${stepPrefix} failed:`, JSON.stringify(data.errors));
-        throw new Error(
-          `${stepPrefix} crawl failed: ${data.errors?.map((e) => e.message).join(", ") ?? "unknown"}`
-        );
-      }
-
-      return { jobId: data.result };
-    });
-
-    let isComplete = false;
-    let pollCount = 0;
-    const maxPolls = 30;
-
-    while (!isComplete && pollCount < maxPolls) {
-      const delay = pollCount === 0 ? tuning.initialPollDelay : tuning.pollInterval;
-      await step.sleep(`${stepPrefix}-poll-wait-${pollCount}`, delay as WorkflowSleepDuration);
-
-      const pollStatus = await step.do(`${stepPrefix}-poll-${pollCount}`, async () => {
-        const resp = await fetch(`${apiBase}/crawl/${crawlJob.jobId}`, {
-          headers: { Authorization: `Bearer ${this.env.CF_API_TOKEN}` },
-        });
-        const data = (await resp.json()) as CrawlPollResponse;
-
-        console.log(`${stepPrefix} poll ${pollCount}: status=${data.result?.status}, total=${data.result?.total ?? 0}, finished=${data.result?.finished ?? 0}`);
-
-        if (!data.success) {
-          throw new Error(`${stepPrefix} poll failed: ${data.errors?.map((e) => e.message).join(", ")}`);
-        }
-
-        return {
-          status: data.result.status,
-          total: data.result.total ?? 0,
-          finished: data.result.finished ?? 0,
-        };
-      });
-
-      if (pollStatus.status === "completed" || pollStatus.status === "errored") {
-        isComplete = true;
-        if (pollStatus.status === "errored") {
-          console.error(`${stepPrefix} crawl errored.`);
-        }
-      }
-      pollCount++;
-    }
-
-    if (!isComplete) {
-      console.error(`${stepPrefix} timed out. Returning empty results.`);
-      return { jobId: crawlJob.jobId, writtenCount: 0, writtenUrls: [], totalRecords: 0 };
-    }
-
-    const fetchResult = await step.do(`${stepPrefix}-fetch`, async () => {
-      const records: Array<{ url: string; markdown: string | null }> = [];
-      let cursor: number | undefined = undefined;
-      let pageNum = 0;
-      const maxPages = 5;
-
-      do {
-        const fetchUrl = new URL(`${apiBase}/crawl/${crawlJob.jobId}`);
-        fetchUrl.searchParams.set("limit", "500");
-        if (cursor !== undefined) fetchUrl.searchParams.set("cursor", String(cursor));
-
-        const resp = await fetch(fetchUrl.toString(), {
-          headers: { Authorization: `Bearer ${this.env.CF_API_TOKEN}` },
-        });
-        const data = (await resp.json()) as CrawlPollResponse;
-
-        if (!data.success || !data.result.records) {
-          throw new Error(`${stepPrefix} fetch page ${pageNum} failed: ${JSON.stringify(data.errors)}`);
-        }
-
-        for (const record of data.result.records) {
-          records.push({ url: record.url, markdown: record.markdown ?? null });
-        }
-
-        cursor = data.result.cursor;
-        pageNum++;
-      } while (cursor && pageNum < maxPages && records.length < tuning.batchSize * 5);
-
-      console.log(`${stepPrefix}: fetched ${records.length} records, ${records.filter(r => r.markdown).length} with markdown`);
-      return { records };
-    });
-
-    const records = fetchResult.records;
-    let batchWritten = 0;
-    const writtenUrls: string[] = [];
-
-    const chunkCount = Math.ceil(records.length / WRITE_CHUNK_SIZE);
-    for (let chunkIndex = 0; chunkIndex < chunkCount; chunkIndex++) {
-      const chunkStart = chunkIndex * WRITE_CHUNK_SIZE;
-      const chunk = records.slice(chunkStart, chunkStart + WRITE_CHUNK_SIZE);
-
-      const chunkResult = await step.do(`${stepPrefix}-write-${chunkIndex}`, async () => {
-        let written = 0;
-        const chunkWrittenUrls: string[] = [];
-        for (const record of chunk) {
-          if (!record.markdown) continue;
-
-          let urlPath = record.url
-            .replace(/^https?:\/\/voipdocs\.io\/?/, "")
-            .replace(/\/$/, "");
-          if (!urlPath) urlPath = "index";
-
-          let md = record.markdown;
-          md = md.replace(/_!\[/g, "![");
-          md = md.replace(/(\!\[[^\]]*\]\([^)]+\))_/g, "$1");
-
-          const key = `crawls/${datePrefix}/${urlPath}/index.md`;
-          await this.env.KB_BUCKET.put(key, md);
-          written++;
-          chunkWrittenUrls.push(record.url);
-        }
-        return { written, urls: chunkWrittenUrls };
-      });
-
-      batchWritten += chunkResult.written;
-      writtenUrls.push(...chunkResult.urls);
-    }
-
-    return {
-      jobId: crawlJob.jobId,
-      writtenCount: batchWritten,
-      writtenUrls,
-      totalRecords: records.length,
     };
   }
 }

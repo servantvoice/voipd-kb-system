@@ -12,6 +12,7 @@ interface Env {
 interface ImageSource {
   hostname: string;
   pathPrefix: string;
+  pathSignature?: string; // substring that identifies paths from this source (for sources with no pathPrefix)
 }
 
 interface SyncResult {
@@ -173,7 +174,7 @@ async function syncImages(env: Env): Promise<SyncResult> {
             mapped = true;
             break;
           }
-          if (decodedForCheck.includes("helpjuice_production")) {
+          if (!source.pathPrefix && source.pathSignature && decodedForCheck.includes(source.pathSignature)) {
             imageUrls.add("https://" + source.hostname + path);
             mapped = true;
             break;
