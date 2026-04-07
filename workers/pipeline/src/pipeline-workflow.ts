@@ -243,24 +243,35 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
         }
       }
 
-      // Trigger image sync
+      // Trigger image sync and wait for results (with timeout)
+      let imageSyncResult: ImageSyncResult | null = null;
       if (this.env.IMAGE_SYNC_URL) {
         try {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 120_000); // 2 min timeout
           const resp = await fetch(this.env.IMAGE_SYNC_URL, {
             method: "POST",
             headers: { "X-Crawl-Secret": this.env.CRAWL_SECRET },
+            signal: controller.signal,
           });
-          if (!resp.ok) {
-            errors.push(`Image sync: ${resp.status}`);
+          clearTimeout(timeout);
+          if (resp.ok) {
+            imageSyncResult = await resp.json() as ImageSyncResult;
+            console.log(`Image sync: ${imageSyncResult.downloaded} downloaded, ${imageSyncResult.alreadyCached} cached, ${imageSyncResult.failed} failed`);
           } else {
-            console.log("Image sync triggered");
+            errors.push(`Image sync: ${resp.status}`);
           }
         } catch (err) {
-          errors.push(`Image sync error: ${err instanceof Error ? err.message : String(err)}`);
+          const msg = err instanceof Error ? err.message : String(err);
+          if (msg.includes("abort")) {
+            errors.push("Image sync timed out (>2min) — sync may still be running");
+          } else {
+            errors.push(`Image sync error: ${msg}`);
+          }
         }
       }
 
-      // Send email notification
+      // Send email notification (always, regardless of image sync outcome)
       try {
         await sendNotificationEmail(this.env, {
           crawlDatePrefix,
@@ -268,6 +279,8 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
           internalCount: manifestStats.internalCount,
           totalCount: manifestStats.totalCount,
           processedCount: allProcessed.length,
+          imageSyncResult,
+          notifyErrors: errors.length > 0 ? errors : null,
         });
         console.log("Notification email sent");
       } catch (err) {
@@ -292,25 +305,68 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
 
 // ─── Email notification ─────────────────────────────────────────────────
 
+interface ImageSyncResult {
+  scannedArticles: number;
+  uniqueImages: number;
+  alreadyCached: number;
+  downloaded: number;
+  failed: number;
+  revalidated: number;
+  duration: string;
+  errors: string[];
+}
+
 interface NotifyData {
   crawlDatePrefix: string;
   publicCount: number;
   internalCount: number;
   totalCount: number;
   processedCount: number;
+  imageSyncResult: ImageSyncResult | null;
+  notifyErrors: string[] | null;
 }
 
 async function sendNotificationEmail(env: Env, data: NotifyData): Promise<void> {
   const subject = `KB Refresh Complete — ${data.crawlDatePrefix}`;
+
+  let imageSyncHtml = "";
+  if (data.imageSyncResult) {
+    const r = data.imageSyncResult;
+    imageSyncHtml = `
+    <h3>Image Sync</h3>
+    <ul>
+      <li>Articles scanned: ${r.scannedArticles}</li>
+      <li>Unique images: ${r.uniqueImages}</li>
+      <li>Already cached: ${r.alreadyCached}</li>
+      <li>Downloaded: ${r.downloaded}</li>
+      <li>Revalidated: ${r.revalidated}</li>
+      <li>Failed: ${r.failed}</li>
+      <li>Duration: ${r.duration}</li>
+    </ul>
+    ${r.failed > 0 ? `<p><em>See image sync error log in R2 for details.</em></p>` : ""}`;
+  } else {
+    imageSyncHtml = `<h3>Image Sync</h3><p><em>No results (sync timed out or was not triggered).</em></p>`;
+  }
+
+  let errorsHtml = "";
+  if (data.notifyErrors && data.notifyErrors.length > 0) {
+    errorsHtml = `
+    <h3>Warnings</h3>
+    <ul>${data.notifyErrors.map((e) => `<li>${e}</li>`).join("")}</ul>`;
+  }
+
   const html = `
     <h2>KB Refresh Complete</h2>
     <p>Crawl date: <strong>${data.crawlDatePrefix}</strong></p>
+    <h3>Articles</h3>
     <ul>
-      <li>Articles processed: ${data.processedCount}</li>
+      <li>Processed: ${data.processedCount}</li>
       <li>Public: ${data.publicCount}</li>
       <li>Internal: ${data.internalCount}</li>
       <li>Total in manifest: ${data.totalCount}</li>
     </ul>
+    ${imageSyncHtml}
+    ${errorsHtml}
   `.trim();
 
   if (env.POSTMARK_API_TOKEN) {

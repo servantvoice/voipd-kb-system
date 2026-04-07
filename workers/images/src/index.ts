@@ -66,6 +66,29 @@ export default {
       const start = Date.now();
       const result = await syncImages(env);
       result.duration = ((Date.now() - start) / 1000).toFixed(1) + "s";
+
+      // Write error log to R2 if there were failures
+      if (result.failed > 0 && result.errors.length > 0) {
+        try {
+          const timestamp = new Date().toISOString();
+          const logContent = [
+            `Image Sync Error Log — ${timestamp}`,
+            `Duration: ${result.duration}`,
+            `Scanned: ${result.scannedArticles} articles, ${result.uniqueImages} unique images`,
+            `Results: ${result.downloaded} downloaded, ${result.alreadyCached} cached, ${result.revalidated} revalidated, ${result.failed} failed`,
+            "",
+            "Failed URLs:",
+            ...result.errors,
+          ].join("\n");
+          await env.KB_BUCKET.put(
+            `logs/image-sync/${timestamp.split("T")[0]}.log`,
+            logContent
+          );
+        } catch {
+          // Don't fail the sync response over a log write error
+        }
+      }
+
       return new Response(JSON.stringify(result, null, 2), {
         headers: { "Content-Type": "application/json" },
       });
