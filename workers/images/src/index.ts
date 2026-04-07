@@ -168,7 +168,8 @@ async function syncImages(env: Env): Promise<SyncResult> {
         let mapped = false;
         for (const source of imageSources) {
           if (source.pathPrefix && decodedForCheck.startsWith("/" + source.pathPrefix)) {
-            imageUrls.add("https://" + source.hostname + path.slice(("/" + source.pathPrefix).length));
+            const remainder = path.slice(("/" + source.pathPrefix).length);
+            imageUrls.add("https://" + source.hostname + "/" + remainder);
             mapped = true;
             break;
           }
