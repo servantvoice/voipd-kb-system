@@ -110,6 +110,26 @@ The `public-kb/` directory contains a Hugo static site deployed to CF Pages. It 
 
 All branding is configured via `HUGO_PARAMS_*` environment variables in the CF Pages project (company name, logo URL, portal links, etc.).
 
+## Content Control
+
+Categorization rules, branding transforms, and the article override system are documented in [docs/content-control.md](docs/content-control.md). This covers:
+
+- How `shared/categorization.ts` controls what gets crawled and whether articles are public or internal
+- How `shared/transforms.ts` rewrites branding, URLs, and links
+- How to use the admin UI to override individual article content or metadata
+- How overrides are stored in R2 and survive re-crawls
+
+### Seeding category overrides
+
+`scripts/category-overrides-starter.json` contains a ready-to-use category structure (498 articles organized into compact display categories). Run the apply script after deploying to seed your bucket:
+
+```bash
+bash scripts/apply-category-overrides.sh --dry-run   # preview
+bash scripts/apply-category-overrides.sh             # upload
+```
+
+Then trigger a pipeline run to apply the overrides to `processed/` and rebuild the site manifests.
+
 ## Deployment Guide
 
 See [docs/deployment-guide.md](docs/deployment-guide.md) for the comprehensive from-scratch setup guide including all prerequisites, worker deployment, CF Pages setup, DNS, CF Access, email API, and cutover from an existing system.

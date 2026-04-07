@@ -311,6 +311,24 @@ If you changed the pipeline worker name in `workers/pipeline/wrangler.toml`, upd
 
 The crawl worker also accepts a `PIPELINE_URL` env var as a fallback. If both are configured, the service binding takes priority. If you need to run the workers in separate CF accounts, comment out the `[[services]]` section and use `PIPELINE_URL` instead.
 
+## 12. Seed Category Overrides (Optional)
+
+The `scripts/category-overrides-starter.json` file contains a snapshot of a working category structure — 498 articles organized into a compact set of display categories rather than the 50+ raw section names from the upstream source. Running the apply script uploads a `_meta.json` to `overrides/{slug}/` for each article, which the pipeline merges on the next run.
+
+This is optional but recommended — without it your first pipeline run will use the raw upstream section names as display categories.
+
+```bash
+# Preview what would be uploaded (no changes)
+bash scripts/apply-category-overrides.sh --dry-run
+
+# Upload to your R2 bucket (requires wrangler to be authenticated)
+bash scripts/apply-category-overrides.sh
+```
+
+After running, trigger a pipeline run (step 12 below) so the overrides are merged into `processed/` and the site manifests are rebuilt.
+
+Edit `category-overrides-starter.json` first if you want to use different display category names. See [docs/content-control.md](content-control.md) for how the override system works.
+
 ## 12. Test the Full Pipeline
 
 1. **Manual crawl trigger:**

@@ -709,7 +709,7 @@ export async function handlePostEditMeta(
   });
 
   // Always persist metadata to overrides/ so it survives pipeline re-runs.
-  // The n8n pipeline checks overrides/_meta.json and merges category,
+  // The pipeline worker checks overrides/_meta.json and merges category,
   // displayCategory, and breadcrumb from it when building metadata.
   await env.KB_BUCKET.put(`overrides/${slug}/_meta.json`, metaJson, {
     httpMetadata: { contentType: "application/json" },

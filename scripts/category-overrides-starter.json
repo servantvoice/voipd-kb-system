@@ -1,0 +1,4356 @@
+[
+  {
+    "slug": "2024-02-02-summary-of-outage-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2024-02-02 Summary of Outage (Resolved)"
+    ]
+  },
+  {
+    "slug": "2024-03-02-las-core-dump-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2024-03-02 LAS Core Dump (Resolved)"
+    ]
+  },
+  {
+    "slug": "2024-06-24-native-fax-outbound-faxing-failure-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2024-06-24 Native Fax Outbound Faxing Failure (Resolved)"
+    ]
+  },
+  {
+    "slug": "announcements/-2025-06-04-loss-of-communication-to-grr-server",
+    "category": "internal",
+    "breadcrumb": [
+      "Announcements",
+      " 2025 06 04 Loss Of Communication To Grr Server"
+    ]
+  },
+  {
+    "slug": "announcements/-2025-06-05-registration-failure-on-grr-",
+    "category": "internal",
+    "breadcrumb": [
+      "Announcements",
+      " 2025 06 05 Registration Failure On Grr "
+    ]
+  },
+  {
+    "slug": "announcements/-2025-07-08-registration-failure-on-grr",
+    "category": "internal",
+    "breadcrumb": [
+      "Announcements",
+      " 2025 07 08 Registration Failure On Grr"
+    ]
+  },
+  {
+    "slug": "announcements/2024-07-15-atlanta-core-server-outage-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2024 07 15 Atlanta Core Server Outage Resolved"
+    ]
+  },
+  {
+    "slug": "announcements/2025-04-14-call-recordings-unavailable-in-manager-portal-",
+    "category": "internal",
+    "breadcrumb": [
+      "Announcements",
+      "2025 04 14 Call Recordings Unavailable In Manager Portal "
+    ]
+  },
+  {
+    "slug": "announcements/2025-04-23-web-socket-connections-for-grr-and-las-servers-failing-to-connect",
+    "category": "internal",
+    "breadcrumb": [
+      "Announcements",
+      "2025 04 23 Web Socket Connections For Grr And Las Servers Failing To Connect"
+    ]
+  },
+  {
+    "slug": "announcements/2025-04-25-web-socket-connections-for-atl-grr-and-las-servers-failing-to-connect",
+    "category": "internal",
+    "breadcrumb": [
+      "Announcements",
+      "2025 04 25 Web Socket Connections For Atl Grr And Las Servers Failing To Connect"
+    ]
+  },
+  {
+    "slug": "announcements/20250129-inbound-and-outbound-calls-failing-on-the-las-and-grr-servers-resolved",
+    "category": "internal",
+    "breadcrumb": [
+      "Announcements",
+      "20250129 Inbound And Outbound Calls Failing On The Las And Grr Servers Resolved"
+    ]
+  },
+  {
+    "slug": "announcements/20250530-websocket-connections-for-grr-las-phx-and-iad-servers-failing-to-connect",
+    "category": "internal",
+    "breadcrumb": [
+      "Announcements",
+      "20250530 Websocket Connections For Grr Las Phx And Iad Servers Failing To Connect"
+    ]
+  },
+  {
+    "slug": "announcements/2026-01-21-connection-failures-on-outbound-calls",
+    "category": "internal",
+    "breadcrumb": [
+      "Announcements",
+      "2026 01 21 Connection Failures On Outbound Calls"
+    ]
+  },
+  {
+    "slug": "announcements/announcement-policy",
+    "category": "internal",
+    "displayCategory": "Release Notes",
+    "breadcrumb": [
+      "Release Notes",
+      "Announcement Policy"
+    ]
+  },
+  {
+    "slug": "announcements/known-issues",
+    "category": "internal",
+    "displayCategory": "Release Notes",
+    "breadcrumb": [
+      "Release Notes",
+      "Known Issues"
+    ]
+  },
+  {
+    "slug": "auto-attendants/auto-attendant-dtmf-troubleshooting",
+    "category": "public",
+    "breadcrumb": [
+      "Auto Attendants",
+      "Auto Attendant Dtmf Troubleshooting"
+    ]
+  },
+  {
+    "slug": "auto-attendants/auto-attendant-tips-and-tricks",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Auto Attendant Tips And Tricks"
+    ]
+  },
+  {
+    "slug": "auto-attendants/change-auto-attendant-greeting",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Change Auto Attendant Greeting"
+    ]
+  },
+  {
+    "slug": "auto-attendants/configure-speech-to-text",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Configure Speech To Text"
+    ]
+  },
+  {
+    "slug": "auto-attendants/create-an-auto-attendant",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Create An Auto Attendant"
+    ]
+  },
+  {
+    "slug": "auto-attendants/modify-timeouts-for-auto-attendants",
+    "category": "internal",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Modify Timeouts For Auto Attendants"
+    ]
+  },
+  {
+    "slug": "axis/axis-a8105-e-manual-configuration",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Axis A8105 E Manual Configuration"
+    ]
+  },
+  {
+    "slug": "axis/axis-i8016-lve-intercom-manual-registration",
+    "category": "public",
+    "breadcrumb": [
+      "Axis",
+      "Axis I8016 Lve Intercom Manual Registration"
+    ]
+  },
+  {
+    "slug": "branding/app-store-access-requirements-for-publishing-apps-on-apple-and-google-play-store",
+    "category": "internal",
+    "breadcrumb": [
+      "Branding",
+      "App Store Access Requirements For Publishing Apps On Apple And Google Play Store"
+    ]
+  },
+  {
+    "slug": "branding/create-a-developer-account-for-apple-and-google",
+    "category": "internal",
+    "breadcrumb": [
+      "Branding",
+      "Create A Developer Account For Apple And Google"
+    ]
+  },
+  {
+    "slug": "branding/email-template-branding",
+    "category": "internal",
+    "breadcrumb": [
+      "Branding",
+      "Email Template Branding"
+    ]
+  },
+  {
+    "slug": "branding/update-app-version-for-branded-snapmobile-app",
+    "category": "internal",
+    "displayCategory": "Apps",
+    "breadcrumb": [
+      "Apps",
+      "Update App Version For Branded Snapmobile App"
+    ]
+  },
+  {
+    "slug": "call-queues/add-agents-to-a-call-queue",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Add Agents To A Call Queue"
+    ]
+  },
+  {
+    "slug": "call-queues/add-comfort-message-to-a-call-queue",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Add Comfort Message To A Call Queue"
+    ]
+  },
+  {
+    "slug": "call-queues/add-ringback-to-a-call-queue",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Add Ringback To A Call Queue"
+    ]
+  },
+  {
+    "slug": "call-queues/configure-callback-for-a-call-queue",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Configure Callback For A Call Queue"
+    ]
+  },
+  {
+    "slug": "call-queues/configure-offline-routing-for-a-call-queue",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Configure Offline Routing For A Call Queue"
+    ]
+  },
+  {
+    "slug": "call-queues/create-a-call-queue",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Create A Call Queue"
+    ]
+  },
+  {
+    "slug": "call-queues/create-intro-greeting-for-a-call-queue",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Create Intro Greeting For A Call Queue"
+    ]
+  },
+  {
+    "slug": "call-routing/allow-and-block-calls",
+    "category": "public",
+    "breadcrumb": [
+      "Call Routing",
+      "Allow And Block Calls"
+    ]
+  },
+  {
+    "slug": "call-routing/allowing-and-blocking-calls",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Allowing And Blocking Calls"
+    ]
+  },
+  {
+    "slug": "call-routing/answering-rules",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Answering Rules"
+    ]
+  },
+  {
+    "slug": "call-routing/call-routing-best-practices",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Call Routing Best Practices"
+    ]
+  },
+  {
+    "slug": "call-routing/configure-holiday-routing",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Configure Holiday Routing"
+    ]
+  },
+  {
+    "slug": "call-routing/configure-time-of-day-routing",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Configure Time Of Day Routing"
+    ]
+  },
+  {
+    "slug": "call-routing/create-time-frames",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Create Time Frames"
+    ]
+  },
+  {
+    "slug": "call-routing/enable-a-disabled-time-frame-on-a-tod-routing-user",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Enable A Disabled Time Frame On A Tod Routing User"
+    ]
+  },
+  {
+    "slug": "call-routing/enable-call-forwarding",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Enable Call Forwarding"
+    ]
+  },
+  {
+    "slug": "call-routing/telnyx-add-a-technical-prefix-for-outbound-call-authentication",
+    "category": "internal",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Telnyx Add A Technical Prefix For Outbound Call Authentication"
+    ]
+  },
+  {
+    "slug": "caller-id/caller-id-prefix",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Caller ID Prefix"
+    ]
+  },
+  {
+    "slug": "caller-id/update-caller-id-number-for-a-user",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Update Caller ID Number For A User"
+    ]
+  },
+  {
+    "slug": "carrier-events/2018-02-07-onvoyintelliquent-routing-issue-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2018 02 07 Onvoyintelliquent Routing Issue Resolved"
+    ]
+  },
+  {
+    "slug": "carrier-events/2018-03-01-ulc-outage-outbound-calls-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2018 03 01 Ulc Outage Outbound Calls Resolved"
+    ]
+  },
+  {
+    "slug": "carrier-events/2018-03-27-level-3-comcast-outage-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2018 03 27 Level 3 Comcast Outage Resolved"
+    ]
+  },
+  {
+    "slug": "carrier-events/2021-12-10-ulc-outage-inbound-calls-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2021 12 10 Ulc Outage Inbound Calls Resolved"
+    ]
+  },
+  {
+    "slug": "carrier-events/2022-03-10-ulc-outage-outbound-calls-ongoing",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2022 03 10 Ulc Outage Outbound Calls Ongoing"
+    ]
+  },
+  {
+    "slug": "cdrs/advanced-cdr-field-descriptions",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Advanced Cdr Field Descriptions"
+    ]
+  },
+  {
+    "slug": "cdrs/call-history",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Call History"
+    ]
+  },
+  {
+    "slug": "cisco/cisco-manually-registering-an-ata",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Cisco Manually Registering An Ata"
+    ]
+  },
+  {
+    "slug": "cisco/cisco-overrides",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Cisco Overrides"
+    ]
+  },
+  {
+    "slug": "cloudie_connect/cloudieconnect-branding-experience",
+    "category": "internal",
+    "breadcrumb": [
+      "Cloudie_connect",
+      "Cloudieconnect Branding Experience"
+    ]
+  },
+  {
+    "slug": "cloudie_connect/cloudieconnect-mobile-getting-started",
+    "category": "internal",
+    "breadcrumb": [
+      "Cloudie_connect",
+      "Cloudieconnect Mobile Getting Started"
+    ]
+  },
+  {
+    "slug": "cloudie_connect/cloudieconnect-vs-snapmobile",
+    "category": "internal",
+    "breadcrumb": [
+      "Cloudie_connect",
+      "Cloudieconnect Vs Snapmobile"
+    ]
+  },
+  {
+    "slug": "cloudie_connect/using-your-mobile-number-in-cloudieconnect",
+    "category": "internal",
+    "breadcrumb": [
+      "Cloudie_connect",
+      "Using Your Mobile Number In Cloudieconnect"
+    ]
+  },
+  {
+    "slug": "cloudie_connect/welcome-to-cloudieconnect",
+    "category": "internal",
+    "breadcrumb": [
+      "Cloudie_connect",
+      "Welcome To Cloudieconnect"
+    ]
+  },
+  {
+    "slug": "cloudieconnect-desktop/cloudieconnect-desktop-features",
+    "category": "internal",
+    "breadcrumb": [
+      "Cloudieconnect Desktop",
+      "Cloudieconnect Desktop Features"
+    ]
+  },
+  {
+    "slug": "cloudieconnect-desktop/cloudieconnect-desktop-overview",
+    "category": "internal",
+    "breadcrumb": [
+      "Cloudieconnect Desktop",
+      "Cloudieconnect Desktop Overview"
+    ]
+  },
+  {
+    "slug": "cloudieconnect/cloudieconnect-v512-release-notes",
+    "category": "internal",
+    "breadcrumb": [
+      "Cloudieconnect",
+      "Cloudieconnect V512 Release Notes"
+    ]
+  },
+  {
+    "slug": "conferencing/conference-controls",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Conference Controls"
+    ]
+  },
+  {
+    "slug": "conferencing/configure-an-audio-conference-bridge",
+    "category": "internal",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Configure An Audio Conference Bridge"
+    ]
+  },
+  {
+    "slug": "desktop-applications/bria-solo-free-desktop",
+    "category": "internal",
+    "displayCategory": "Apps",
+    "breadcrumb": [
+      "Apps",
+      "Bria Solo Free Desktop"
+    ]
+  },
+  {
+    "slug": "desktop-applications/siptapi",
+    "category": "internal",
+    "displayCategory": "Apps",
+    "breadcrumb": [
+      "Apps",
+      "Siptapi"
+    ]
+  },
+  {
+    "slug": "desktop-applications/zoiper-5-desktop-app",
+    "category": "internal",
+    "displayCategory": "Apps",
+    "breadcrumb": [
+      "Apps",
+      "Zoiper 5 Desktop App"
+    ]
+  },
+  {
+    "slug": "diy-headshot-pictorial-guide-iphone-android",
+    "category": "internal",
+    "breadcrumb": [
+      "Diy Headshot Pictorial Guide Iphone Android"
+    ]
+  },
+  {
+    "slug": "e-911/configure-notifications-for-e911-calling",
+    "category": "internal",
+    "displayCategory": "E-911 & Security",
+    "breadcrumb": [
+      "E-911 & Security",
+      "Configure Notifications For E911 Calling"
+    ]
+  },
+  {
+    "slug": "e-911/create-an-emergency-address",
+    "category": "public",
+    "displayCategory": "E-911 & Security",
+    "breadcrumb": [
+      "E-911 & Security",
+      "Create An Emergency Address"
+    ]
+  },
+  {
+    "slug": "e-911/create-an-emergency-endpoint",
+    "category": "public",
+    "displayCategory": "E-911 & Security",
+    "breadcrumb": [
+      "E-911 & Security",
+      "Create An Emergency Endpoint"
+    ]
+  },
+  {
+    "slug": "e-911/enhanced-911-dynamic-location-routing",
+    "category": "public",
+    "displayCategory": "E-911 & Security",
+    "breadcrumb": [
+      "E-911 & Security",
+      "Enhanced 911 Dynamic Location Routing"
+    ]
+  },
+  {
+    "slug": "e-911/register-e911-from-manager-portal",
+    "category": "internal",
+    "displayCategory": "E-911 & Security",
+    "breadcrumb": [
+      "E-911 & Security",
+      "Register E911 From Manager Portal"
+    ]
+  },
+  {
+    "slug": "e-911/remove-e911-number-from-manager-portal",
+    "category": "internal",
+    "displayCategory": "E-911 & Security",
+    "breadcrumb": [
+      "E-911 & Security",
+      "Remove E911 Number From Manager Portal"
+    ]
+  },
+  {
+    "slug": "e-911/test-e911-registration",
+    "category": "public",
+    "displayCategory": "E-911 & Security",
+    "breadcrumb": [
+      "E-911 & Security",
+      "Test E911 Registration"
+    ]
+  },
+  {
+    "slug": "fanvil/fanvil-overrides",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Fanvil Overrides"
+    ]
+  },
+  {
+    "slug": "faqs/contacts-and-hours-of-operation",
+    "category": "internal",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Contacts And Hours Of Operation"
+    ]
+  },
+  {
+    "slug": "faqs/core-network",
+    "category": "public",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Core Network"
+    ]
+  },
+  {
+    "slug": "faqs/frequently-asked-questions",
+    "category": "public",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Frequently Asked Questions"
+    ]
+  },
+  {
+    "slug": "faqs/getting-started-guide",
+    "category": "public",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Getting Started Guide"
+    ]
+  },
+  {
+    "slug": "faqs/glossary",
+    "category": "public",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Glossary"
+    ]
+  },
+  {
+    "slug": "faqs/hardware-return-policy",
+    "category": "internal",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Hardware Return Policy"
+    ]
+  },
+  {
+    "slug": "faqs/how-to-use-the-manager-portal",
+    "category": "public",
+    "breadcrumb": [
+      "FAQs",
+      "How To Use The Manager Portal"
+    ]
+  },
+  {
+    "slug": "faqs/ip-addresses-ports",
+    "category": "public",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Ip Addresses Ports"
+    ]
+  },
+  {
+    "slug": "faqs/oitvoip-merch-requests",
+    "category": "internal",
+    "breadcrumb": [
+      "FAQs",
+      "Oitvoip Merch Requests"
+    ]
+  },
+  {
+    "slug": "faqs/partner-central-complete-a-quote-request-form",
+    "category": "internal",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Partner Central Complete A Quote Request Form"
+    ]
+  },
+  {
+    "slug": "faqs/partner-cheat-sheet",
+    "category": "internal",
+    "breadcrumb": [
+      "FAQs",
+      "Partner Cheat Sheet"
+    ]
+  },
+  {
+    "slug": "faqs/prohibited-and-limited-support-devices",
+    "category": "public",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Prohibited And Limited Support Devices"
+    ]
+  },
+  {
+    "slug": "faqs/service-availability",
+    "category": "public",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Service Availability"
+    ]
+  },
+  {
+    "slug": "faqs/snapmobile-ios-35-release-notes",
+    "category": "public",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Snapmobile Ios 35 Release Notes"
+    ]
+  },
+  {
+    "slug": "faqs/star-codes-and-features",
+    "category": "public",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Star Codes And Features"
+    ]
+  },
+  {
+    "slug": "faqs/suspected-spoofed-dids",
+    "category": "public",
+    "breadcrumb": [
+      "FAQs",
+      "Suspected Spoofed Dids"
+    ]
+  },
+  {
+    "slug": "faxing/types-of-faxing",
+    "category": "public",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "Types Of Faxing"
+    ]
+  },
+  {
+    "slug": "features/account-codes",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Account Codes"
+    ]
+  },
+  {
+    "slug": "features/barge-listen-in-and-whisper",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Barge Listen In And Whisper"
+    ]
+  },
+  {
+    "slug": "features/call-recording",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Call Recording"
+    ]
+  },
+  {
+    "slug": "features/cloudieai-call-recording-transcription-intelligence",
+    "category": "public",
+    "breadcrumb": [
+      "Features",
+      "Cloudieai Call Recording Transcription Intelligence"
+    ]
+  },
+  {
+    "slug": "features/configure-timeframe-toggle",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Configure Timeframe Toggle"
+    ]
+  },
+  {
+    "slug": "features/enable-sso-for-a-domain",
+    "category": "internal",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Enable Sso For A Domain"
+    ]
+  },
+  {
+    "slug": "features/multi-factor-authentication",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Multi Factor Authentication"
+    ]
+  },
+  {
+    "slug": "features/music-on-hold",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Music On Hold"
+    ]
+  },
+  {
+    "slug": "features/reset-voicemail-pin",
+    "category": "public",
+    "breadcrumb": [
+      "Features",
+      "Reset Voicemail Pin"
+    ]
+  },
+  {
+    "slug": "features/retrieve-sso-client-id",
+    "category": "internal",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Retrieve Sso Client Id"
+    ]
+  },
+  {
+    "slug": "features/shared-contacts",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Shared Contacts"
+    ]
+  },
+  {
+    "slug": "features/single-sign-on",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Single Sign On"
+    ]
+  },
+  {
+    "slug": "features/snapanalytics",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Snapanalytics"
+    ]
+  },
+  {
+    "slug": "features/static-dynamic-call-parking",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Static Dynamic Call Parking"
+    ]
+  },
+  {
+    "slug": "firewalls/disabling-sip-alg-on-a-fortigate-firewall",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Disabling SIP Alg On A Fortigate Firewall"
+    ]
+  },
+  {
+    "slug": "firewalls/sonicwall-recommended-settings-for-voip",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Sonicwall Recommended Settings For Voip"
+    ]
+  },
+  {
+    "slug": "fraud/domestic-toll-fraudtraffic-pumping",
+    "category": "public",
+    "displayCategory": "E-911 & Security",
+    "breadcrumb": [
+      "E-911 & Security",
+      "Domestic Toll Fraudtraffic Pumping"
+    ]
+  },
+  {
+    "slug": "fraud/good-cyber-hygiene-best-practices",
+    "category": "public",
+    "displayCategory": "E-911 & Security",
+    "breadcrumb": [
+      "E-911 & Security",
+      "Good Cyber Hygiene Best Practices"
+    ]
+  },
+  {
+    "slug": "fraud/international-toll-fraudinternational-revenue-share-fraud-irsf",
+    "category": "public",
+    "displayCategory": "E-911 & Security",
+    "breadcrumb": [
+      "E-911 & Security",
+      "International Toll Fraudinternational Revenue Share Fraud Irsf"
+    ]
+  },
+  {
+    "slug": "fraud/phishing-scams-irs-ssa-vacations-student-loans-etc",
+    "category": "public",
+    "displayCategory": "E-911 & Security",
+    "breadcrumb": [
+      "E-911 & Security",
+      "Phishing Scams Irs Ssa Vacations Student Loans Etc"
+    ]
+  },
+  {
+    "slug": "fraud/recommended-fraud-mitigation-best-practices",
+    "category": "public",
+    "displayCategory": "E-911 & Security",
+    "breadcrumb": [
+      "E-911 & Security",
+      "Recommended Fraud Mitigation Best Practices"
+    ]
+  },
+  {
+    "slug": "fraud/text-messaging-spam",
+    "category": "public",
+    "displayCategory": "E-911 & Security",
+    "breadcrumb": [
+      "E-911 & Security",
+      "Text Messaging Spam"
+    ]
+  },
+  {
+    "slug": "fraud/toll-free-traffic-pumping-within-north-america",
+    "category": "public",
+    "displayCategory": "E-911 & Security",
+    "breadcrumb": [
+      "E-911 & Security",
+      "Toll Free Traffic Pumping Within North America"
+    ]
+  },
+  {
+    "slug": "fraud/unlawful-robocalls-within-north-america",
+    "category": "public",
+    "displayCategory": "E-911 & Security",
+    "breadcrumb": [
+      "E-911 & Security",
+      "Unlawful Robocalls Within North America"
+    ]
+  },
+  {
+    "slug": "grandstream/add-global-username-and-password-to-grandstream-gaps-profile",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Add Global Username And Password To Grandstream Gaps Profile"
+    ]
+  },
+  {
+    "slug": "grandstream/grandstream-attended-transfer",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Grandstream Attended Transfer"
+    ]
+  },
+  {
+    "slug": "grandstream/grandstream-automated-provisioning-system",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Grandstream Automated Provisioning System"
+    ]
+  },
+  {
+    "slug": "grandstream/grandstream-blf-key-configuration",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Grandstream Blf Key Configuration"
+    ]
+  },
+  {
+    "slug": "grandstream/grandstream-call-park-manual-configuration",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Grandstream Call Park Manual Configuration"
+    ]
+  },
+  {
+    "slug": "grandstream/grandstream-dp752-manual-configuration",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Grandstream Dp752 Manual Configuration"
+    ]
+  },
+  {
+    "slug": "grandstream/grandstream-ht812-provisioning",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Grandstream Ht812 Provisioning"
+    ]
+  },
+  {
+    "slug": "grandstream/grandstream-ip-phone-connections",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Grandstream Ip Phone Connections"
+    ]
+  },
+  {
+    "slug": "grandstream/grandstream-manual-configuration",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Grandstream Manual Configuration"
+    ]
+  },
+  {
+    "slug": "grandstream/grandstream-manually-register-ht813",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Grandstream Manually Register Ht813"
+    ]
+  },
+  {
+    "slug": "grandstream/grandstream-overrides",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Grandstream Overrides"
+    ]
+  },
+  {
+    "slug": "grandstream/grandstream-screen-capture",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Grandstream Screen Capture"
+    ]
+  },
+  {
+    "slug": "grandstream/grandstream-upgrade-firmware-via-web-gui",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Grandstream Upgrade Firmware Via Web Gui"
+    ]
+  },
+  {
+    "slug": "hardware-software/add-a-sip-phone",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Add A SIP Phone"
+    ]
+  },
+  {
+    "slug": "hardware-software/add-custom-overrides",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Add Custom Overrides"
+    ]
+  },
+  {
+    "slug": "hardware-software/add-hardware-to-manager-portal",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Add Hardware To Manager Portal"
+    ]
+  },
+  {
+    "slug": "hardware-software/capturing-dtmf-using-wireshark",
+    "category": "public",
+    "breadcrumb": [
+      "Hardware & Software",
+      "Capturing Dtmf Using Wireshark"
+    ]
+  },
+  {
+    "slug": "hardware-software/change-transport-type-on-devices-to-tls",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Change Transport Type On Devices To Tls"
+    ]
+  },
+  {
+    "slug": "hardware-software/configure-custom-overrides-for-a-domain",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Configure Custom Overrides For A Domain"
+    ]
+  },
+  {
+    "slug": "hardware-software/configure-obi302-to-specific-phone-ports-by-account",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Configure Obi302 To Specific Phone Ports By Account"
+    ]
+  },
+  {
+    "slug": "hardware-software/default-passwords-for-phones",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Default Passwords For Phones"
+    ]
+  },
+  {
+    "slug": "hardware-software/enable-sip-signalling-over-tls",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Enable SIP Signalling Over Tls"
+    ]
+  },
+  {
+    "slug": "hardware-software/factory-reset-sip-phones",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Factory Reset SIP Phones"
+    ]
+  },
+  {
+    "slug": "hardware-software/grandstream-gds3710-to-yealink-t58-video-call-setup",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Grandstream Gds3710 To Yealink T58 Video Call Setup"
+    ]
+  },
+  {
+    "slug": "hardware-software/how-to-get-access-to-yealink-mcs-or-dms",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "How To Get Access To Yealink Mcs Or Dms"
+    ]
+  },
+  {
+    "slug": "hardware-software/import-phones-to-a-domain",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Import Phones To A Domain"
+    ]
+  },
+  {
+    "slug": "hardware-software/mac-address-already-exists-in-the-manager-portal",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Mac Address Already Exists In The Manager Portal"
+    ]
+  },
+  {
+    "slug": "hardware-software/missed-call-notification",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Missed Call Notification"
+    ]
+  },
+  {
+    "slug": "hardware-software/packaging-guidelines",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Packaging Guidelines"
+    ]
+  },
+  {
+    "slug": "hardware-software/recommended-adapters-for-overhead-paging-systems",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Recommended Adapters For Overhead Paging Systems"
+    ]
+  },
+  {
+    "slug": "hardware-software/recommended-door-voip-entry-phone",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Recommended Door Voip Entry Phone"
+    ]
+  },
+  {
+    "slug": "hardware-software/setting-obihai-status-to-managed",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Setting Obihai Status To Managed"
+    ]
+  },
+  {
+    "slug": "hardware-software/snapmobile-web-troubleshooting-registration-issue",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Snapmobile Web Troubleshooting Registration Issue"
+    ]
+  },
+  {
+    "slug": "hardware-software/support-devices",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Support Devices"
+    ]
+  },
+  {
+    "slug": "hardware-software/unifi-talk-sip-trunk-setup",
+    "category": "internal",
+    "breadcrumb": [
+      "Hardware & Software",
+      "Unifi Talk Sip Trunk Setup"
+    ]
+  },
+  {
+    "slug": "hardware-software/upgrade-firmware-on-avaya-j100-series",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Upgrade Firmware On Avaya J100 Series"
+    ]
+  },
+  {
+    "slug": "hardware-software/view-phones-contact-ip",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "View Phones Contact Ip"
+    ]
+  },
+  {
+    "slug": "hardware-software/view-the-private-ip-of-a-device",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "View The Private Ip Of A Device"
+    ]
+  },
+  {
+    "slug": "hardware-software/viking-ip1700-provisioning",
+    "category": "public",
+    "breadcrumb": [
+      "Hardware & Software",
+      "Viking Ip1700 Provisioning"
+    ]
+  },
+  {
+    "slug": "hardware-software/wake-up-call",
+    "category": "public",
+    "breadcrumb": [
+      "Hardware & Software",
+      "Wake Up Call"
+    ]
+  },
+  {
+    "slug": "hardware-software/wasabi-permission-requirements-for-remote-storage",
+    "category": "public",
+    "breadcrumb": [
+      "Hardware & Software",
+      "Wasabi Permission Requirements For Remote Storage"
+    ]
+  },
+  {
+    "slug": "hipaa-compliance",
+    "category": "internal",
+    "breadcrumb": [
+      "Hipaa Compliance"
+    ]
+  },
+  {
+    "slug": "hosted-voice/1925587-untitled-article",
+    "category": "internal",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "1925587 Untitled Article"
+    ]
+  },
+  {
+    "slug": "hosted-voice/Enable%20QoS%20scores%20in%20History",
+    "category": "public",
+    "breadcrumb": [
+      "Hosted Voice",
+      "Enable%20QoS%20scores%20in%20History"
+    ]
+  },
+  {
+    "slug": "hosted-voice/call-center-on-snapmobile-web",
+    "category": "public",
+    "breadcrumb": [
+      "Hosted Voice",
+      "Call Center On Snapmobile Web"
+    ]
+  },
+  {
+    "slug": "hosted-voice/create-a-domain",
+    "category": "internal",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Create A Domain"
+    ]
+  },
+  {
+    "slug": "hosted-voice/delete-a-domain",
+    "category": "internal",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Delete A Domain"
+    ]
+  },
+  {
+    "slug": "hosted-voice/dns-records",
+    "category": "internal",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Dns Records"
+    ]
+  },
+  {
+    "slug": "hosted-voice/domain-creation-best-practices",
+    "category": "public",
+    "breadcrumb": [
+      "Hosted Voice",
+      "Domain Creation Best Practices"
+    ]
+  },
+  {
+    "slug": "hosted-voice/extension-numbering-reserved-number-space",
+    "category": "public",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Extension Numbering Reserved Number Space"
+    ]
+  },
+  {
+    "slug": "hosted-voice/identify-a-ghost-call",
+    "category": "public",
+    "breadcrumb": [
+      "Hosted Voice",
+      "Identify A Ghost Call"
+    ]
+  },
+  {
+    "slug": "hosted-voice/interoperability-testing-checklist",
+    "category": "public",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Interoperability Testing Checklist"
+    ]
+  },
+  {
+    "slug": "hosted-voice/move-domains-across-resellers",
+    "category": "internal",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Move Domains Across Resellers"
+    ]
+  },
+  {
+    "slug": "hosted-voice/multicast-paging",
+    "category": "public",
+    "breadcrumb": [
+      "Hosted Voice",
+      "Multicast Paging"
+    ]
+  },
+  {
+    "slug": "hosted-voice/pbx-transfer-checklist",
+    "category": "public",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "PBX Transfer Checklist"
+    ]
+  },
+  {
+    "slug": "hosted-voice/porting-holidays",
+    "category": "public",
+    "displayCategory": "Getting Started & General Info",
+    "breadcrumb": [
+      "Getting Started & General Info",
+      "Porting Holidays"
+    ]
+  },
+  {
+    "slug": "how-to-move-a-mobile-x-esim-to-a-new-phone-",
+    "category": "internal",
+    "displayCategory": "Mobile X",
+    "breadcrumb": [
+      "Mobile X"
+    ]
+  },
+  {
+    "slug": "integrations/audit-log-user-guide",
+    "category": "internal",
+    "breadcrumb": [
+      "Integrations",
+      "Audit Log User Guide"
+    ]
+  },
+  {
+    "slug": "integrations/briostack-call-popup",
+    "category": "public",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Briostack Call Popup"
+    ]
+  },
+  {
+    "slug": "integrations/install-and-configure-the-postman-app",
+    "category": "internal",
+    "breadcrumb": [
+      "Integrations",
+      "Install And Configure The Postman App"
+    ]
+  },
+  {
+    "slug": "integrations/repairshopr-integration",
+    "category": "public",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Repairshopr Integration"
+    ]
+  },
+  {
+    "slug": "integrations/syncromsp-integration",
+    "category": "internal",
+    "breadcrumb": [
+      "Integrations",
+      "Syncromsp Integration"
+    ]
+  },
+  {
+    "slug": "integrations/url-call-popup",
+    "category": "public",
+    "breadcrumb": [
+      "Integrations",
+      "Url Call Popup"
+    ]
+  },
+  {
+    "slug": "inventory-phone-numbers/add-dids-to-manager-portal",
+    "category": "internal",
+    "displayCategory": "Number Management",
+    "breadcrumb": [
+      "Number Management",
+      "Add Dids To Manager Portal"
+    ]
+  },
+  {
+    "slug": "inventory-phone-numbers/delete-a-did",
+    "category": "internal",
+    "displayCategory": "Number Management",
+    "breadcrumb": [
+      "Number Management",
+      "Delete A Did"
+    ]
+  },
+  {
+    "slug": "inventory-phone-numbers/route-dids",
+    "category": "internal",
+    "displayCategory": "Number Management",
+    "breadcrumb": [
+      "Number Management",
+      "Route Dids"
+    ]
+  },
+  {
+    "slug": "local-toll-free-porting/number-barn-porting-requirements",
+    "category": "public",
+    "displayCategory": "Number Management",
+    "breadcrumb": [
+      "Number Management",
+      "Number Barn Porting Requirements"
+    ]
+  },
+  {
+    "slug": "local-toll-free-porting/port-in-your-existing-numbers",
+    "category": "internal",
+    "displayCategory": "Number Management",
+    "breadcrumb": [
+      "Number Management",
+      "Port In Your Existing Numbers"
+    ]
+  },
+  {
+    "slug": "local-toll-free-porting/porting-checklist",
+    "category": "internal",
+    "displayCategory": "Number Management",
+    "breadcrumb": [
+      "Number Management",
+      "Porting Checklist"
+    ]
+  },
+  {
+    "slug": "local-toll-free-porting/project-ports",
+    "category": "internal",
+    "displayCategory": "Number Management",
+    "breadcrumb": [
+      "Number Management",
+      "Project Ports"
+    ]
+  },
+  {
+    "slug": "local-toll-free-porting/request-a-new-did",
+    "category": "internal",
+    "displayCategory": "Number Management",
+    "breadcrumb": [
+      "Number Management",
+      "Request A New Did"
+    ]
+  },
+  {
+    "slug": "local-toll-free-porting/unlock-google-voice-number-for-porting",
+    "category": "public",
+    "displayCategory": "Number Management",
+    "breadcrumb": [
+      "Number Management",
+      "Unlock Google Voice Number For Porting"
+    ]
+  },
+  {
+    "slug": "manager-portal-pro-releases/bulk-edit-devicephone-inventory",
+    "category": "internal",
+    "displayCategory": "Release Notes",
+    "breadcrumb": [
+      "Release Notes",
+      "Bulk Edit Devicephone Inventory"
+    ]
+  },
+  {
+    "slug": "manager-portal-pro-releases/how-to-use-the-pbx-feature-count-report",
+    "category": "internal",
+    "displayCategory": "Release Notes",
+    "breadcrumb": [
+      "Release Notes",
+      "How To Use The PBX Feature Count Report"
+    ]
+  },
+  {
+    "slug": "manager-portal-pro-releases/manager-portal-pro-release-notes",
+    "category": "internal",
+    "displayCategory": "Release Notes",
+    "breadcrumb": [
+      "Release Notes",
+      "Manager Portal Pro Release Notes"
+    ]
+  },
+  {
+    "slug": "manager-portal-pro-releases/v43-release-notes",
+    "category": "internal",
+    "displayCategory": "Release Notes",
+    "breadcrumb": [
+      "Release Notes",
+      "V43 Release Notes"
+    ]
+  },
+  {
+    "slug": "manual-configuration/1920163-untitled-article",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "1920163 Untitled Article"
+    ]
+  },
+  {
+    "slug": "manual-configuration/algo-manual-configuration",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Algo Manual Configuration"
+    ]
+  },
+  {
+    "slug": "manual-configuration/avaya-manual-configuration",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Avaya Manual Configuration"
+    ]
+  },
+  {
+    "slug": "manual-configuration/change-transport-type-on-devices",
+    "category": "public",
+    "breadcrumb": [
+      "Manual Configuration",
+      "Change Transport Type On Devices"
+    ]
+  },
+  {
+    "slug": "manual-configuration/cisco-manual-configuration",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Cisco Manual Configuration"
+    ]
+  },
+  {
+    "slug": "manual-configuration/cnpilot-r200r201-manual-configuration",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Cnpilot R200r201 Manual Configuration"
+    ]
+  },
+  {
+    "slug": "manual-configuration/cyberdata-paging-unit-manual-configuration",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Cyberdata Paging Unit Manual Configuration"
+    ]
+  },
+  {
+    "slug": "manual-configuration/digium-ip-phone-configuration",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Digium Ip Phone Configuration"
+    ]
+  },
+  {
+    "slug": "manual-configuration/how-to-move-devices-between-domains",
+    "category": "public",
+    "breadcrumb": [
+      "Manual Configuration",
+      "How To Move Devices Between Domains"
+    ]
+  },
+  {
+    "slug": "manual-configuration/obihai-200300-manual-configuration",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Obihai 200300 Manual Configuration"
+    ]
+  },
+  {
+    "slug": "manual-configuration/snom-c-series-manual-configuration",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Snom C Series Manual Configuration"
+    ]
+  },
+  {
+    "slug": "manual-configuration/snom-m300-manual-configuration",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Snom M300 Manual Configuration"
+    ]
+  },
+  {
+    "slug": "manual-configuration/snom-pa1-manual-configuration",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Snom Pa1 Manual Configuration"
+    ]
+  },
+  {
+    "slug": "manual-configuration/valcom-sip-intercom-controller-manual-configuration",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Valcom SIP Intercom Controller Manual Configuration"
+    ]
+  },
+  {
+    "slug": "manual-configuration/yealink-manual-configuration",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Yealink Manual Configuration"
+    ]
+  },
+  {
+    "slug": "mfax-analog/assign-and-configure-faxbridge",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "Assign And Configure Faxbridge"
+    ]
+  },
+  {
+    "slug": "mfax-analog/enable-confirmation-page-printing-on-faxbridge",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "Enable Confirmation Page Printing On Faxbridge"
+    ]
+  },
+  {
+    "slug": "mfax-analog/faxbridge-troubleshooting-commands",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "Faxbridge Troubleshooting Commands"
+    ]
+  },
+  {
+    "slug": "mfax-analog/faxbridge-troubleshooting-steps",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "Faxbridge Troubleshooting Steps"
+    ]
+  },
+  {
+    "slug": "mfax-analog/how-to-perform-a-firmware-update-on-a-fax-bridge-using-putty",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "How To Perform A Firmware Update On A Fax Bridge Using Putty"
+    ]
+  },
+  {
+    "slug": "mfax-analog/setup-and-installation-of-faxbridge",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "Setup And Installation Of Faxbridge"
+    ]
+  },
+  {
+    "slug": "mfax-digital/change-email-address-on-user-account",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "Change Email Address On User Account"
+    ]
+  },
+  {
+    "slug": "mfax-digital/change-your-email-notification-settings",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "Change Your Email Notification Settings"
+    ]
+  },
+  {
+    "slug": "mfax-digital/fax-result-codes",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "Fax Result Codes"
+    ]
+  },
+  {
+    "slug": "mfax-digital/install-the-mfax-printer-driver",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "Install The mFax Printer Driver"
+    ]
+  },
+  {
+    "slug": "mfax-digital/log-in-to-the-secure-web-portal",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "Log In To The Secure Web Portal"
+    ]
+  },
+  {
+    "slug": "mfax-digital/mfax-removingmoving-a-faxbridge",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "mFax Removingmoving A Faxbridge"
+    ]
+  },
+  {
+    "slug": "mfax-digital/mfax-send-a-fax-from-email",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "mFax Send A Fax From Email"
+    ]
+  },
+  {
+    "slug": "mfax-digital/mfax-send-a-fax-from-email-oitvoip",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "mFax Send A Fax From Email Oitvoip"
+    ]
+  },
+  {
+    "slug": "mfax-digital/remove-mfax-users-and-account",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "Remove mFax Users And Account"
+    ]
+  },
+  {
+    "slug": "mfax-digital/removing-users-from-the-mfax-suppression-list",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "Removing Users From The mFax Suppression List"
+    ]
+  },
+  {
+    "slug": "mfax-digital/routing-a-mfax-number-to-a-user",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "Routing A mFax Number To A User"
+    ]
+  },
+  {
+    "slug": "mfax-digital/send-a-fax-from-the-secure-web-portal",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "Send A Fax From The Secure Web Portal"
+    ]
+  },
+  {
+    "slug": "mfax-digital/snapback-process",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "Snapback Process"
+    ]
+  },
+  {
+    "slug": "mfax-digital/view-fax-history",
+    "category": "internal",
+    "displayCategory": "mFax",
+    "breadcrumb": [
+      "mFax",
+      "View Fax History"
+    ]
+  },
+  {
+    "slug": "mobile-applications/android-native-phone-app",
+    "category": "internal",
+    "displayCategory": "Mobile Apps",
+    "breadcrumb": [
+      "Mobile Apps",
+      "Android Native Phone App"
+    ]
+  },
+  {
+    "slug": "mobile-applications/bria-mobile-app",
+    "category": "internal",
+    "displayCategory": "Mobile Apps",
+    "breadcrumb": [
+      "Mobile Apps",
+      "Bria Mobile App"
+    ]
+  },
+  {
+    "slug": "mobile-applications/how-to-submit-logs-with-snapmobile-ios-and-android-app",
+    "category": "internal",
+    "displayCategory": "Mobile Apps",
+    "breadcrumb": [
+      "Mobile Apps",
+      "How To Submit Logs With Snapmobile Ios And Android App"
+    ]
+  },
+  {
+    "slug": "mobile-applications/how-to-use-oit-connect",
+    "category": "internal",
+    "displayCategory": "Mobile Apps",
+    "breadcrumb": [
+      "Mobile Apps",
+      "How To Use Oit Connect"
+    ]
+  },
+  {
+    "slug": "mobile-applications/how-to-use-snapmobile",
+    "category": "internal",
+    "displayCategory": "Mobile Apps",
+    "breadcrumb": [
+      "Mobile Apps",
+      "How To Use Snapmobile"
+    ]
+  },
+  {
+    "slug": "mobile-applications/how-to-use-snapmobile-web",
+    "category": "internal",
+    "displayCategory": "Mobile Apps",
+    "breadcrumb": [
+      "Mobile Apps",
+      "How To Use Snapmobile Web"
+    ]
+  },
+  {
+    "slug": "mobile-applications/install-progressive-web-app-for-snapmobile-web",
+    "category": "internal",
+    "displayCategory": "Mobile Apps",
+    "breadcrumb": [
+      "Mobile Apps",
+      "Install Progressive Web App For Snapmobile Web"
+    ]
+  },
+  {
+    "slug": "mobile-applications/oit-connect-join-beta-program",
+    "category": "internal",
+    "displayCategory": "Mobile Apps",
+    "breadcrumb": [
+      "Mobile Apps",
+      "Oit Connect Join Beta Program"
+    ]
+  },
+  {
+    "slug": "mobile-applications/oit-connect-preferred",
+    "category": "internal",
+    "displayCategory": "Mobile Apps",
+    "breadcrumb": [
+      "Mobile Apps",
+      "Oit Connect Preferred"
+    ]
+  },
+  {
+    "slug": "mobile-applications/snapmobile-join-beta-program",
+    "category": "internal",
+    "displayCategory": "Mobile Apps",
+    "breadcrumb": [
+      "Mobile Apps",
+      "Snapmobile Join Beta Program"
+    ]
+  },
+  {
+    "slug": "mobile-applications/snapmobile-preferred",
+    "category": "public",
+    "displayCategory": "Mobile Apps",
+    "breadcrumb": [
+      "Mobile Apps",
+      "Snapmobile Preferred"
+    ]
+  },
+  {
+    "slug": "mobile-applications/zoiper-mobile-app",
+    "category": "internal",
+    "displayCategory": "Mobile Apps",
+    "breadcrumb": [
+      "Mobile Apps",
+      "Zoiper Mobile App"
+    ]
+  },
+  {
+    "slug": "mobile-x/considerations-for-mobile-x",
+    "category": "internal",
+    "breadcrumb": [
+      "Mobile X",
+      "Considerations For Mobile X"
+    ]
+  },
+  {
+    "slug": "mobile-x/create-mobile-x-group",
+    "category": "internal",
+    "breadcrumb": [
+      "Mobile X",
+      "Create Mobile X Group"
+    ]
+  },
+  {
+    "slug": "mobile-x/create-mobile-x-messaging-gateway",
+    "category": "internal",
+    "breadcrumb": [
+      "Mobile X",
+      "Create Mobile X Messaging Gateway"
+    ]
+  },
+  {
+    "slug": "mobile-x/create-mobile-x-subscribers",
+    "category": "internal",
+    "breadcrumb": [
+      "Mobile X",
+      "Create Mobile X Subscribers"
+    ]
+  },
+  {
+    "slug": "mobile-x/import-phone-numbers-to-mobile-x",
+    "category": "internal",
+    "breadcrumb": [
+      "Mobile X",
+      "Import Phone Numbers To Mobile X"
+    ]
+  },
+  {
+    "slug": "mobile-x/mobile-x-change-extension-to-extension-caller-id",
+    "category": "internal",
+    "breadcrumb": [
+      "Mobile X",
+      "Mobile X Change Extension To Extension Caller Id"
+    ]
+  },
+  {
+    "slug": "mobile-x/mobile-x-direct-volte-migration",
+    "category": "internal",
+    "breadcrumb": [
+      "Mobile X",
+      "Mobile X Direct Volte Migration"
+    ]
+  },
+  {
+    "slug": "mobile-x/set-up-your-phone-with-mobile-x",
+    "category": "internal",
+    "breadcrumb": [
+      "Mobile X",
+      "Set Up Your Phone With Mobile X"
+    ]
+  },
+  {
+    "slug": "native-fax-major-incident-timeline-071924",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2024/07/19 Native Fax Major Incident (Resolved)"
+    ]
+  },
+  {
+    "slug": "native-fax/add-native-fax-account",
+    "category": "internal",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "Add Native Fax Account"
+    ]
+  },
+  {
+    "slug": "native-fax/addremove-an-ata-from-a-user",
+    "category": "internal",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "Addremove An Ata From A User"
+    ]
+  },
+  {
+    "slug": "native-fax/considerations-with-native-fax",
+    "category": "public",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "Considerations With Native Fax"
+    ]
+  },
+  {
+    "slug": "native-fax/delete-a-native-fax-account",
+    "category": "internal",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "Delete A Native Fax Account"
+    ]
+  },
+  {
+    "slug": "native-fax/delete-fax-messages",
+    "category": "public",
+    "breadcrumb": [
+      "Native Fax",
+      "Delete Fax Messages"
+    ]
+  },
+  {
+    "slug": "native-fax/factory-reset-audiocodes-mp-202b-native-fax-ata",
+    "category": "public",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "Factory Reset Audiocodes Mp 202b Native Fax Ata"
+    ]
+  },
+  {
+    "slug": "native-fax/how-to-receivemanage-inbound-faxes",
+    "category": "public",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "How To Receivemanage Inbound Faxes"
+    ]
+  },
+  {
+    "slug": "native-fax/native-fax-send-a-fax-from-email",
+    "category": "public",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "Native Fax Send A Fax From Email"
+    ]
+  },
+  {
+    "slug": "native-fax/native-fax-send-a-fax-from-email-oitvoip",
+    "category": "internal",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "Native Fax Send A Fax From Email Oitvoip"
+    ]
+  },
+  {
+    "slug": "native-fax/send-fax-from-the-manager-portal",
+    "category": "public",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "Send Fax From The Manager Portal"
+    ]
+  },
+  {
+    "slug": "native-fax/setup-and-installation-of-audiocodes-mp202x-native-fax-ata",
+    "category": "public",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "Setup And Installation Of Audiocodes Mp202x Native Fax Ata"
+    ]
+  },
+  {
+    "slug": "native-fax/setup-and-installation-of-readynet-qx300-native-fax-ata",
+    "category": "public",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "Setup And Installation Of Readynet Qx300 Native Fax Ata"
+    ]
+  },
+  {
+    "slug": "ob-branding/onebill-create-a-new-reseller-user",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Create A New Reseller User"
+    ]
+  },
+  {
+    "slug": "ob-branding/onebill-create-agent-settlements-policies-and-link-to-products",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Create Agent Settlements Policies And Link To Products"
+    ]
+  },
+  {
+    "slug": "ob-branding/onebill-create-custom-urls-for-admin-and-selfcare",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Create Custom Urls For Admin And Selfcare"
+    ]
+  },
+  {
+    "slug": "ob-branding/onebill-edit-business-profile-branding",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Edit Business Profile Branding"
+    ]
+  },
+  {
+    "slug": "ob-branding/onebill-edit-email-alerts",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Edit Email Alerts"
+    ]
+  },
+  {
+    "slug": "ob-branding/onebill-edit-invoice-and-quote-template-",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Edit Invoice And Quote Template "
+    ]
+  },
+  {
+    "slug": "ob-branding/onebill-how-to-set-up-the-quickbooks-online-integrations",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill How To Set Up The Quickbooks Online Integrations"
+    ]
+  },
+  {
+    "slug": "ob-branding/onebill-ip-addresses-to-whitelist-for-ippay",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Ip Addresses To Whitelist For Ippay"
+    ]
+  },
+  {
+    "slug": "ob-branding/onebill-set-up-smtp-server",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Set Up Smtp Server"
+    ]
+  },
+  {
+    "slug": "ob-branding/onebill-setting-up-integrations",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Setting Up Integrations"
+    ]
+  },
+  {
+    "slug": "ob-branding/onebill-ssl-certificate-renewal",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Ssl Certificate Renewal"
+    ]
+  },
+  {
+    "slug": "ob-customers/onebill-create-a-lead",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Create A Lead"
+    ]
+  },
+  {
+    "slug": "ob-customers/onebill-create-a-new-agent-account-and-link-to-a-subscriber",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Create A New Agent Account And Link To A Subscriber"
+    ]
+  },
+  {
+    "slug": "ob-customers/onebill-create-a-quote",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Create A Quote"
+    ]
+  },
+  {
+    "slug": "ob-customers/onebill-create-new-subscriber-account",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Create New Subscriber Account"
+    ]
+  },
+  {
+    "slug": "ob-customers/onebill-delete-a-contact",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Delete A Contact"
+    ]
+  },
+  {
+    "slug": "ob-customers/onebill-how-to-add-and-edit-subscriber-sites",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill How To Add And Edit Subscriber Sites"
+    ]
+  },
+  {
+    "slug": "ob-customers/onebill-quote-to-customer-process",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Quote To Customer Process"
+    ]
+  },
+  {
+    "slug": "ob-invoicing/applying-a-credit-or-adjustment",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "Applying A Credit Or Adjustment"
+    ]
+  },
+  {
+    "slug": "ob-invoicing/cancel-a-product",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "Cancel A Product"
+    ]
+  },
+  {
+    "slug": "ob-invoicing/onebill-create-a-one-timetrigger-invoice",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Create A One Timetrigger Invoice"
+    ]
+  },
+  {
+    "slug": "ob-invoicing/onebill-end-of-month-procedures",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill End Of Month Procedures"
+    ]
+  },
+  {
+    "slug": "ob-invoicing/onebill-rectify-an-invoice",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Rectify An Invoice"
+    ]
+  },
+  {
+    "slug": "ob-products/onebill-adding-products-to-customers",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Adding Products To Customers"
+    ]
+  },
+  {
+    "slug": "ob-products/onebill-change-quantities-on-existing-products",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Change Quantities On Existing Products"
+    ]
+  },
+  {
+    "slug": "ob-products/onebill-create-a-new-product",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Create A New Product"
+    ]
+  },
+  {
+    "slug": "ob-products/onebill-create-a-price-plan",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Create A Price Plan"
+    ]
+  },
+  {
+    "slug": "ob-taxes-and-fees/onebill-how-to-add-a-surcharge-to-invoices",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill How To Add A Surcharge To Invoices"
+    ]
+  },
+  {
+    "slug": "ob-usage/onebill-assign-usage-product-to-your-customer",
+    "category": "internal",
+    "displayCategory": "OneBill",
+    "breadcrumb": [
+      "OneBill",
+      "OneBill Assign Usage Product To Your Customer"
+    ]
+  },
+  {
+    "slug": "onboarding-recommendations/onboarding-call-guidelines",
+    "category": "internal",
+    "displayCategory": "Onboarding",
+    "breadcrumb": [
+      "Onboarding",
+      "Onboarding Call Guidelines"
+    ]
+  },
+  {
+    "slug": "onboarding-recommendations/orders-tasks",
+    "category": "internal",
+    "displayCategory": "Onboarding",
+    "breadcrumb": [
+      "Onboarding",
+      "Orders Tasks"
+    ]
+  },
+  {
+    "slug": "onboarding-recommendations/orders-tasks-self-service",
+    "category": "internal",
+    "displayCategory": "Onboarding",
+    "breadcrumb": [
+      "Onboarding",
+      "Orders Tasks Self Service"
+    ]
+  },
+  {
+    "slug": "onebill/onebill-faqs",
+    "category": "internal",
+    "breadcrumb": [
+      "OneBill",
+      "Onebill Faqs"
+    ]
+  },
+  {
+    "slug": "platform-events/2019-05-06-atlanta-network-failure-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2019 05 06 Atlanta Network Failure Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2019-06-06-nyj004-network-failure-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2019 06 06 Nyj004 Network Failure Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2019-11-22-acs001-core-failure-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2019 11 22 Acs001 Core Failure Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2020-02-15-outbound-call-failure-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2020 02 15 Outbound Call Failure Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2020-07-08-acs001-core-failure-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2020 07 08 Acs001 Core Failure Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2020-08-14-portal-api-snapmobile-outage-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2020 08 14 Portal API Snapmobile Outage Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2020-09-17-portal-api-snapmobile-outage-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2020 09 17 Portal API Snapmobile Outage Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2021-03-16-call-history-display-failure-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2021 03 16 Call History Display Failure Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2021-03-31-outbound-calling-outage-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2021 03 31 Outbound Calling Outage Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2021-05-04-poor-call-quality-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2021 05 04 Poor Call Quality Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2021-10-05-yealink-provisioning-errors-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2021 10 05 Yealink Provisioning Errors Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2021-11-11-outbound-call-failures-from-atlanta-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2021 11 11 Outbound Call Failures From Atlanta Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2021-11-29-system-restart-sje-and-atl-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2021 11 29 System Restart Sje And Atl Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2022-01-06-partial-inbound-call-failures-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2022 01 06 Partial Inbound Call Failures Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2022-05-25-outbound-call-failures-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2022 05 25 Outbound Call Failures Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2022-07-14-device-provisioning-server-unreachable-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2022 07 14 Device Provisioning Server Unreachable Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2022-09-03-sje-outage-inboundoutbound-callsdevice-registration-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2022 09 03 Sje Outage Inboundoutbound Callsdevice Registration Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2022-09-22-sje-nyj-outage-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2022 09 22 Sje Nyj Outage Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2023-08-15-packet-loss-and-high-latency-on-grr-server-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2023 08 15 Packet Loss And High Latency On Grr Server Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/2024-09-18-las-outage-resolved",
+    "category": "internal",
+    "breadcrumb": [
+      "Platform Events",
+      "2024 09 18 Las Outage Resolved"
+    ]
+  },
+  {
+    "slug": "platform-events/resolve-inbound-calling-failures-to-tod-user",
+    "category": "internal",
+    "breadcrumb": [
+      "Platform Events",
+      "Resolve Inbound Calling Failures To Tod User"
+    ]
+  },
+  {
+    "slug": "polycom/polycom-branding",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Polycom Branding"
+    ]
+  },
+  {
+    "slug": "polycom/polycom-call-parking",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Polycom Call Parking"
+    ]
+  },
+  {
+    "slug": "polycom/polycom-change-background-wallpaper",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Polycom Change Background Wallpaper"
+    ]
+  },
+  {
+    "slug": "polycom/polycom-enabling-the-web-interface",
+    "category": "internal",
+    "breadcrumb": [
+      "Polycom",
+      "Polycom Enabling The Web Interface"
+    ]
+  },
+  {
+    "slug": "polycom/polycom-manual-configuration",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Polycom Manual Configuration"
+    ]
+  },
+  {
+    "slug": "polycom/polycom-overrides",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Polycom Overrides"
+    ]
+  },
+  {
+    "slug": "polycom/polycom-performing-a-firmware-update",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Polycom Performing A Firmware Update"
+    ]
+  },
+  {
+    "slug": "polycom/polycom-switching-vvx-phones-from-teamslync-to-generic-sip",
+    "category": "internal",
+    "breadcrumb": [
+      "Polycom",
+      "Polycom Switching Vvx Phones From Teamslync To Generic Sip"
+    ]
+  },
+  {
+    "slug": "polycom/polycom-vvx-how-to-perform-a-remote-packet-capture",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Polycom Vvx How To Perform A Remote Packet Capture"
+    ]
+  },
+  {
+    "slug": "polycom/polycom-zero-touch-provision-ztp-and-pdms-sp",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Polycom Zero Touch Provision Ztp And Pdms Sp"
+    ]
+  },
+  {
+    "slug": "polycom/polycom-zero-touch-provisioning",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Polycom Zero Touch Provisioning"
+    ]
+  },
+  {
+    "slug": "provisioning/aastra-provisioning",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Aastra Provisioning"
+    ]
+  },
+  {
+    "slug": "provisioning/cisco-remote-provisioning",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Cisco Remote Provisioning"
+    ]
+  },
+  {
+    "slug": "provisioning/device-provisioning-via-dhcp-options",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Device Provisioning Via Dhcp Options"
+    ]
+  },
+  {
+    "slug": "provisioning/grandstream-manual-provisioning",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Grandstream Manual Provisioning"
+    ]
+  },
+  {
+    "slug": "provisioning/mitelastra-first-time-provisioning-with-the-global-one-time-username-and-password",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Mitelastra First Time Provisioning With The Global One Time Username And Password"
+    ]
+  },
+  {
+    "slug": "provisioning/panasonic-provisioning",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Panasonic Provisioning"
+    ]
+  },
+  {
+    "slug": "provisioning/polycom-manual-provisioning",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Polycom Manual Provisioning"
+    ]
+  },
+  {
+    "slug": "provisioning/polycom-obi-edition-provisioning",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Polycom Obi Edition Provisioning"
+    ]
+  },
+  {
+    "slug": "provisioning/provisioning-global-one-time-password",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Provisioning Global One Time Password"
+    ]
+  },
+  {
+    "slug": "provisioning/reset-global-one-time-password",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Reset Global One Time Password"
+    ]
+  },
+  {
+    "slug": "provisioning/snom-c-series-manual-provisioning",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Snom C Series Manual Provisioning"
+    ]
+  },
+  {
+    "slug": "provisioning/snom-d-series-provisioning",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Snom D Series Provisioning"
+    ]
+  },
+  {
+    "slug": "provisioning/v-tech-manual-provisioning",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "V Tech Manual Provisioning"
+    ]
+  },
+  {
+    "slug": "provisioning/yealink-manual-provisioning",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Yealink Manual Provisioning"
+    ]
+  },
+  {
+    "slug": "release-notes/uc-integrator-424-release-notes",
+    "category": "internal",
+    "breadcrumb": [
+      "Release Notes",
+      "Uc Integrator 424 Release Notes"
+    ]
+  },
+  {
+    "slug": "release-notes/uc-integrator-4508681-release-notes",
+    "category": "internal",
+    "breadcrumb": [
+      "Release Notes",
+      "Uc Integrator 4508681 Release Notes"
+    ]
+  },
+  {
+    "slug": "release-notes/v44-feature-showcase",
+    "category": "internal",
+    "breadcrumb": [
+      "Release Notes",
+      "V44 Feature Showcase"
+    ]
+  },
+  {
+    "slug": "release-notes/v44-release-notes",
+    "category": "internal",
+    "breadcrumb": [
+      "Release Notes",
+      "V44 Release Notes"
+    ]
+  },
+  {
+    "slug": "release-notes/v443-release-notes",
+    "category": "internal",
+    "breadcrumb": [
+      "Release Notes",
+      "V443 Release Notes"
+    ]
+  },
+  {
+    "slug": "scheduling-an-outbound-email-in-outlook",
+    "category": "internal",
+    "displayCategory": "Apps",
+    "breadcrumb": [
+      "Apps",
+      "Scheduling an Outbound Email in Outlook"
+    ]
+  },
+  {
+    "slug": "sip-trunking/3cx-connect-a-sip-trunk",
+    "category": "internal",
+    "breadcrumb": [
+      "SIP Trunking",
+      "3cx Connect A Sip Trunk"
+    ]
+  },
+  {
+    "slug": "sip-trunking/adtran-connect-analog-users-to-use-sip-credentials",
+    "category": "internal",
+    "breadcrumb": [
+      "SIP Trunking",
+      "Adtran Connect Analog Users To Use Sip Credentials"
+    ]
+  },
+  {
+    "slug": "sip-trunking/allworx-connect-a-sip-ip-based-trunk",
+    "category": "internal",
+    "breadcrumb": [
+      "SIP Trunking",
+      "Allworx Connect A Sip Ip Based Trunk"
+    ]
+  },
+  {
+    "slug": "sip-trunking/bring-your-own-telco-byot-considerations",
+    "category": "internal",
+    "breadcrumb": [
+      "SIP Trunking",
+      "Bring Your Own Telco Byot Considerations"
+    ]
+  },
+  {
+    "slug": "sip-trunking/configure-failover-for-a-sip-trunk",
+    "category": "internal",
+    "breadcrumb": [
+      "SIP Trunking",
+      "Configure Failover For A Sip Trunk"
+    ]
+  },
+  {
+    "slug": "sip-trunking/create-a-sip-trunk",
+    "category": "internal",
+    "breadcrumb": [
+      "SIP Trunking",
+      "Create A SIP Trunk"
+    ]
+  },
+  {
+    "slug": "sip-trunking/elastix-connect-a-sip-trunk",
+    "category": "internal",
+    "breadcrumb": [
+      "SIP Trunking",
+      "Elastix Connect A Sip Trunk"
+    ]
+  },
+  {
+    "slug": "sip-trunking/freepbx-connect-a-sip-trunk",
+    "category": "internal",
+    "breadcrumb": [
+      "SIP Trunking",
+      "Freepbx Connect A Sip Trunk"
+    ]
+  },
+  {
+    "slug": "sip-trunking/modify-headers-for-a-sip-trunk",
+    "category": "internal",
+    "breadcrumb": [
+      "SIP Trunking",
+      "Modify Headers For A Sip Trunk"
+    ]
+  },
+  {
+    "slug": "sip-trunking/obihai-200300-sip-trunk-configuration",
+    "category": "internal",
+    "breadcrumb": [
+      "SIP Trunking",
+      "Obihai 200300 Sip Trunk Configuration"
+    ]
+  },
+  {
+    "slug": "sip-trunking/pbxact-sip-trunk-setup",
+    "category": "internal",
+    "breadcrumb": [
+      "SIP Trunking",
+      "Pbxact Sip Trunk Setup"
+    ]
+  },
+  {
+    "slug": "sip-trunking/setup-a-xorcom-pbx",
+    "category": "internal",
+    "breadcrumb": [
+      "SIP Trunking",
+      "Setup A Xorcom Pbx"
+    ]
+  },
+  {
+    "slug": "sip-trunking/switchvox-connect-a-sip-trunk",
+    "category": "internal",
+    "breadcrumb": [
+      "SIP Trunking",
+      "Switchvox Connect A Sip Trunk"
+    ]
+  },
+  {
+    "slug": "sip-trunking/yeastar-s-connect-a-sip-trunk",
+    "category": "internal",
+    "breadcrumb": [
+      "SIP Trunking",
+      "Yeastar S Connect A Sip Trunk"
+    ]
+  },
+  {
+    "slug": "sms-mms/10dlc-messaging-overview",
+    "category": "public",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "10dlc Messaging Overview"
+    ]
+  },
+  {
+    "slug": "sms-mms/10dlc-vetting-rejection-reasons",
+    "category": "public",
+    "breadcrumb": [
+      "SMS / MMS",
+      "10dlc Vetting Rejection Reasons"
+    ]
+  },
+  {
+    "slug": "sms-mms/assigning-a-campaign-id-to-an-sms-did",
+    "category": "public",
+    "breadcrumb": [
+      "SMS / MMS",
+      "Assigning A Campaign Id To An Sms Did"
+    ]
+  },
+  {
+    "slug": "sms-mms/enable-messaging-smsmms-for-a-call-queue",
+    "category": "public",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "Enable Messaging Smsmms For A Call Queue"
+    ]
+  },
+  {
+    "slug": "sms-mms/group-chat",
+    "category": "public",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "Group Chat"
+    ]
+  },
+  {
+    "slug": "sms-mms/send-and-receive-messages-from-the-manager-portal-smsmms",
+    "category": "public",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "Send And Receive Messages From The Manager Portal Smsmms"
+    ]
+  },
+  {
+    "slug": "sms-mms/send-and-receive-mms-via-call-queue-from-manager-portal",
+    "category": "public",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "Send And Receive Mms Via Call Queue From Manager Portal"
+    ]
+  },
+  {
+    "slug": "sms-mms/third-party-smsmms",
+    "category": "public",
+    "displayCategory": "Messaging & Fax",
+    "breadcrumb": [
+      "Messaging & Fax",
+      "Third Party Smsmms"
+    ]
+  },
+  {
+    "slug": "snapbuilder/create-and-apply-a-template-on-snapbuilder",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Create And Apply A Template On SNAPbuilder"
+    ]
+  },
+  {
+    "slug": "snapbuilder/enable-remote-phonebook-on-snapbuilder",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Enable Remote Phonebook On SNAPbuilder"
+    ]
+  },
+  {
+    "slug": "snapbuilder/how-to-use-snapbuilder",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "How To Use SNAPbuilder"
+    ]
+  },
+  {
+    "slug": "snapmobile/how-to-complete-the-branded-snapmobile-android-google-declaration",
+    "category": "internal",
+    "displayCategory": "Release Notes",
+    "breadcrumb": [
+      "Release Notes",
+      "How To Complete The Branded Snapmobile Android Google Declaration"
+    ]
+  },
+  {
+    "slug": "snapmobile/snapmobile-android-31-release-notes",
+    "category": "internal",
+    "displayCategory": "Release Notes",
+    "breadcrumb": [
+      "Release Notes",
+      "Snapmobile Android 31 Release Notes"
+    ]
+  },
+  {
+    "slug": "snapmobile/snapmobile-android-32-release-notes",
+    "category": "internal",
+    "displayCategory": "Release Notes",
+    "breadcrumb": [
+      "Release Notes",
+      "Snapmobile Android 32 Release Notes"
+    ]
+  },
+  {
+    "slug": "snapmobile/snapmobile-android-33-release-notes",
+    "category": "internal",
+    "displayCategory": "Release Notes",
+    "breadcrumb": [
+      "Release Notes",
+      "Snapmobile Android 33 Release Notes"
+    ]
+  },
+  {
+    "slug": "snapmobile/snapmobile-android-35-release-notes",
+    "category": "internal",
+    "displayCategory": "Release Notes",
+    "breadcrumb": [
+      "Release Notes",
+      "Snapmobile Android 35 Release Notes"
+    ]
+  },
+  {
+    "slug": "snapmobile/snapmobile-android-40-release-notes",
+    "category": "internal",
+    "breadcrumb": [
+      "SnapMobile",
+      "Snapmobile Android 40 Release Notes"
+    ]
+  },
+  {
+    "slug": "snapmobile/snapmobile-android-v411-release-notes",
+    "category": "internal",
+    "breadcrumb": [
+      "SnapMobile",
+      "Snapmobile Android V411 Release Notes"
+    ]
+  },
+  {
+    "slug": "snapmobile/snapmobile-ios-31-release-notes",
+    "category": "internal",
+    "displayCategory": "Release Notes",
+    "breadcrumb": [
+      "Release Notes",
+      "Snapmobile Ios 31 Release Notes"
+    ]
+  },
+  {
+    "slug": "snapmobile/snapmobile-ios-32-release-notes",
+    "category": "internal",
+    "displayCategory": "Release Notes",
+    "breadcrumb": [
+      "Release Notes",
+      "Snapmobile Ios 32 Release Notes"
+    ]
+  },
+  {
+    "slug": "snapmobile/snapmobile-ios-322-release-notes",
+    "category": "internal",
+    "displayCategory": "Release Notes",
+    "breadcrumb": [
+      "Release Notes",
+      "Snapmobile Ios 322 Release Notes"
+    ]
+  },
+  {
+    "slug": "snapmobile/snapmobile-ios-33-release-notes",
+    "category": "internal",
+    "displayCategory": "Release Notes",
+    "breadcrumb": [
+      "Release Notes",
+      "Snapmobile Ios 33 Release Notes"
+    ]
+  },
+  {
+    "slug": "snapmobile/snapmobile-version-40-ios-release-notes",
+    "category": "internal",
+    "displayCategory": "Release Notes",
+    "breadcrumb": [
+      "Release Notes",
+      "Snapmobile Version 40 Ios Release Notes"
+    ]
+  },
+  {
+    "slug": "snom/add-device-to-sraps",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Add Device To Sraps"
+    ]
+  },
+  {
+    "slug": "snom/add-provisioning-profile-to-sraps",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Add Provisioning Profile To Sraps"
+    ]
+  },
+  {
+    "slug": "talent-lms-course-requirements",
+    "category": "public",
+    "breadcrumb": [
+      "Talent Lms Course Requirements"
+    ]
+  },
+  {
+    "slug": "teammate-connector/1920273-add-teammate-to-trust-traffic-list",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "1920273 Add TeamMate To Trust Traffic List"
+    ]
+  },
+  {
+    "slug": "teammate-connector/2024-04-30-grr-loss-of-lnetwork-connectivity-issues-resolved",
+    "category": "internal",
+    "displayCategory": "Incidents & Events",
+    "breadcrumb": [
+      "Incidents & Events",
+      "2024 04 30 Grr Loss Of Lnetwork Connectivity Issues Resolved"
+    ]
+  },
+  {
+    "slug": "teammate-connector/add-new-users-to-teammate",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Add New Users To Teammate"
+    ]
+  },
+  {
+    "slug": "teammate-connector/add-pbx-to-teammate-connector-enterprise",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Add PBX To TeamMate Connector Enterprise"
+    ]
+  },
+  {
+    "slug": "teammate-connector/build-the-teammate-connector-application",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Build The TeamMate Connector Application"
+    ]
+  },
+  {
+    "slug": "teammate-connector/configure-carriers-for-sms-with-teammate-connector",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Configure Carriers For Sms With TeamMate Connector"
+    ]
+  },
+  {
+    "slug": "teammate-connector/configure-direct-routing-for-teammate-connector",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Configure Direct Routing For TeamMate Connector"
+    ]
+  },
+  {
+    "slug": "teammate-connector/create-new-teammate-enterprise",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Create New TeamMate Enterprise"
+    ]
+  },
+  {
+    "slug": "teammate-connector/creating-feature-codes-for-teammate-connector",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Creating Feature Codes For TeamMate Connector"
+    ]
+  },
+  {
+    "slug": "teammate-connector/delete-previous-direct-routing",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Delete Previous Direct Routing"
+    ]
+  },
+  {
+    "slug": "teammate-connector/deleting-teammate-connector-resellers-and-enterpriseseam",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Deleting TeamMate Connector Resellers And Enterpriseseam"
+    ]
+  },
+  {
+    "slug": "teammate-connector/deleting-users-from-teammate-connector",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Deleting Users From TeamMate Connector"
+    ]
+  },
+  {
+    "slug": "teammate-connector/enable-sms-with-teammate-connector",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Enable Sms With TeamMate Connector"
+    ]
+  },
+  {
+    "slug": "teammate-connector/ensure-calling-plan-is-disabled-for-microsoft-business-voice",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Ensure Calling Plan Is Disabled For Microsoft Business Voice"
+    ]
+  },
+  {
+    "slug": "teammate-connector/install-pbx-end-user-portal-with-teammate-epp",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Install PBX End User Portal With TeamMate Epp"
+    ]
+  },
+  {
+    "slug": "teammate-connector/login-error-upon-initial-enterprise-registration",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Login Error Upon Initial Enterprise Registration"
+    ]
+  },
+  {
+    "slug": "teammate-connector/microsoft-domain-issues",
+    "category": "public",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Microsoft Domain Issues"
+    ]
+  },
+  {
+    "slug": "teammate-connector/microsoft-office-licenses-showing-as-not-available",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Microsoft Office Licenses Showing As Not Available"
+    ]
+  },
+  {
+    "slug": "teammate-connector/subscription-status-showing-as-expired",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Subscription Status Showing As Expired"
+    ]
+  },
+  {
+    "slug": "teammate-connector/supported-microsoft-licenses-for-teammate-connector",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Supported Microsoft Licenses For TeamMate Connector"
+    ]
+  },
+  {
+    "slug": "teammate-connector/teammate-connector-configuration-steps",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "TeamMate Connector Configuration Steps"
+    ]
+  },
+  {
+    "slug": "teammate-connector/teammate-connector-faq",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "TeamMate Connector Faq"
+    ]
+  },
+  {
+    "slug": "teammate-connector/teammate-connector-known-issues",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "TeamMate Connector Known Issues"
+    ]
+  },
+  {
+    "slug": "teammate-connector/teammate-connector-troubleshooting",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "TeamMate Connector Troubleshooting"
+    ]
+  },
+  {
+    "slug": "training-courses/enrolling-in-a-course",
+    "category": "internal",
+    "breadcrumb": [
+      "Training Courses",
+      "Enrolling In A Course"
+    ]
+  },
+  {
+    "slug": "troubleshooting/call-drop-when-transferred-via-snapbuilder-speed-dial",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Call Drop When Transferred Via Snapbuilder Speed Dial"
+    ]
+  },
+  {
+    "slug": "troubleshooting/common-sip-response-codes",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Common Sip Response Codes"
+    ]
+  },
+  {
+    "slug": "troubleshooting/find-your-public-ip-address",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Find Your Public Ip Address"
+    ]
+  },
+  {
+    "slug": "troubleshooting/how-to-take-packet-captures",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "How To Take Packet Captures"
+    ]
+  },
+  {
+    "slug": "troubleshooting/imported-article-01-apr-18-17",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Imported Article 01 Apr 18 17"
+    ]
+  },
+  {
+    "slug": "troubleshooting/inbound-call-troubleshooting",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Inbound Call Troubleshooting"
+    ]
+  },
+  {
+    "slug": "troubleshooting/network-configuration-best-practices",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Network Configuration Best Practices"
+    ]
+  },
+  {
+    "slug": "troubleshooting/numbers-for-testing",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Numbers For Testing"
+    ]
+  },
+  {
+    "slug": "troubleshooting/obtain-a-call-trace",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Obtain A Call Trace"
+    ]
+  },
+  {
+    "slug": "troubleshooting/outbound-call-troubleshooting",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Outbound Call Troubleshooting"
+    ]
+  },
+  {
+    "slug": "troubleshooting/quick-response-to-a-compromised-userdevice",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Quick Response To A Compromised Userdevice"
+    ]
+  },
+  {
+    "slug": "troubleshooting/remove-stuck-active-call",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Remove Stuck Active Call"
+    ]
+  },
+  {
+    "slug": "troubleshooting/routers-with-known-issues",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Routers With Known Issues"
+    ]
+  },
+  {
+    "slug": "troubleshooting/running-syslog-using-papertrailappcom",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Running Syslog Using Papertrailappcom"
+    ]
+  },
+  {
+    "slug": "troubleshooting/setting-unanswered-calls-to-external-numbers-voicemail",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Setting Unanswered Calls To External Numbers Voicemail"
+    ]
+  },
+  {
+    "slug": "troubleshooting/signs-of-sip-alg-or-double-nat",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Signs Of Sip Alg Or Double Nat"
+    ]
+  },
+  {
+    "slug": "troubleshooting/sip-alg-what-is-it-and-how-to-disable-it",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Sip Alg What Is It And How To Disable It"
+    ]
+  },
+  {
+    "slug": "troubleshooting/snapmobile-web-dropping-assisted-transfer-calls",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Snapmobile Web Dropping Assisted Transfer Calls"
+    ]
+  },
+  {
+    "slug": "troubleshooting/snapmobile-web-rejects-login-when-portal-is-proxied-via-cloudflare",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Snapmobile Web Rejects Login When Portal Is Proxied Via Cloudflare"
+    ]
+  },
+  {
+    "slug": "troubleshooting/temporarily-register-devices-to-a-different-core",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Temporarily Register Devices To A Different Core"
+    ]
+  },
+  {
+    "slug": "troubleshooting/troubleshoot-inbound-cnam",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Troubleshoot Inbound Cnam"
+    ]
+  },
+  {
+    "slug": "troubleshooting/troubleshooting-not-provisioned-e911",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Troubleshooting Not Provisioned E911"
+    ]
+  },
+  {
+    "slug": "troubleshooting/troubleshooting-outbound-calls-marked-as-spam",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Troubleshooting Outbound Calls Marked As Spam"
+    ]
+  },
+  {
+    "slug": "troubleshooting/troubleshooting-poor-call-quality",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Troubleshooting Poor Call Quality"
+    ]
+  },
+  {
+    "slug": "troubleshooting/troubleshooting-registration-provisioning-issues",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Troubleshooting Registration Provisioning Issues"
+    ]
+  },
+  {
+    "slug": "troubleshooting/troubleshooting-voicemail-will-not-play-audio",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Troubleshooting Voicemail Will Not Play Audio"
+    ]
+  },
+  {
+    "slug": "troubleshooting/unable-to-receive-2fa-codes-to-sms-number",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Unable To Receive 2fa Codes To Sms Number"
+    ]
+  },
+  {
+    "slug": "troubleshooting/understanding-sip-packets",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Understanding Sip Packets"
+    ]
+  },
+  {
+    "slug": "troubleshooting/use-pingplotter-cloud-to-diagnose-network-issues",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Use Pingplotter Cloud To Diagnose Network Issues"
+    ]
+  },
+  {
+    "slug": "troubleshooting/use-pingplotter-to-diagnose-network-issues",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Use Pingplotter To Diagnose Network Issues"
+    ]
+  },
+  {
+    "slug": "troubleshooting/voip-codec-types",
+    "category": "internal",
+    "breadcrumb": [
+      "Troubleshooting",
+      "Voip Codec Types"
+    ]
+  },
+  {
+    "slug": "uc-integrator/assign-uc-integrator-license",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Assign UC Integrator License"
+    ]
+  },
+  {
+    "slug": "uc-integrator/configure-autotask-integration-with-uc-integrator",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Configure Autotask Integration With UC Integrator"
+    ]
+  },
+  {
+    "slug": "uc-integrator/configure-salesforce-integration-with-uc-integrator",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Configure Salesforce Integration With UC Integrator"
+    ]
+  },
+  {
+    "slug": "uc-integrator/how-to-use-uc-integrator",
+    "category": "public",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "How To Use UC Integrator"
+    ]
+  },
+  {
+    "slug": "uc-integrator/uc-integrator-license-types",
+    "category": "internal",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "UC Integrator License Types"
+    ]
+  },
+  {
+    "slug": "users/bulk-editing-users",
+    "category": "public",
+    "displayCategory": "Users & Administration",
+    "breadcrumb": [
+      "Users & Administration",
+      "Bulk Editing Users"
+    ]
+  },
+  {
+    "slug": "users/call-center-supervisor-overview",
+    "category": "public",
+    "displayCategory": "Users & Administration",
+    "breadcrumb": [
+      "Users & Administration",
+      "Call Center Supervisor Overview"
+    ]
+  },
+  {
+    "slug": "users/change-user-scope",
+    "category": "public",
+    "displayCategory": "Users & Administration",
+    "breadcrumb": [
+      "Users & Administration",
+      "Change User Scope"
+    ]
+  },
+  {
+    "slug": "users/configure-speed-dials-sorting-list",
+    "category": "internal",
+    "displayCategory": "Users & Administration",
+    "breadcrumb": [
+      "Users & Administration",
+      "Configure Speed Dials Sorting List"
+    ]
+  },
+  {
+    "slug": "users/create-a-user",
+    "category": "internal",
+    "displayCategory": "Users & Administration",
+    "breadcrumb": [
+      "Users & Administration",
+      "Create A User"
+    ]
+  },
+  {
+    "slug": "users/dial-permissions",
+    "category": "public",
+    "displayCategory": "Users & Administration",
+    "breadcrumb": [
+      "Users & Administration",
+      "Dial Permissions"
+    ]
+  },
+  {
+    "slug": "users/distinctive-ring-via-manager-portal",
+    "category": "public",
+    "displayCategory": "Users & Administration",
+    "breadcrumb": [
+      "Users & Administration",
+      "Distinctive Ring Via Manager Portal"
+    ]
+  },
+  {
+    "slug": "users/force-a-password-reset-for-a-user",
+    "category": "public",
+    "displayCategory": "Users & Administration",
+    "breadcrumb": [
+      "Users & Administration",
+      "Force A Password Reset For A User"
+    ]
+  },
+  {
+    "slug": "users/hot-desking-hoteling",
+    "category": "public",
+    "displayCategory": "Users & Administration",
+    "breadcrumb": [
+      "Users & Administration",
+      "Hot Desking Hoteling"
+    ]
+  },
+  {
+    "slug": "users/how-to-add-a-user-to-a-site",
+    "category": "public",
+    "displayCategory": "Users & Administration",
+    "breadcrumb": [
+      "Users & Administration",
+      "How To Add A User To A Site"
+    ]
+  },
+  {
+    "slug": "users/import-users",
+    "category": "public",
+    "displayCategory": "Users & Administration",
+    "breadcrumb": [
+      "Users & Administration",
+      "Import Users"
+    ]
+  },
+  {
+    "slug": "users/managing-sites-in-the-manager-portal",
+    "category": "public",
+    "displayCategory": "Users & Administration",
+    "breadcrumb": [
+      "Users & Administration",
+      "Managing Sites In The Manager Portal"
+    ]
+  },
+  {
+    "slug": "users/reset-and-recycle-a-user",
+    "category": "public",
+    "displayCategory": "Users & Administration",
+    "breadcrumb": [
+      "Users & Administration",
+      "Reset And Recycle A User"
+    ]
+  },
+  {
+    "slug": "users/send-a-welcome-email",
+    "category": "public",
+    "displayCategory": "Users & Administration",
+    "breadcrumb": [
+      "Users & Administration",
+      "Send A Welcome Email"
+    ]
+  },
+  {
+    "slug": "users/site-manager-overview",
+    "category": "public",
+    "displayCategory": "Users & Administration",
+    "breadcrumb": [
+      "Users & Administration",
+      "Site Manager Overview"
+    ]
+  },
+  {
+    "slug": "users/user-scope-overview",
+    "category": "public",
+    "displayCategory": "Users & Administration",
+    "breadcrumb": [
+      "Users & Administration",
+      "User Scope Overview"
+    ]
+  },
+  {
+    "slug": "voicemail/access-voicemail-remotely",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Access Voicemail Remotely"
+    ]
+  },
+  {
+    "slug": "voicemail/configure-message-waiting-indicator-for-shared-voicemail-account",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Configure Message Waiting Indicator For Shared Voicemail Account"
+    ]
+  },
+  {
+    "slug": "voicemail/configure-missed-call-email-notifications",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Configure Missed Call Email Notifications"
+    ]
+  },
+  {
+    "slug": "voicemail/delete-voicemail-messages",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Delete Voicemail Messages"
+    ]
+  },
+  {
+    "slug": "voicemail/enable-voicemail-for-a-user",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Enable Voicemail For A User"
+    ]
+  },
+  {
+    "slug": "voicemail/enable-voicemail-transcription",
+    "category": "internal",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Enable Voicemail Transcription"
+    ]
+  },
+  {
+    "slug": "voicemail/how-to-make-enhanced-voicemail-press-1-feature-route-to-the-company-directory",
+    "category": "public",
+    "breadcrumb": [
+      "Voicemail",
+      "How To Make Enhanced Voicemail Press 1 Feature Route To The Company Directory"
+    ]
+  },
+  {
+    "slug": "voicemail/how-to-set-up-voicemail-to-email",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "How To Set Up Voicemail To Email"
+    ]
+  },
+  {
+    "slug": "voicemail/manage-voicemail-greetings",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Manage Voicemail Greetings"
+    ]
+  },
+  {
+    "slug": "voicemail/set-up-a-group-general-voicemail",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Set Up A Group General Voicemail"
+    ]
+  },
+  {
+    "slug": "voicemail/voicemail-menu",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features",
+      "Voicemail Menu"
+    ]
+  },
+  {
+    "slug": "voipmonitor/voipmonitor-filter-and-view-registration-logs",
+    "category": "internal",
+    "displayCategory": "Troubleshooting",
+    "breadcrumb": [
+      "Troubleshooting",
+      "VoIPMonitor Filter And View Registration Logs"
+    ]
+  },
+  {
+    "slug": "voipmonitor/voipmonitor-how-to-capture-a-pcap",
+    "category": "internal",
+    "displayCategory": "Troubleshooting",
+    "breadcrumb": [
+      "Troubleshooting",
+      "VoIPMonitor How To Capture A Pcap"
+    ]
+  },
+  {
+    "slug": "web-responders-overview",
+    "category": "public",
+    "displayCategory": "Phone System Features",
+    "breadcrumb": [
+      "Phone System Features"
+    ]
+  },
+  {
+    "slug": "wildix/wildix-w-pa-manual-registration",
+    "category": "internal",
+    "breadcrumb": [
+      "Wildix",
+      "Wildix W Pa Manual Registration"
+    ]
+  },
+  {
+    "slug": "yealink/call-parking-for-yealink-phones",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Call Parking For Yealink Phones"
+    ]
+  },
+  {
+    "slug": "yealink/configuring-w80b-multi-cell-system",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Configuring W80b Multi Cell System"
+    ]
+  },
+  {
+    "slug": "yealink/exporting-yealink-diagnostic-files",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Exporting Yealink Diagnostic Files"
+    ]
+  },
+  {
+    "slug": "yealink/how-to-do-local-conferencing-with-yealink-supported-devices",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "How To Do Local Conferencing With Yealink Supported Devices"
+    ]
+  },
+  {
+    "slug": "yealink/how-to-setup-the-yealink-ax83h-wifi-handset-",
+    "category": "public",
+    "breadcrumb": [
+      "Yealink",
+      "How To Setup The Yealink Ax83h Wifi Handset "
+    ]
+  },
+  {
+    "slug": "yealink/ip-phone-connections",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Ip Phone Connections"
+    ]
+  },
+  {
+    "slug": "yealink/provisioning-extra-lines-to-a-yealink-base-station",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Provisioning Extra Lines To A Yealink Base Station"
+    ]
+  },
+  {
+    "slug": "yealink/register-a-yealink-handset-to-a-base-station",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Register A Yealink Handset To A Base Station"
+    ]
+  },
+  {
+    "slug": "yealink/transfer-methods-on-yealink-t5x-devices",
+    "category": "public",
+    "breadcrumb": [
+      "Yealink",
+      "Transfer Methods On Yealink T5x Devices"
+    ]
+  },
+  {
+    "slug": "yealink/yealink-attended-transfer",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Yealink Attended Transfer"
+    ]
+  },
+  {
+    "slug": "yealink/yealink-change-background-wallpaper",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Yealink Change Background Wallpaper"
+    ]
+  },
+  {
+    "slug": "yealink/yealink-how-to-sync-shared-contacts-to-the-handsets-w70b-dect-phone",
+    "category": "public",
+    "breadcrumb": [
+      "Yealink",
+      "Yealink How To Sync Shared Contacts To The Handsets W70b Dect Phone"
+    ]
+  },
+  {
+    "slug": "yealink/yealink-management-cloud-service-ymcs-remote-provisioning-service-rps",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Yealink Management Cloud Service Ymcs Remote Provisioning Service Rps"
+    ]
+  },
+  {
+    "slug": "yealink/yealink-overrides",
+    "category": "internal",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Yealink Overrides"
+    ]
+  },
+  {
+    "slug": "yealink/yealink-perform-a-firmware-update",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Yealink Perform A Firmware Update"
+    ]
+  },
+  {
+    "slug": "yealink/yealink-screen-capture-and-access",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Yealink Screen Capture And Access"
+    ]
+  },
+  {
+    "slug": "yealink/yealink-swapping-a-device-between-two-extensions",
+    "category": "public",
+    "breadcrumb": [
+      "Yealink",
+      "Yealink Swapping A Device Between Two Extensions"
+    ]
+  },
+  {
+    "slug": "yealink/yealink-t4xs-connect-a-jabra-engage-75-using-ehs36-or-micro-usb",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Yealink T4xs Connect A Jabra Engage 75 Using Ehs36 Or Micro Usb"
+    ]
+  },
+  {
+    "slug": "yealink/yealink-t5x-connect-a-sennheiser-sd-pro-using-ehs40",
+    "category": "public",
+    "displayCategory": "Phones & Devices",
+    "breadcrumb": [
+      "Phones & Devices",
+      "Yealink T5x Connect A Sennheiser Sd Pro Using Ehs40"
+    ]
+  }
+]
