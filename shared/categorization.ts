@@ -86,6 +86,7 @@ export const INTERNAL_EXACT_PATHS = [
   "/2024-03-02-las-core-dump-resolved",
   "/2024-06-24-native-fax-outbound-faxing-failure-resolved",
   "/diy-headshot-pictorial-guide-iphone-android",
+  "/talent-lms-course-requirements",
   "/hipaa-compliance",
   "/call-routing/telnyx-add-a-technical-prefix-for-outbound-call-authentication",
   "/native-fax/add-native-fax-account",

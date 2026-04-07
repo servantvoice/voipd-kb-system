@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Monorepo for a white-label knowledge base system. Crawls upstream docs, transforms content (branding, URL rewriting, categorization), and serves via Cloudflare Workers + R2.
+Monorepo for a white-label knowledge base system. Crawls upstream docs, transforms content (branding, URL rewriting, categorization), and serves via Cloudflare Workers + R2. This is the active codebase — other repos in the parent directory are legacy and unused.
 
 ## Commands
 
@@ -79,12 +79,30 @@ custom-articles/{slug}/index.md         — net-new articles
 
 All deployment-specific values (domains, company names, account IDs, emails) are in `.dev.vars` files (local) and CF dashboard (production). Nothing identifying is committed. See `.dev.vars.example` in each worker directory and the root.
 
+### Branding Variables
+
+The system is designed to be white-labeled. Brand names are never hardcoded in shared code — they come from env vars:
+
+- `BRAND_NAME` — company/brand name (replaces "OIT VoIP", standalone "OIT" in content)
+- `CONNECT_NAME` — mobile/desktop app name (replaces "CloudieConnect" in content and slug display)
+- `CONNECT_DESKTOP_NAME` — desktop variant name (replaces "CloudieConnect Desktop")
+- `SITE_TITLE` — page title used in HTML templates (internal worker)
+
+### Config Variables
+
+- `KB_DOMAIN` — public KB domain
+- `INTERNAL_KB_DOMAIN` — internal KB domain (behind CF Access)
+- `IMAGE_DOMAIN` — image CDN domain (R2 public bucket)
+- `MANAGER_PORTAL_URL` — manager portal URL for link rewriting
+- `SOURCE_IMAGE_CDN` — upstream image CDN to rewrite (default: `cdn.elev.io`)
+
 ## Key Patterns
 
-- Shared code uses `buildConfig(env)` — no module-level constants with deployment-specific values
+- Shared code uses `buildConfig(env)` and `buildBrandingConfig(env)` — no module-level constants with deployment-specific values
 - Branding transforms are parameterized via `BrandingConfig` from env vars
-- `wrangler.toml` files have placeholder values for `name`, `bucket_name`, and `pattern`
+- `wrangler.toml` files have placeholder values for `name`, `bucket_name`, and `pattern` — no real deployment values committed
 - Workers import shared code via relative paths (`../../../shared/`)
+- `buildBreadcrumb(path, branding)` — pass branding so CloudieConnect slug variants display correctly
 
 ## Planning
 

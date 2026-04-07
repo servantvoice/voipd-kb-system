@@ -12,7 +12,8 @@ invocation_logs = true
 
 # No [vars] — use .dev.vars (local) or CF dashboard (production)
 # Required vars: KB_DOMAIN, INTERNAL_KB_DOMAIN, ADMIN_EMAILS, EDITOR_EMAILS,
-#   VIEWER_EMAILS, PAGES_DEPLOY_HOOK, BRAND_NAME, SITE_TITLE
+#   VIEWER_EMAILS, PAGES_DEPLOY_HOOK, BRAND_NAME, CONNECT_NAME,
+#   CONNECT_DESKTOP_NAME, SITE_TITLE
 # Secrets: CRAWL_SECRET
 
 [[r2_buckets]]

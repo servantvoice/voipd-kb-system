@@ -42,6 +42,8 @@ export interface Env {
   CRAWL_SECRET: string;
   PAGES_DEPLOY_HOOK: string;
   BRAND_NAME: string;
+  CONNECT_NAME: string;
+  CONNECT_DESKTOP_NAME: string;
   SITE_TITLE: string;
 }
 
@@ -237,7 +239,7 @@ async function loadManifest(bucket: R2Bucket): Promise<SiteManifest | null> {
     if (!obj) return null;
     const raw = (await obj.json()) as ArticleMeta[] | SiteManifest;
 
-    // The n8n workflow writes a flat array; convert to categorized structure
+    // Pipeline writes a flat array; convert to categorized structure
     if (Array.isArray(raw)) {
       const categories: Record<string, { articles: ArticleMeta[] }> = {};
       for (const article of raw) {
@@ -413,8 +415,11 @@ async function handleArticle(
     }
   }
   if (breadcrumb.length === 0) {
-    // Fallback: humanize slug segments (keep in sync with Build Metadata node)
+    // Fallback: humanize slug segments when metadata lacks breadcrumb
     breadcrumb = slug.split("/").filter(Boolean).map((s) => {
+      const lower = s.toLowerCase();
+      if (lower === "cloudieconnect-desktop") return env.CONNECT_DESKTOP_NAME;
+      if (lower === "cloudieconnect" || lower === "cloudie_connect") return env.CONNECT_NAME;
       let name = s.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
       name = name.replace(/\bE 911\b/g, "E-911");
       name = name.replace(/\bSms Mms\b/g, "SMS / MMS");

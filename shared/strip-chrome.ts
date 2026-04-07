@@ -1,10 +1,9 @@
 /**
  * Strip navigation chrome from crawled markdown articles.
  *
- * Ported from the n8n "Strip Page Chrome" Code node in the
- * Content Cleanup sub-workflow. The crawled articles have a consistent
- * structure: breadcrumbs, title, author, empty headings, Contact Us nav,
- * [+ More] link, Table of Contents, then actual content.
+ * Crawled articles have a consistent structure: breadcrumbs, title, author,
+ * empty headings, Contact Us nav, [+ More] link, Table of Contents, then
+ * actual content.
  */
 
 export interface StripResult {
@@ -99,6 +98,7 @@ export function stripPageChrome(markdown: string, articlePath: string): StripRes
     ""
   );
   md = md.replace(/Close Expand\s*\n\s*\n\s*#{1,6}\s*$/g, "");
+  md = md.replace(/\n*Are we missing a feature[^\n]*\n?/gi, "");
 
   // ─── 4. FIX RELATIVE LINKS ─────────────────────────────────────────
   if (articlePath) {

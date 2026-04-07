@@ -63,6 +63,24 @@ const PLATFORM_TEXT_CLEANUP = [
   { pattern: /\s*\(helpjuice\.com\)/gi, replacement: "" },
 ];
 
+// ─── Helpers ────────────────────────────────────────────────────────────
+
+/**
+ * Apply a regex replacement only to text outside of markdown link URLs.
+ * Splits on ](url) segments so branding rules don't insert spaces into slugs.
+ */
+function replaceOutsideLinkUrls(
+  text: string,
+  pattern: RegExp,
+  replacement: string,
+): string {
+  const parts = text.split(/(\]\([^)]*\))/);
+  for (let i = 0; i < parts.length; i += 2) {
+    parts[i] = parts[i].replace(pattern, replacement);
+  }
+  return parts.join("");
+}
+
 // ─── Transform function ─────────────────────────────────────────────────
 
 /**
@@ -132,10 +150,11 @@ export function transformMarkdown(
     result = result.replace(rule.pattern, rule.replacement);
   }
 
-  // 12. Branding replacements
+  // 12. Branding replacements — applied outside link URLs to avoid introducing
+  //     spaces into slug paths (e.g. CloudieConnect → connect name in a URL)
   const brandingRules = buildBrandingRules(branding);
   for (const rule of brandingRules) {
-    result = result.replace(rule.pattern, rule.replacement);
+    result = replaceOutsideLinkUrls(result, rule.pattern, rule.replacement);
   }
 
   // 13. Handle CF email obfuscation
@@ -233,7 +252,7 @@ const CASE_CORRECTIONS: Record<string, string> = {
   "local toll free porting": "Local & Toll Free Porting",
 };
 
-export function buildBreadcrumb(urlPath: string): string[] {
+export function buildBreadcrumb(urlPath: string, branding?: BrandingConfig): string[] {
   return urlPath
     .split("/")
     .filter(Boolean)
@@ -241,6 +260,12 @@ export function buildBreadcrumb(urlPath: string): string[] {
       const spaced = segment.replace(/-/g, " ");
       const corrected = CASE_CORRECTIONS[spaced.toLowerCase()];
       if (corrected) return corrected;
+      // Normalize CloudieConnect slug variants using branding config if available
+      if (branding) {
+        const lower = spaced.toLowerCase();
+        if (lower === "cloudieconnect desktop") return branding.connectDesktopName;
+        if (lower === "cloudieconnect" || lower === "cloudie_connect") return branding.connectName;
+      }
       return spaced.replace(/\b\w/g, (c) => c.toUpperCase());
     });
 }

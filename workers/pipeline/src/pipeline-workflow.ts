@@ -134,7 +134,7 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
             }
 
             // Build metadata
-            const breadcrumb = buildBreadcrumb(article.path);
+            const breadcrumb = buildBreadcrumb(article.path, branding);
 
             const meta: ArticleMeta = {
               slug: article.path,
