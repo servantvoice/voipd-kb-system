@@ -2,7 +2,7 @@ interface Env {
   KB_BUCKET: R2Bucket;
   IMAGE_BUCKET: R2Bucket;
   IMAGE_DOMAIN: string;
-  SOURCE_CDN: string;
+  SOURCE_IMAGE_CDN: string;
   REVALIDATE_HOURS: string;
   MAX_CONCURRENT: string;
   CRAWL_SECRET: string;
@@ -34,7 +34,7 @@ interface ImageMeta {
 }
 
 function parseImageSources(env: Env): ImageSource[] {
-  const sources: ImageSource[] = [{ hostname: env.SOURCE_CDN, pathPrefix: "" }];
+  const sources: ImageSource[] = [{ hostname: env.SOURCE_IMAGE_CDN, pathPrefix: "" }];
   if (env.ADDITIONAL_IMAGE_SOURCES) {
     try {
       const additional = JSON.parse(env.ADDITIONAL_IMAGE_SOURCES) as ImageSource[];
@@ -76,7 +76,7 @@ export default {
         JSON.stringify({
           ok: true,
           imageDomain: env.IMAGE_DOMAIN,
-          sourceCdn: env.SOURCE_CDN,
+          sourceCdn: env.SOURCE_IMAGE_CDN,
         }),
         { headers: { "Content-Type": "application/json" } },
       );
@@ -158,7 +158,7 @@ async function syncImages(env: Env): Promise<SyncResult> {
         }
         if (!mapped) {
           // Default: map to primary source CDN
-          imageUrls.add("https://" + env.SOURCE_CDN + path);
+          imageUrls.add("https://" + env.SOURCE_IMAGE_CDN + path);
         }
       }
     }

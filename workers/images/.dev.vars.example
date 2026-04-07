@@ -1,6 +1,6 @@
 # Copy to .dev.vars — NEVER commit .dev.vars
 IMAGE_DOMAIN=images.example.com
-SOURCE_CDN=cdn.elev.io
+SOURCE_IMAGE_CDN=cdn.elev.io
 REVALIDATE_HOURS=24
 MAX_CONCURRENT=5
 CRAWL_SECRET=your-shared-secret
