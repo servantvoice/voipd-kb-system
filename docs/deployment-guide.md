@@ -47,10 +47,13 @@ For the images bucket, enable **Public Access** with a custom domain (e.g., `ima
 
 Also create an **R2 API token** (R2 > Manage R2 API Tokens > Create API Token) with read access to the KB content bucket. The public site's build script uses this to fetch articles. Save the Access Key ID and Secret Access Key — you'll need them for the CF Pages environment.
 
-## 2. Clone and Install
+## 2. Fork, Clone, and Install
+
+Fork this repo to your own GitHub account first — CF Pages requires a GitHub repo it can access for automated builds.
 
 ```bash
-git clone <this-repo>
+# Fork via GitHub UI, then:
+git clone git@github.com:YOUR-ORG/voipd-kb-system.git
 cd voipd-kb-system
 npm install
 cd public-kb && npm install && cd ..
