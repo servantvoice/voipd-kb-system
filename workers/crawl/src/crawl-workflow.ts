@@ -42,8 +42,8 @@ function isExcluded(urlPath: string): boolean {
 }
 
 // Defaults — overridable via env vars for tuning without redeploying
-const DEFAULT_BATCH_SIZE = 25;
-const DEFAULT_RETRY_BATCH_SIZE = 10;
+const DEFAULT_BATCH_SIZE = 50;
+const DEFAULT_RETRY_BATCH_SIZE = 25;
 const DEFAULT_MAX_RETRY_ROUNDS = 3;
 const DEFAULT_INITIAL_POLL_DELAY = "5 minutes";
 const DEFAULT_POLL_INTERVAL = "2 minutes";
