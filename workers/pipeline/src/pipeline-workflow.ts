@@ -267,36 +267,43 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
 
     // Step 5: Wait for image sync to complete, then send notification email
     await step.do("notify-email", { retries: { limit: 2, delay: "10 seconds" } }, async () => {
-      // Wait for image sync worker to finish (runs ~2 min)
-      await new Promise((r) => setTimeout(r, 150_000)); // 2.5 min wait
+      // Wait for image sync worker to finish, then poll until log appears (max ~6 min total)
+      await new Promise((r) => setTimeout(r, 180_000)); // 3 min initial wait
 
-      // Read sync result from R2 log written by images worker
       let imageSyncResult: ImageSyncResult | null = null;
       const logKey = `logs/image-sync/${crawlDatePrefix}.log`;
-      const logObj = await this.env.KB_BUCKET.get(logKey);
-      if (logObj) {
-        const text = await logObj.text();
-        // Results line format: "Results: N downloaded, N cached, N revalidated, N failed"
-        const resultsMatch = text.match(/Results: (\d+) downloaded, (\d+) cached, (\d+) revalidated, (\d+) failed/);
-        const scannedArticles = text.match(/Scanned: (\d+) articles/)?.[1];
-        const uniqueImages = text.match(/(\d+) unique images/)?.[1];
-        const duration = text.match(/Duration: ([^\n]+)/)?.[1];
-        const errorLines = text.split("\n").filter((l) => l.startsWith("403 ") || l.startsWith("Error:"));
-        if (resultsMatch) {
-          imageSyncResult = {
-            downloaded: parseInt(resultsMatch[1]),
-            alreadyCached: parseInt(resultsMatch[2]),
-            revalidated: parseInt(resultsMatch[3]),
-            failed: parseInt(resultsMatch[4]),
-            scannedArticles: parseInt(scannedArticles ?? "0"),
-            uniqueImages: parseInt(uniqueImages ?? "0"),
-            duration: duration ?? "",
-            errors: errorLines,
-          };
-          console.log(`Image sync: ${imageSyncResult.downloaded} downloaded, ${imageSyncResult.alreadyCached} cached, ${imageSyncResult.failed} failed`);
+
+      for (let attempt = 0; attempt < 3; attempt++) {
+        const logObj = await this.env.KB_BUCKET.get(logKey);
+        if (logObj) {
+          const text = await logObj.text();
+          // Results line format: "Results: N downloaded, N cached, N revalidated, N failed"
+          const resultsMatch = text.match(/Results: (\d+) downloaded, (\d+) cached, (\d+) revalidated, (\d+) failed/);
+          const scannedArticles = text.match(/Scanned: (\d+) articles/)?.[1];
+          const uniqueImages = text.match(/(\d+) unique images/)?.[1];
+          const duration = text.match(/Duration: ([^\n]+)/)?.[1];
+          const errorLines = text.split("\n").filter((l) => l.startsWith("403 ") || l.startsWith("Error:"));
+          if (resultsMatch) {
+            imageSyncResult = {
+              downloaded: parseInt(resultsMatch[1]),
+              alreadyCached: parseInt(resultsMatch[2]),
+              revalidated: parseInt(resultsMatch[3]),
+              failed: parseInt(resultsMatch[4]),
+              scannedArticles: parseInt(scannedArticles ?? "0"),
+              uniqueImages: parseInt(uniqueImages ?? "0"),
+              duration: duration ?? "",
+              errors: errorLines,
+            };
+            console.log(`Image sync: ${imageSyncResult.downloaded} downloaded, ${imageSyncResult.alreadyCached} cached, ${imageSyncResult.failed} failed`);
+            break;
+          }
         }
-      } else {
-        console.log("No image sync log found yet — sync may still be running");
+        if (attempt < 2) {
+          console.log(`Image sync log not ready yet (attempt ${attempt + 1}) — waiting 60s`);
+          await new Promise((r) => setTimeout(r, 60_000)); // 1 min between retries
+        } else {
+          console.log("Image sync log not found after retries — sync may still be running");
+        }
       }
 
       const errors: string[] = [];
