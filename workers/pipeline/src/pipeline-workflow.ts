@@ -234,11 +234,10 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
       return { totalCount: siteManifest.length, publicCount, internalCount };
     });
 
-    // Step 4: Trigger downstream + send notification
-    await step.do("notify", { retries: { limit: 2, delay: "10 seconds" } }, async () => {
+    // Step 4: Trigger CF Pages deploy + fire image sync (fire-and-forget)
+    await step.do("trigger-downstream", async () => {
       const errors: string[] = [];
 
-      // Trigger CF Pages deploy hook
       if (this.env.PAGES_DEPLOY_HOOK) {
         try {
           const resp = await fetch(this.env.PAGES_DEPLOY_HOOK, { method: "POST" });
@@ -252,35 +251,55 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
         }
       }
 
-      // Trigger image sync and wait for results (with timeout)
-      let imageSyncResult: ImageSyncResult | null = null;
       if (this.env.IMAGE_SYNC_URL) {
-        try {
-          const controller = new AbortController();
-          const timeout = setTimeout(() => controller.abort(), 120_000); // 2 min timeout
-          const resp = await fetch(this.env.IMAGE_SYNC_URL, {
-            method: "POST",
-            headers: { "X-Crawl-Secret": this.env.CRAWL_SECRET },
-            signal: controller.signal,
-          });
-          clearTimeout(timeout);
-          if (resp.ok) {
-            imageSyncResult = await resp.json() as ImageSyncResult;
-            console.log(`Image sync: ${imageSyncResult.downloaded} downloaded, ${imageSyncResult.alreadyCached} cached, ${imageSyncResult.failed} failed`);
-          } else {
-            errors.push(`Image sync: ${resp.status}`);
-          }
-        } catch (err) {
-          const msg = err instanceof Error ? err.message : String(err);
-          if (msg.includes("abort")) {
-            errors.push("Image sync timed out (>2min) — sync may still be running");
-          } else {
-            errors.push(`Image sync error: ${msg}`);
-          }
-        }
+        // Fire and forget — don't await the full sync response
+        fetch(this.env.IMAGE_SYNC_URL, {
+          method: "POST",
+          headers: { "X-Crawl-Secret": this.env.CRAWL_SECRET },
+        }).catch(() => {});
+        console.log("Image sync triggered (fire-and-forget)");
       }
 
-      // Send email notification (always, regardless of image sync outcome)
+      if (errors.length > 0) {
+        console.error("Trigger errors:", errors.join("; "));
+      }
+    });
+
+    // Step 5: Wait for image sync to complete, then send notification email
+    await step.do("notify-email", { retries: { limit: 2, delay: "10 seconds" } }, async () => {
+      // Wait for image sync worker to finish (runs ~2 min)
+      await new Promise((r) => setTimeout(r, 150_000)); // 2.5 min wait
+
+      // Read sync result from R2 log written by images worker
+      let imageSyncResult: ImageSyncResult | null = null;
+      const logKey = `logs/image-sync/${crawlDatePrefix}.log`;
+      const logObj = await this.env.KB_BUCKET.get(logKey);
+      if (logObj) {
+        const text = await logObj.text();
+        // Results line format: "Results: N downloaded, N cached, N revalidated, N failed"
+        const resultsMatch = text.match(/Results: (\d+) downloaded, (\d+) cached, (\d+) revalidated, (\d+) failed/);
+        const scannedArticles = text.match(/Scanned: (\d+) articles/)?.[1];
+        const uniqueImages = text.match(/(\d+) unique images/)?.[1];
+        const duration = text.match(/Duration: ([^\n]+)/)?.[1];
+        const errorLines = text.split("\n").filter((l) => l.startsWith("403 ") || l.startsWith("Error:"));
+        if (resultsMatch) {
+          imageSyncResult = {
+            downloaded: parseInt(resultsMatch[1]),
+            alreadyCached: parseInt(resultsMatch[2]),
+            revalidated: parseInt(resultsMatch[3]),
+            failed: parseInt(resultsMatch[4]),
+            scannedArticles: parseInt(scannedArticles ?? "0"),
+            uniqueImages: parseInt(uniqueImages ?? "0"),
+            duration: duration ?? "",
+            errors: errorLines,
+          };
+          console.log(`Image sync: ${imageSyncResult.downloaded} downloaded, ${imageSyncResult.alreadyCached} cached, ${imageSyncResult.failed} failed`);
+        }
+      } else {
+        console.log("No image sync log found yet — sync may still be running");
+      }
+
+      const errors: string[] = [];
       try {
         await sendNotificationEmail(this.env, {
           crawlDatePrefix,
@@ -296,10 +315,7 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
         console.log("Notification email sent");
       } catch (err) {
         errors.push(`Email: ${err instanceof Error ? err.message : String(err)}`);
-      }
-
-      if (errors.length > 0) {
-        console.error("Notification errors:", errors.join("; "));
+        console.error("Email error:", errors.join("; "));
       }
     });
 
