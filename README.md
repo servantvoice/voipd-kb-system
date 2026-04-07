@@ -119,6 +119,8 @@ Categorization rules, branding transforms, and the article override system are d
 - How to use the admin UI to override individual article content or metadata
 - How overrides are stored in R2 and survive re-crawls
 
+Open content-review items (articles needing manual edits, override candidates, public/internal reclassification) are tracked in [ROADMAP.md](ROADMAP.md).
+
 ### Seeding category overrides
 
 `scripts/category-overrides-starter.json` contains a ready-to-use category structure (498 articles organized into compact display categories). Run the apply script after deploying to seed your bucket:
@@ -133,3 +135,7 @@ Then trigger a pipeline run to apply the overrides to `processed/` and rebuild t
 ## Deployment Guide
 
 See [docs/deployment-guide.md](docs/deployment-guide.md) for the comprehensive from-scratch setup guide including all prerequisites, worker deployment, CF Pages setup, DNS, CF Access, email API, and cutover from an existing system.
+
+## Roadmap & Open Items
+
+[ROADMAP.md](ROADMAP.md) tracks open content-review items, planned feature enhancements (callout styling, floating TOC, link checker, override editor improvements), and the changelog of completed pipeline fixes.
