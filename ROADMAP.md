@@ -74,6 +74,28 @@ Open content-review items, planned feature enhancements, and a changelog of comp
 
 - [ ] Add diff view to pending review queue (show changes vs current article using jsdiff/diff2html)
 
+- [ ] **Admin dashboard: All Overrides view** — add an admin page listing every article that has any entry under `overrides/{slug}/`, regardless of whether a pipeline run has touched it recently. Each row should show:
+  - Slug (linked to the article on internal KB)
+  - Last-modified date (from the override's `_meta.json` `updatedAt`, or R2 object `uploaded` timestamp as fallback)
+  - Override type: **Content only** (`index.md` exists but no/empty `_meta.json`), **Metadata only** (`_meta.json` exists but no `index.md`), or **Both**
+  - Current category (public / internal) and visibility status (approved / pending-review)
+  - Quick actions: Edit Metadata / Edit Content / Delete Override
+  - Sortable by date (default: newest first) and filterable by type. Useful for auditing what's been customized and spotting old overrides that may no longer be needed after upstream changes.
+  - Implementation: `env.KB_BUCKET.list({ prefix: "overrides/" })` to enumerate, then group by slug and read each `_meta.json` for dates. Render via a new route like `/.admin/overrides`.
+
+- [ ] **Review queue: disappeared-upstream articles** — when an article present in the previous `processed/_site-manifest.json` no longer appears in the current crawl's URL list, it should land in the `/.admin/review` queue under a new "Disappeared Upstream" group. Each entry should show:
+  - The local slug and last-seen date
+  - Whether an override exists at `overrides/{slug}/index.md` or `overrides/{slug}/_meta.json` (and a preview link)
+  - Actions: **Keep locally** (promote to a custom article or leave override in place so pipeline keeps serving it), or **Delete** (remove from manifest + `processed/` + `overrides/` + `custom-articles/`)
+  - Implementation: Pipeline's newness detection already reads the previous manifest — extend it to compute `removedSlugs = previousSlugs \ currentSlugs` and write a `disappeared-upstream` marker (e.g. write `_meta.json` with `status: "disappeared-upstream"` into a dedicated key, or a separate `processed/_disappeared.json` list). Surface in admin UI alongside pending-review.
+
+- [ ] **Review queue: upstream changed after override** — for any article where the upstream content has changed since the last crawl AND there's an override whose `updatedAt` is older than the upstream change, flag it for re-review. The change may have fixed the issue the override was working around, or may need the override updated. Each entry should show:
+  - The slug, override `updatedAt`, and new `lastCrawled`
+  - A diff between the previous crawled markdown and the current crawled markdown (so the admin can see what changed upstream)
+  - A diff between the override and the current upstream (so the admin can see what's being overridden)
+  - Actions: **Keep override**, **Discard override** (upstream is now correct), or **Edit override** (re-anchor against new upstream)
+  - Implementation needs: preserve the previous crawled markdown somewhere (maybe `crawls/{prevDate}/{path}/index.md` is already retained, or we snapshot into `processed/{slug}/_prev.md`), track an upstream content hash in `_meta.json`, compare against override `updatedAt`.
+
 - [x] **Callout styling for Scope/Requirements/Troubleshooting sections** — implemented 2026-04-07
   - Added `wrapCallouts()` in `shared/transforms.ts` that wraps `## Scope`, `## Requirements`, and `## Troubleshooting` sections (plus their `**Bold**` variants) in `<div class="callout callout-scope|callout-req|callout-warn">` blocks during pipeline processing
   - Added matching CSS in both `public-kb/static/css/custom.css` (Hugo public site) and `workers/internal/src/templates/layout.ts` (internal worker) — rounded borders, colored backgrounds (blue for Scope, green for Requirements, amber for Troubleshooting/Warning)
