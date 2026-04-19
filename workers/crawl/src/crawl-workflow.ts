@@ -47,7 +47,22 @@ const DEFAULT_CRAWL_MAX_AGE_SECONDS = 86400; // 24 hours
 
 export class CrawlWorkflow extends WorkflowEntrypoint<Env, CrawlParams> {
   async run(event: WorkflowEvent<CrawlParams>, step: WorkflowStep) {
-    const params = event.payload;
+    try {
+      return await this.runInner(event, step);
+    } catch (err) {
+      const msg = err instanceof Error ? (err.stack ?? err.message) : String(err);
+      console.error("Crawl workflow failed:", msg);
+      try {
+        await notifyFailure(this.env, event.payload, msg);
+      } catch (notifyErr) {
+        console.error("Also failed to send failure notification:", notifyErr);
+      }
+      throw err;
+    }
+  }
+
+  private async runInner(event: WorkflowEvent<CrawlParams>, step: WorkflowStep) {
+    const params: CrawlParams = event.payload ?? {};
     const crawlUrl = params.url ?? "https://voipdocs.io/";
 
     const crawlPageLimit = parseInt(this.env.CRAWL_PAGE_LIMIT || "", 10) || DEFAULT_CRAWL_PAGE_LIMIT;
@@ -325,4 +340,49 @@ export class CrawlWorkflow extends WorkflowEntrypoint<Env, CrawlParams> {
       crawlDatePrefix: datePrefix,
     };
   }
+}
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+async function notifyFailure(env: Env, params: CrawlParams, errorMsg: string): Promise<void> {
+  const datePrefix = new Date().toISOString().split("T")[0];
+  const subject = `KB Crawl FAILED — ${datePrefix}`;
+  const html = `
+    <h2 style="color:#c00;">Crawl workflow failed</h2>
+    <p>Date: <strong>${datePrefix}</strong></p>
+    <p>Source URL: <code>${escapeHtml(params.url ?? "https://voipdocs.io/")}</code></p>
+    <p>The weekly crawl did not complete, so the pipeline was not triggered and the KBs were not refreshed.</p>
+    <h3>Error</h3>
+    <pre style="white-space:pre-wrap;background:#f8f8f8;border:1px solid #ddd;padding:0.75rem;">${escapeHtml(errorMsg)}</pre>
+    <p>Check the Cloudflare Workflows dashboard for the errored instance. If this is a transient upstream error (e.g. Browser Rendering 7009), a manual re-trigger often resolves it.</p>
+  `.trim();
+
+  const body = JSON.stringify({ subject, html });
+  const headers = {
+    "Content-Type": "application/json",
+    "X-Crawl-Secret": env.CRAWL_SECRET,
+  };
+
+  if (env.PIPELINE_WORKER) {
+    const resp = await env.PIPELINE_WORKER.fetch("https://pipeline/notify", { method: "POST", headers, body });
+    if (!resp.ok) {
+      throw new Error(`Pipeline /notify returned ${resp.status}: ${await resp.text()}`);
+    }
+    return;
+  }
+  if (env.PIPELINE_URL) {
+    const resp = await fetch(`${env.PIPELINE_URL}/notify`, { method: "POST", headers, body });
+    if (!resp.ok) {
+      throw new Error(`Pipeline /notify returned ${resp.status}: ${await resp.text()}`);
+    }
+    return;
+  }
+  console.warn("No PIPELINE_WORKER or PIPELINE_URL configured — cannot send failure email");
 }

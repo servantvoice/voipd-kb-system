@@ -6,6 +6,7 @@ import { R2_PREFIXES } from "../../../shared/config";
 import { transformMarkdown, extractTitle, buildBreadcrumb } from "../../../shared/transforms";
 import { stripPageChrome } from "../../../shared/strip-chrome";
 import type { ArticleMeta, SearchIndexEntry } from "../../../shared/types";
+import { sendEmail } from "../../../shared/email";
 
 interface PipelineParams {
   crawlDatePrefix: string;
@@ -36,6 +37,28 @@ const CHUNK_SIZE = 50;
 
 export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
   async run(event: WorkflowEvent<PipelineParams>, step: WorkflowStep) {
+    try {
+      return await this.runInner(event, step);
+    } catch (err) {
+      const msg = err instanceof Error ? (err.stack ?? err.message) : String(err);
+      console.error("Pipeline workflow failed:", msg);
+      try {
+        await sendEmail(this.env, `KB Pipeline FAILED — ${event.payload.crawlDatePrefix}`, `
+          <h2 style="color:#c00;">Pipeline workflow failed</h2>
+          <p>Crawl date: <strong>${event.payload.crawlDatePrefix}</strong></p>
+          <p>The pipeline that transforms crawled markdown and builds the site manifest errored out. The public and internal KBs may be stale.</p>
+          <h3>Error</h3>
+          <pre style="white-space:pre-wrap;background:#f8f8f8;border:1px solid #ddd;padding:0.75rem;">${escapeHtml(msg)}</pre>
+          <p>Check the Cloudflare Workflows dashboard for the errored instance and retry manually if appropriate.</p>
+        `.trim());
+      } catch (emailErr) {
+        console.error("Also failed to send failure email:", emailErr);
+      }
+      throw err;
+    }
+  }
+
+  private async runInner(event: WorkflowEvent<PipelineParams>, step: WorkflowStep) {
     const { crawlDatePrefix } = event.payload;
     console.log(`Pipeline started for crawl date: ${crawlDatePrefix}`);
 
@@ -390,6 +413,16 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
 
 // ─── Email notification ─────────────────────────────────────────────────
 
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+
 interface ImageSyncResult {
   scannedArticles: number;
   uniqueImages: number;
@@ -485,45 +518,5 @@ async function sendNotificationEmail(env: Env, data: NotifyData): Promise<void> 
     ${errorsHtml}
   `.trim();
 
-  if (env.POSTMARK_API_TOKEN) {
-    const resp = await fetch("https://api.postmarkapp.com/email", {
-      method: "POST",
-      headers: {
-        "X-Postmark-Server-Token": env.POSTMARK_API_TOKEN,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        From: env.NOTIFICATION_FROM,
-        To: env.NOTIFICATION_TO,
-        Subject: subject,
-        HtmlBody: html,
-        MessageStream: env.POSTMARK_MESSAGE_STREAM || "outbound",
-      }),
-    });
-
-    if (!resp.ok) {
-      throw new Error(`Postmark returned ${resp.status}: ${await resp.text()}`);
-    }
-  } else if (env.RESEND_API_KEY) {
-    const resp = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${env.RESEND_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: env.NOTIFICATION_FROM,
-        to: env.NOTIFICATION_TO,
-        subject: subject,
-        html: html,
-      }),
-    });
-
-    if (!resp.ok) {
-      throw new Error(`Resend returned ${resp.status}: ${await resp.text()}`);
-    }
-  } else {
-    console.log("No email API token configured — skipping notification email");
-  }
+  await sendEmail(env, subject, html);
 }
