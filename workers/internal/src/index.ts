@@ -25,6 +25,8 @@ import {
   handlePostReject,
   handleGetEditMeta,
   handlePostEditMeta,
+  handleReviewQueue,
+  handlePostApproveReview,
 } from "./admin";
 
 // ---------------------------------------------------------------------------
@@ -148,6 +150,11 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
     return handleGetPending(env, user);
   }
 
+  if (path === "/.admin/review" && method === "GET") {
+    if (user.role !== "admin") return forbidden();
+    return handleReviewQueue(env, user);
+  }
+
   if (path.startsWith("/.admin/edit-meta/") && method === "GET") {
     if (user.role !== "admin") return forbidden();
     const slug = path.replace("/.admin/edit-meta/", "");
@@ -174,6 +181,12 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
     if (user.role !== "admin" && user.role !== "editor") return forbidden();
     const slug = path.replace("/api/admin/custom/", "");
     return handlePostCustom(slug, request, env, user);
+  }
+
+  if (path.startsWith("/api/admin/approve-review/") && method === "POST") {
+    if (user.role !== "admin") return forbidden();
+    const slug = decodeURIComponent(path.replace("/api/admin/approve-review/", ""));
+    return handlePostApproveReview(slug, env, user);
   }
 
   if (path.startsWith("/api/admin/approve/") && method === "POST") {
@@ -308,6 +321,7 @@ async function handleArticle(
   let title = slug.split("/").pop() ?? slug;
   let isOverride = false;
   let sourceUrl: string | undefined;
+  let status: string | undefined;
 
   // Check override first
   const overrideObj = await env.KB_BUCKET.get(`overrides/${slug}/index.md`);
@@ -320,6 +334,7 @@ async function handleArticle(
         const meta = (await metaObj.json()) as Record<string, unknown>;
         if (meta.category === "internal") category = "internal";
         if (typeof meta.title === "string") title = meta.title;
+        if (typeof meta.status === "string") status = meta.status;
       } catch {
         /* ignore */
       }
@@ -341,6 +356,7 @@ async function handleArticle(
           const meta = (await metaObj.json()) as Record<string, unknown>;
           if (meta.category === "internal") category = "internal";
           if (typeof meta.title === "string") title = meta.title;
+          if (typeof meta.status === "string") status = meta.status;
         } catch {
           /* ignore */
         }
@@ -363,6 +379,7 @@ async function handleArticle(
           const meta = (await metaObj.json()) as Record<string, unknown>;
           if (meta.category === "internal") category = "internal";
           if (typeof meta.title === "string") title = meta.title;
+          if (typeof meta.status === "string") status = meta.status;
         } catch {
           /* ignore */
         }
@@ -388,7 +405,24 @@ async function handleArticle(
     title = h1Match[1].trim();
   }
 
-  const html = renderMarkdown(md);
+  let html = renderMarkdown(md);
+
+  // Prepend a "Needs Review" banner for articles flagged by the crawl.
+  if (status === "pending-review" && user.role === "admin") {
+    const banner = `
+<aside style="border:2px solid #c60;background:#fff6eb;padding:0.75rem 1rem;margin-bottom:1rem;border-radius:0.4rem;">
+  <strong>&#9888; Needs Review</strong> &mdash;
+  This article was newly discovered by the weekly crawl${category === "public" ? " and is currently <strong>hidden from the public site</strong>" : ""}.
+  <div style="margin-top:0.4rem;">
+    <button type="button" style="font-size:0.85rem;" onclick="fetch('/api/admin/approve-review/${encodeURIComponent(slug)}',{method:'POST'}).then(r=>r.ok?location.reload():alert('Approval failed'))">Approve (keep as ${category})</button>
+    <a href="/.admin/edit-meta/${encodeURIComponent(slug)}" role="button" class="outline" style="font-size:0.85rem;">Edit Metadata</a>
+    <a href="/.admin/review" style="font-size:0.85rem;margin-left:0.5rem;">All pending \u2192</a>
+  </div>
+</aside>`;
+    html = banner + html;
+  } else if (status === "pending-review") {
+    html = `<aside style="border:1px solid #c60;background:#fff6eb;padding:0.5rem 1rem;margin-bottom:1rem;border-radius:0.4rem;font-size:0.9rem;"><strong>Needs Review</strong> &mdash; This article has not yet been approved by an admin.</aside>` + html;
+  }
 
   // Get breadcrumb from metadata if available, otherwise build from slug
   let breadcrumb: string[] = [];

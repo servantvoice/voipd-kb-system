@@ -21,12 +21,18 @@ interface ArticleMeta {
   author: string;
   createdAt: string;
   updatedAt: string;
-  status: "live" | "pending";
+  /**
+   * Editorial pipeline status — used for the admin review queue.
+   * "live"/"pending" are editor-submission states;
+   * "pending-review"/"approved" are crawl-review states (newly-discovered articles).
+   */
+  status: "live" | "pending" | "pending-review" | "approved";
   breadcrumb?: string[];
   displayCategory?: string;
   sourceUrl?: string;
   lastCrawled?: string;
   isOverride?: boolean;
+  firstSeen?: string;
   [key: string]: unknown;
 }
 
@@ -38,9 +44,21 @@ export async function handleAdminDashboard(
   env: Env,
   user: UserContext,
 ): Promise<Response> {
+  // Count articles awaiting review from the weekly crawl
+  const manifest = await loadSiteManifest(env);
+  const reviewCount = manifest.filter((m) => m.status === "pending-review").length;
+  const reviewBadge = reviewCount > 0
+    ? ` <span class="badge" style="background:#c60;color:#fff;border-radius:1em;padding:0.1em 0.6em;font-size:0.85em;">${reviewCount}</span>`
+    : "";
+
   const content = `
     <h1>Admin Dashboard</h1>
     <div class="article-grid">
+      <article>
+        <header><strong>Needs Review${reviewBadge}</strong></header>
+        <p>Newly-discovered articles from the weekly crawl. Held from the public site until approved.</p>
+        <footer><a href="/.admin/review" role="button" class="${reviewCount > 0 ? "" : "outline "}">Review Queue</a></footer>
+      </article>
       <article>
         <header><strong>Overrides</strong></header>
         <p>Edit existing articles with custom content that replaces the crawled version.</p>
@@ -52,8 +70,8 @@ export async function handleAdminDashboard(
         <footer><a href="/.admin/custom/new" role="button" class="outline">New Custom Article</a></footer>
       </article>
       <article>
-        <header><strong>Pending Review</strong></header>
-        <p>Editor submissions awaiting approval.</p>
+        <header><strong>Editor Submissions</strong></header>
+        <p>Editor-submitted content awaiting approval.</p>
         <footer><a href="/.admin/pending" role="button" class="outline">View Queue</a></footer>
       </article>
     </div>`;
@@ -199,14 +217,26 @@ export async function handlePostOverride(
   const prefix =
     user.role === "admin" ? `overrides/${slug}` : `editorial/pending/override-${slug.replace(/\//g, "--")}`;
 
+  // Load existing meta so we preserve fields the pipeline / other admin forms have set
+  // (displayCategory, breadcrumb, sourceUrl, lastCrawled, firstSeen, createdAt, etc.)
+  let existingMeta: Record<string, unknown> = {};
+  for (const p of [`overrides/${slug}`, `custom-articles/${slug}`, `processed/${slug}`]) {
+    const obj = await env.KB_BUCKET.get(`${p}/_meta.json`);
+    if (obj) {
+      try { existingMeta = (await obj.json()) as Record<string, unknown>; break; } catch { /* ignore */ }
+    }
+  }
+
   const meta: ArticleMeta = {
+    ...(existingMeta as Partial<ArticleMeta>),
     slug,
     title,
     category,
     author: user.email,
-    createdAt: now,
+    createdAt: (existingMeta.createdAt as string) ?? now,
     updatedAt: now,
-    status: user.role === "admin" ? "live" : "pending",
+    // Admin writing an override is an explicit approval action.
+    status: user.role === "admin" ? "approved" : "pending",
   };
 
   const writes: Promise<R2Object>[] = [
@@ -686,7 +716,7 @@ export async function handlePostEditMeta(
     }
   }
 
-  // Update metadata
+  // Update metadata — explicit admin save is an approval action.
   const updatedMeta = {
     ...existingMeta,
     slug,
@@ -698,6 +728,7 @@ export async function handlePostEditMeta(
         : [title || slug]
     )],
     displayCategory,
+    status: "approved" as const,
     updatedAt: new Date().toISOString(),
   };
 
@@ -739,6 +770,119 @@ export async function handlePostEditMeta(
     `https://${env.INTERNAL_KB_DOMAIN}/articles/${slug}`,
     303,
   );
+}
+
+// ---------------------------------------------------------------------------
+// Crawl review queue (newly-discovered articles awaiting admin approval)
+// ---------------------------------------------------------------------------
+
+export async function handleReviewQueue(
+  env: Env,
+  user: UserContext,
+): Promise<Response> {
+  if (user.role !== "admin") {
+    return new Response("Forbidden", { status: 403 });
+  }
+
+  const manifest = await loadSiteManifest(env);
+  const pending = manifest
+    .filter((m) => m.status === "pending-review")
+    .sort((a, b) => (b.firstSeen ?? "").localeCompare(a.firstSeen ?? ""));
+
+  const grouped = new Map<string, ArticleMeta[]>();
+  for (const item of pending) {
+    const group = (Array.isArray(item.breadcrumb) && item.breadcrumb[0]) || "Uncategorized";
+    if (!grouped.has(group)) grouped.set(group, []);
+    grouped.get(group)!.push(item);
+  }
+
+  const body = pending.length === 0
+    ? `<p>No articles awaiting review. Newly-crawled articles will appear here.</p>`
+    : [...grouped.entries()].map(([group, items]) => `
+      <h2>${escapeHtml(group)} <small style="opacity:0.6;">(${items.length})</small></h2>
+      <ul>
+        ${items.map((item) => `
+          <li style="margin-bottom:0.75rem;">
+            <strong><a href="/articles/${escapeHtml(item.slug)}">${escapeHtml(item.title)}</a></strong>
+            <span class="badge ${item.category}" style="margin-left:0.5rem;">${item.category.toUpperCase()}</span>
+            <br>
+            <code style="font-size:0.85em;">${escapeHtml(item.slug)}</code>
+            ${item.firstSeen ? `<small style="opacity:0.6;margin-left:0.5rem;">first seen: ${escapeHtml(item.firstSeen)}</small>` : ""}
+            <div style="margin-top:0.3rem;">
+              <button type="button" style="font-size:0.85rem;" onclick="fetch('/api/admin/approve-review/${encodeURIComponent(item.slug)}',{method:'POST'}).then(r=>r.ok?location.reload():alert('Approval failed'))">Approve (keep as ${item.category})</button>
+              <a href="/.admin/edit-meta/${encodeURIComponent(item.slug)}" role="button" class="outline" style="font-size:0.85rem;">Edit Metadata</a>
+              <a href="/.admin/override/${encodeURIComponent(item.slug)}" role="button" class="outline secondary" style="font-size:0.85rem;">Edit Content</a>
+            </div>
+          </li>
+        `).join("")}
+      </ul>
+    `).join("");
+
+  const content = `
+    <h1>Needs Review <small style="opacity:0.6;">(${pending.length})</small></h1>
+    <p>These articles were discovered by the weekly crawl and have not been approved by an admin yet.
+    Public-category articles here are <strong>hidden from the public site</strong> until approved.</p>
+    ${body}`;
+
+  return htmlResponse(
+    renderLayout({
+      title: "Needs Review",
+      content,
+      user,
+      activePath: "/.admin/review",
+      env,
+    }),
+  );
+}
+
+export async function handlePostApproveReview(
+  slug: string,
+  env: Env,
+  user: UserContext,
+): Promise<Response> {
+  if (user.role !== "admin") {
+    return new Response("Forbidden", { status: 403 });
+  }
+
+  // Load existing meta (prefer override, fall back to processed)
+  let meta: Record<string, unknown> = {};
+  for (const p of [`overrides/${slug}`, `processed/${slug}`]) {
+    const obj = await env.KB_BUCKET.get(`${p}/_meta.json`);
+    if (obj) {
+      try { meta = (await obj.json()) as Record<string, unknown>; break; } catch { /* ignore */ }
+    }
+  }
+
+  if (!meta.slug) {
+    return new Response("Article not found", { status: 404 });
+  }
+
+  meta.status = "approved";
+  meta.updatedAt = new Date().toISOString();
+  const metaJson = JSON.stringify(meta, null, 2);
+
+  // Persist to overrides/ (survives future pipeline runs) and processed/ (immediate effect)
+  await Promise.all([
+    env.KB_BUCKET.put(`overrides/${slug}/_meta.json`, metaJson, {
+      httpMetadata: { contentType: "application/json" },
+    }),
+    env.KB_BUCKET.put(`processed/${slug}/_meta.json`, metaJson, {
+      httpMetadata: { contentType: "application/json" },
+    }),
+  ]);
+
+  await updateSiteManifest(env, slug, meta as unknown as ArticleMeta);
+
+  // Trigger Pages rebuild if the approved article is public
+  if (meta.category === "public" && env.PAGES_DEPLOY_HOOK) {
+    try {
+      await fetch(env.PAGES_DEPLOY_HOOK, { method: "POST" });
+    } catch { /* non-fatal */ }
+  }
+
+  return new Response(JSON.stringify({ ok: true, slug, category: meta.category }), {
+    headers: { "Content-Type": "application/json" },
+  });
 }
 
 // ---------------------------------------------------------------------------

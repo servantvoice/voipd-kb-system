@@ -65,6 +65,27 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
       })
       .filter((a) => a.path !== "index"); // skip root URL
 
+    // Step 1b: Load previous site manifest so we can detect newly-discovered slugs
+    // and carry forward status/firstSeen for slugs we've already seen.
+    const previousMeta = await step.do("read-previous-manifest", async () => {
+      const key = `${R2_PREFIXES.processed}_site-manifest.json`;
+      const obj = await this.env.KB_BUCKET.get(key);
+      if (!obj) {
+        console.log("No previous site manifest — treating all slugs as new");
+        return { knownSlugs: [] as string[], byslug: {} as Record<string, ArticleMeta> };
+      }
+      try {
+        const arr = JSON.parse(await obj.text()) as ArticleMeta[];
+        const byslug: Record<string, ArticleMeta> = {};
+        for (const m of arr) byslug[m.slug] = m;
+        return { knownSlugs: arr.map((m) => m.slug), byslug };
+      } catch {
+        return { knownSlugs: [] as string[], byslug: {} as Record<string, ArticleMeta> };
+      }
+    });
+    const knownSlugSet = new Set(previousMeta.knownSlugs);
+    const previousBySlug = previousMeta.byslug;
+
     const allProcessed: ProcessedArticle[] = [];
 
     // Step 2: Process articles in chunks
@@ -146,10 +167,23 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
               breadcrumb,
             };
 
+            // Carry forward status/firstSeen from previous manifest; mark newly-discovered
+            // slugs as pending-review so they don't auto-publish.
+            const prev = previousBySlug[article.path];
+            if (prev?.firstSeen) meta.firstSeen = prev.firstSeen;
+            if (prev?.status) meta.status = prev.status;
+
+            if (!knownSlugSet.has(article.path)) {
+              meta.status = "pending-review";
+              meta.firstSeen = crawlDatePrefix;
+            }
+
             // Apply override metadata if present
             if (overrideMeta) {
+              console.log(`Applying override meta for ${article.path}: ${Object.keys(overrideMeta).join(",")}`);
               if (overrideMeta.category) meta.category = overrideMeta.category as ArticleMeta["category"];
               if (overrideMeta.title) meta.title = overrideMeta.title as string;
+              if (overrideMeta.status) meta.status = overrideMeta.status as ArticleMeta["status"];
               if (overrideMeta.displayCategory) {
                 (meta as ArticleMeta & { displayCategory: string }).displayCategory =
                   overrideMeta.displayCategory as string;
@@ -228,10 +262,24 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
 
       const publicCount = siteManifest.filter((m) => m.category === "public").length;
       const internalCount = siteManifest.filter((m) => m.category === "internal").length;
+      const pendingReviewEntries = siteManifest.filter((m) => m.status === "pending-review");
+      const pendingReviewCount = pendingReviewEntries.length;
+      const newlyPendingSlugs = pendingReviewEntries
+        .filter((m) => m.firstSeen === crawlDatePrefix)
+        .map((m) => m.slug);
 
-      console.log(`Manifests: ${siteManifest.length} total (${publicCount} public, ${internalCount} internal)`);
+      console.log(`Manifests: ${siteManifest.length} total (${publicCount} public, ${internalCount} internal, ${pendingReviewCount} pending review)`);
+      if (newlyPendingSlugs.length > 0) {
+        console.log(`Newly discovered this run: ${newlyPendingSlugs.join(", ")}`);
+      }
 
-      return { totalCount: siteManifest.length, publicCount, internalCount };
+      return {
+        totalCount: siteManifest.length,
+        publicCount,
+        internalCount,
+        pendingReviewCount,
+        newlyPendingSlugs,
+      };
     });
 
     // Step 4: Trigger CF Pages deploy + fire image sync (fire-and-forget)
@@ -314,10 +362,13 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
           internalCount: manifestStats.internalCount,
           totalCount: manifestStats.totalCount,
           processedCount: allProcessed.length,
+          pendingReviewCount: manifestStats.pendingReviewCount,
+          newlyPendingSlugs: manifestStats.newlyPendingSlugs,
           imageSyncResult,
           notifyErrors: errors.length > 0 ? errors : null,
           limitWarning: manifest.limitWarning,
           crawlTruncated: manifest.crawlTruncated,
+          internalKbDomain: this.env.INTERNAL_KB_DOMAIN,
         });
         console.log("Notification email sent");
       } catch (err) {
@@ -356,10 +407,13 @@ interface NotifyData {
   internalCount: number;
   totalCount: number;
   processedCount: number;
+  pendingReviewCount: number;
+  newlyPendingSlugs: string[];
   imageSyncResult: ImageSyncResult | null;
   notifyErrors: string[] | null;
   limitWarning?: boolean;
   crawlTruncated?: boolean;
+  internalKbDomain?: string;
 }
 
 async function sendNotificationEmail(env: Env, data: NotifyData): Promise<void> {
@@ -400,6 +454,20 @@ async function sendNotificationEmail(env: Env, data: NotifyData): Promise<void> 
     <ul>${data.notifyErrors.map((e) => `<li>${e}</li>`).join("")}</ul>`;
   }
 
+  let pendingHtml = "";
+  if (data.pendingReviewCount > 0) {
+    const reviewUrl = data.internalKbDomain ? `https://${data.internalKbDomain}/.admin/review` : null;
+    const newItems = data.newlyPendingSlugs.length > 0
+      ? `<p><strong>New this run (${data.newlyPendingSlugs.length}):</strong></p>
+         <ul>${data.newlyPendingSlugs.slice(0, 20).map((s) => `<li><code>${s}</code></li>`).join("")}</ul>
+         ${data.newlyPendingSlugs.length > 20 ? `<p><em>...and ${data.newlyPendingSlugs.length - 20} more</em></p>` : ""}`
+      : "";
+    pendingHtml = `
+    <h3 style="color:#c60;">Pending Review (${data.pendingReviewCount})</h3>
+    <p>These articles are held from the public site until an admin approves them.${reviewUrl ? ` <a href="${reviewUrl}">Review queue</a>` : ""}</p>
+    ${newItems}`;
+  }
+
   const html = `
     <h2>KB Refresh Complete</h2>
     <p>Crawl date: <strong>${data.crawlDatePrefix}</strong></p>
@@ -409,8 +477,10 @@ async function sendNotificationEmail(env: Env, data: NotifyData): Promise<void> 
       <li>Processed: ${data.processedCount}</li>
       <li>Public: ${data.publicCount}</li>
       <li>Internal: ${data.internalCount}</li>
+      <li>Pending review: ${data.pendingReviewCount}${data.pendingReviewCount > 0 ? " <em>(subset of above — held from public site)</em>" : ""}</li>
       <li>Total in manifest: ${data.totalCount}</li>
     </ul>
+    ${pendingHtml}
     ${imageSyncHtml}
     ${errorsHtml}
   `.trim();

@@ -190,8 +190,9 @@
   {
     "slug": "axis/axis-i8016-lve-intercom-manual-registration",
     "category": "public",
+    "displayCategory": "Phones & Devices",
     "breadcrumb": [
-      "Axis",
+      "Phones & Devices",
       "Axis I8016 Lve Intercom Manual Registration"
     ]
   },
@@ -480,66 +481,82 @@
     ]
   },
   {
-    "slug": "cloudie_connect/cloudieconnect-branding-experience",
+    "slug": "cloudie_connect/cloudie-connect-extension-unregistered",
     "category": "internal",
     "breadcrumb": [
       "Cloudie_connect",
+      "Cloudie Connect Extension Unregistered"
+    ]
+  },
+  {
+    "slug": "cloudie_connect/cloudieconnect-branding-experience",
+    "category": "internal",
+    "displayCategory": "CloudieConnect",
+    "breadcrumb": [
+      "CloudieConnect",
       "Cloudieconnect Branding Experience"
     ]
   },
   {
     "slug": "cloudie_connect/cloudieconnect-mobile-getting-started",
     "category": "internal",
+    "displayCategory": "CloudieConnect",
     "breadcrumb": [
-      "Cloudie_connect",
+      "CloudieConnect",
       "Cloudieconnect Mobile Getting Started"
     ]
   },
   {
     "slug": "cloudie_connect/cloudieconnect-vs-snapmobile",
     "category": "internal",
+    "displayCategory": "CloudieConnect",
     "breadcrumb": [
-      "Cloudie_connect",
+      "CloudieConnect",
       "Cloudieconnect Vs Snapmobile"
     ]
   },
   {
     "slug": "cloudie_connect/using-your-mobile-number-in-cloudieconnect",
     "category": "internal",
+    "displayCategory": "CloudieConnect",
     "breadcrumb": [
-      "Cloudie_connect",
+      "CloudieConnect",
       "Using Your Mobile Number In Cloudieconnect"
     ]
   },
   {
     "slug": "cloudie_connect/welcome-to-cloudieconnect",
     "category": "internal",
+    "displayCategory": "CloudieConnect",
     "breadcrumb": [
-      "Cloudie_connect",
+      "CloudieConnect",
       "Welcome To Cloudieconnect"
     ]
   },
   {
     "slug": "cloudieconnect-desktop/cloudieconnect-desktop-features",
     "category": "internal",
+    "displayCategory": "CloudieConnect Desktop",
     "breadcrumb": [
-      "Cloudieconnect Desktop",
+      "CloudieConnect Desktop",
       "Cloudieconnect Desktop Features"
     ]
   },
   {
     "slug": "cloudieconnect-desktop/cloudieconnect-desktop-overview",
     "category": "internal",
+    "displayCategory": "CloudieConnect Desktop",
     "breadcrumb": [
-      "Cloudieconnect Desktop",
+      "CloudieConnect Desktop",
       "Cloudieconnect Desktop Overview"
     ]
   },
   {
     "slug": "cloudieconnect/cloudieconnect-v512-release-notes",
     "category": "internal",
+    "displayCategory": "CloudieConnect",
     "breadcrumb": [
-      "Cloudieconnect",
+      "CloudieConnect",
       "Cloudieconnect V512 Release Notes"
     ]
   },
@@ -1076,6 +1093,14 @@
     ]
   },
   {
+    "slug": "grandstream/grandstream-device-management-system-gdms-remote-provisioning-service-rps",
+    "category": "internal",
+    "breadcrumb": [
+      "Grandstream",
+      "Grandstream Device Management System Gdms Remote Provisioning Service Rps"
+    ]
+  },
+  {
     "slug": "grandstream/grandstream-dp752-manual-configuration",
     "category": "internal",
     "displayCategory": "Phones & Devices",
@@ -1497,6 +1522,14 @@
     ]
   },
   {
+    "slug": "hosted-voice/mpp-reporting-analytics-capabilities",
+    "category": "public",
+    "breadcrumb": [
+      "Hosted Voice",
+      "Mpp Reporting Analytics Capabilities"
+    ]
+  },
+  {
     "slug": "hosted-voice/multicast-paging",
     "category": "public",
     "breadcrumb": [
@@ -1777,6 +1810,14 @@
     ]
   },
   {
+    "slug": "manual-configuration/manually-update-outbound-proxy-on-a-device",
+    "category": "public",
+    "breadcrumb": [
+      "Manual Configuration",
+      "Manually Update Outbound Proxy On A Device"
+    ]
+  },
+  {
     "slug": "manual-configuration/obihai-200300-manual-configuration",
     "category": "public",
     "displayCategory": "Phones & Devices",
@@ -1993,21 +2034,21 @@
     ]
   },
   {
-    "slug": "mfax-digital/snapback-process",
-    "category": "internal",
-    "displayCategory": "mFax",
-    "breadcrumb": [
-      "mFax",
-      "Snapback Process"
-    ]
-  },
-  {
     "slug": "mfax-digital/view-fax-history",
     "category": "internal",
     "displayCategory": "mFax",
     "breadcrumb": [
       "mFax",
       "View Fax History"
+    ]
+  },
+  {
+    "slug": "microsoft-entra/microsoft-entra-obtaining-your-tenant-id",
+    "category": "public",
+    "displayCategory": "Integrations",
+    "breadcrumb": [
+      "Integrations",
+      "Microsoft Entra Obtaining Your Tenant Id"
     ]
   },
   {
@@ -2148,6 +2189,14 @@
     "breadcrumb": [
       "Mobile X",
       "Create Mobile X Subscribers"
+    ]
+  },
+  {
+    "slug": "mobile-x/enabling-imessage-on-mobile-x",
+    "category": "internal",
+    "breadcrumb": [
+      "Mobile X",
+      "Enabling Imessage On Mobile X"
     ]
   },
   {
@@ -2557,6 +2606,15 @@
     "breadcrumb": [
       "OneBill",
       "OneBill Assign Usage Product To Your Customer"
+    ]
+  },
+  {
+    "slug": "oitvoip-access-platform-apis",
+    "category": "internal",
+    "displayCategory": "Oitvoip Access Platform Apis",
+    "breadcrumb": [
+      "Oitvoip Access Platform Apis",
+      "OITVOIP: Access Platform APIs"
     ]
   },
   {
@@ -3388,9 +3446,11 @@
   },
   {
     "slug": "talent-lms-course-requirements",
-    "category": "public",
+    "category": "internal",
+    "displayCategory": "Talent Lms Course Requirements",
     "breadcrumb": [
-      "Talent Lms Course Requirements"
+      "Talent Lms Course Requirements",
+      "Talent LMS Course Requirements"
     ]
   },
   {
@@ -3436,15 +3496,6 @@
     "breadcrumb": [
       "Integrations",
       "Build The TeamMate Connector Application"
-    ]
-  },
-  {
-    "slug": "teammate-connector/configure-carriers-for-sms-with-teammate-connector",
-    "category": "internal",
-    "displayCategory": "Integrations",
-    "breadcrumb": [
-      "Integrations",
-      "Configure Carriers For Sms With TeamMate Connector"
     ]
   },
   {
@@ -3607,6 +3658,14 @@
     "breadcrumb": [
       "Integrations",
       "TeamMate Connector Troubleshooting"
+    ]
+  },
+  {
+    "slug": "the-essentials/manager-portal-pro-release-notes",
+    "category": "public",
+    "breadcrumb": [
+      "The Essentials",
+      "Manager Portal Pro Release Notes"
     ]
   },
   {

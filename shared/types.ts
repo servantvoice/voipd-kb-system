@@ -19,6 +19,10 @@ export interface ArticleMeta {
   isOverride: boolean;
   breadcrumb: string[];
   displayCategory?: string;
+  /** Undefined or "approved" = visible on public site (if category=public). "pending-review" = held until admin approves. */
+  status?: "pending-review" | "approved";
+  /** crawlDatePrefix when this slug was first discovered by the pipeline. */
+  firstSeen?: string;
 }
 
 /** Entry in the site manifest (processed/_site-manifest.json) */

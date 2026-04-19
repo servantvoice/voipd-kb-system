@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 # apply-category-overrides.sh
 #
-# Reads category-overrides-starter.json and uploads a _meta.json to
-# overrides/{slug}/ for each entry via wrangler.
+# Fresh-onboarding priming ONLY. Reads category-overrides-starter.json
+# and uploads a _meta.json to overrides/{slug}/ for each entry via wrangler.
+#
+# WARNING: This script overwrites live admin overrides. NEVER run it on
+# an established deployment without --force. Use scripts/regenerate-starter.sh
+# first if you want to rebuild the starter JSON from current R2 truth.
 #
 # Usage:
-#   ./scripts/apply-category-overrides.sh            # upload to R2
-#   ./scripts/apply-category-overrides.sh --dry-run  # print paths only
+#   ./scripts/apply-category-overrides.sh                    # upload to R2 (refuses if populated)
+#   ./scripts/apply-category-overrides.sh --dry-run          # print paths only
+#   ./scripts/apply-category-overrides.sh --force            # bypass populated-bucket safety
+#   ./scripts/apply-category-overrides.sh --dry-run --force  # combine
 #
 # Requirements: jq, npx (wrangler), wrangler authentication
 
@@ -16,10 +22,46 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CATALOG="$SCRIPT_DIR/category-overrides-starter.json"
 BUCKET="servant-voice-kb"
 DRY_RUN=false
+FORCE=false
 
-if [[ "${1:-}" == "--dry-run" ]]; then
-  DRY_RUN=true
+for arg in "$@"; do
+  case "$arg" in
+    --dry-run) DRY_RUN=true ;;
+    --force) FORCE=true ;;
+    *) echo "Unknown arg: $arg" >&2; exit 2 ;;
+  esac
+done
+
+if [[ "$DRY_RUN" == "true" ]]; then
   echo "Dry run — no uploads will be made."
+fi
+
+# Safety check: refuse to run on an established deployment without --force.
+# Proxy for "established" = site manifest already has >10 articles.
+if [[ "$FORCE" != "true" ]]; then
+  safety_tmp=$(mktemp -t sv-manifest-check)
+  if npx wrangler r2 object get "$BUCKET/processed/_site-manifest.json" \
+      --remote --file "$safety_tmp" >/dev/null 2>&1; then
+    existing=$(jq 'length' "$safety_tmp" 2>/dev/null || echo 0)
+    rm -f "$safety_tmp"
+    if (( existing > 10 )); then
+      cat <<EOF >&2
+
+ERROR: Target bucket is already populated ($existing articles in the site manifest).
+This script overwrites live admin overrides and would revert any admin
+edits made since the starter JSON was generated.
+
+If you intentionally want to re-baseline overrides from the starter JSON,
+re-run with:  $0 --force
+
+To refresh the starter JSON from current R2 state first:
+  ./scripts/regenerate-starter.sh
+EOF
+      exit 1
+    fi
+  else
+    rm -f "$safety_tmp"
+  fi
 fi
 
 if ! command -v jq &>/dev/null; then
@@ -38,7 +80,7 @@ echo
 
 uploaded=0
 skipped=0
-tmpfile=$(mktemp /tmp/override-meta-XXXXXX.json)
+tmpfile=$(mktemp -t sv-override-meta)
 trap 'rm -f "$tmpfile"' EXIT
 
 for i in $(seq 0 $((count - 1))); do

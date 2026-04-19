@@ -22,6 +22,8 @@ interface ArticleMeta {
   lastCrawled?: string;
   isOverride?: boolean;
   breadcrumb?: string[];
+  status?: "pending-review" | "approved";
+  firstSeen?: string;
 }
 
 interface SiteManifestEntry extends ArticleMeta {}
@@ -56,9 +58,14 @@ async function main() {
   const manifestBody = await manifestRes.Body!.transformToString();
   const manifest: SiteManifestEntry[] = JSON.parse(manifestBody);
 
-  // 2. Filter to public articles only
-  const publicArticles = manifest.filter((a) => a.category === "public");
-  console.log(`Found ${manifest.length} total articles, ${publicArticles.length} public`);
+  // 2. Filter to public articles only — exclude pending-review (held until admin approves)
+  const publicArticles = manifest.filter(
+    (a) => a.category === "public" && a.status !== "pending-review",
+  );
+  const pendingCount = manifest.filter((a) => a.status === "pending-review").length;
+  console.log(
+    `Found ${manifest.length} total articles, ${publicArticles.length} public (${pendingCount} pending review excluded)`,
+  );
 
   // 3. Fetch each public article and write as Hugo content
   let written = 0;
