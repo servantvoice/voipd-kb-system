@@ -248,18 +248,37 @@ export async function handlePostOverride(
     }),
   ];
 
-  // Also write to processed/ so the Hugo public site picks up override content
+  // Also write to processed/ so the Hugo public site picks up override content.
+  // Mirror both body and metadata so the on-disk meta matches the manifest.
   if (user.role === "admin") {
     writes.push(
       env.KB_BUCKET.put(`processed/${slug}/index.md`, mdContent, {
         httpMetadata: { contentType: "text/markdown" },
       }),
+      env.KB_BUCKET.put(
+        `processed/${slug}/_meta.json`,
+        JSON.stringify(meta, null, 2),
+        { httpMetadata: { contentType: "application/json" } },
+      ),
     );
   }
 
   await Promise.all(writes);
 
   if (user.role === "admin") {
+    // Keep the site manifest in sync so Hugo's category filter sees the new state.
+    await updateSiteManifest(env, slug, meta);
+
+    // Trigger Pages rebuild whenever the article was or is public — covers
+    // public→internal transitions where the public site needs to drop it.
+    const wasPublic = existingMeta.category === "public";
+    const isPublic = category === "public";
+    if ((wasPublic || isPublic) && env.PAGES_DEPLOY_HOOK) {
+      try {
+        await fetch(env.PAGES_DEPLOY_HOOK, { method: "POST" });
+      } catch { /* non-fatal */ }
+    }
+
     return Response.redirect(
       `https://${env.INTERNAL_KB_DOMAIN}/articles/${slug}`,
       303,

@@ -6,7 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-Nothing yet.
+### Added
+- **Vendor email/domain swaps in `transformMarkdown`.** `support@oit.co` is replaced with the bare word `support`; standalone `oit.co` and `oitvoip.com` mentions are rewritten to `BRAND_DOMAIN` (new env var on the pipeline worker). Order matters: the email rule runs before the domain rule so the email's domain isn't rewritten before the email pattern can match.
+- `BRAND_DOMAIN` env var added to `SystemConfig` (`shared/config.ts`), `.env.private`, `workers/pipeline/.dev.vars{,.example}`, and `scripts/setup-env.sh` distribution.
+
+### Fixed
+- `workers/internal/src/admin.ts` `handlePostOverride` (override editor save) now (1) writes `processed/{slug}/_meta.json` in addition to `index.md`, (2) calls `updateSiteManifest` so Hugo's `category === "public"` filter sees the new state, and (3) fires `PAGES_DEPLOY_HOOK` whenever the article was or is public — covering public→internal transitions where the public site needs to drop the article. Previously, saving an override never triggered a Pages rebuild and never updated the manifest, so category changes silently stayed visible on the public site until the next weekly pipeline run.
 
 ## [2026-04-19]
 

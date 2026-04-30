@@ -114,6 +114,15 @@ export function transformMarkdown(
   // 4. Manager Portal links
   result = result.replace(/https?:\/\/manage\.oitvoip\.com/gi, config.managerPortalUrl);
 
+  // 4a. Vendor email/domain swaps. Order matters: the support@oit.co rule
+  //     must run before the bare oit.co rule, otherwise the email's domain
+  //     gets rewritten before the email pattern can match it.
+  result = result.replace(/support@oit\.co/gi, "support");
+  if (config.brandDomain) {
+    result = result.replace(/\boit\.co\b/gi, config.brandDomain);
+    result = result.replace(/\boitvoip\.com\b/gi, config.brandDomain);
+  }
+
   // 5. Strip URL cruft
   for (const rule of URL_CRUFT_RULES) {
     result = result.replace(rule.pattern, rule.replacement);

@@ -4,6 +4,7 @@ export interface SystemConfig {
   imageDomain: string;
   sourceImageCdn: string;
   managerPortalUrl: string;
+  brandDomain: string;
   r2Prefixes: typeof R2_PREFIXES;
 }
 
@@ -23,6 +24,7 @@ export function buildConfig(env: Record<string, string>): SystemConfig {
     imageDomain: env.IMAGE_DOMAIN ?? "",
     sourceImageCdn: env.SOURCE_IMAGE_CDN ?? "cdn.elev.io",
     managerPortalUrl: env.MANAGER_PORTAL_URL ?? "",
+    brandDomain: env.BRAND_DOMAIN ?? "",
     r2Prefixes: R2_PREFIXES,
   };
 }

@@ -73,6 +73,7 @@ write_dev_vars "$REPO_ROOT/workers/pipeline/.dev.vars" \
   INTERNAL_KB_DOMAIN \
   IMAGE_DOMAIN \
   MANAGER_PORTAL_URL \
+  BRAND_DOMAIN \
   SOURCE_IMAGE_CDN \
   BRAND_NAME \
   CONNECT_NAME \
