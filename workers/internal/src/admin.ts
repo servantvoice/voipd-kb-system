@@ -266,12 +266,15 @@ export async function handlePostOverride(
   await Promise.all(writes);
 
   if (user.role === "admin") {
-    // Keep the site manifest in sync so Hugo's category filter sees the new state.
+    // Read the manifest BEFORE updating it — this captures what the public
+    // site currently sees, which is the correct signal for "do we need a
+    // rebuild?". Using existingMeta here would miss recoveries from a prior
+    // broken save where overrides/_meta.json got out of sync with the manifest.
+    const priorManifest = await loadSiteManifest(env);
+    const wasPublic = priorManifest.find((a) => a.slug === slug)?.category === "public";
+
     await updateSiteManifest(env, slug, meta);
 
-    // Trigger Pages rebuild whenever the article was or is public — covers
-    // public→internal transitions where the public site needs to drop it.
-    const wasPublic = existingMeta.category === "public";
     const isPublic = category === "public";
     if ((wasPublic || isPublic) && env.PAGES_DEPLOY_HOOK) {
       try {
@@ -773,11 +776,16 @@ export async function handlePostEditMeta(
     });
   }
 
+  // Trigger Pages rebuild if visibility changed or article is public.
+  // Read the manifest BEFORE updating it so wasPublic reflects what the
+  // public site actually sees, not whatever overrides/_meta.json says (which
+  // may have drifted from the manifest in prior broken saves).
+  const priorManifest = await loadSiteManifest(env);
+  const wasPublic = priorManifest.find((a) => a.slug === slug)?.category === "public";
+
   // Update site manifest
   await updateSiteManifest(env, slug, updatedMeta as unknown as ArticleMeta);
 
-  // Trigger Pages rebuild if visibility changed or article is public
-  const wasPublic = existingMeta.category === "public";
   const isPublic = category === "public";
   if ((wasPublic || isPublic) && env.PAGES_DEPLOY_HOOK) {
     try {

@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 - `workers/internal/src/admin.ts` `handlePostOverride` (override editor save) now (1) writes `processed/{slug}/_meta.json` in addition to `index.md`, (2) calls `updateSiteManifest` so Hugo's `category === "public"` filter sees the new state, and (3) fires `PAGES_DEPLOY_HOOK` whenever the article was or is public — covering public→internal transitions where the public site needs to drop the article. Previously, saving an override never triggered a Pages rebuild and never updated the manifest, so category changes silently stayed visible on the public site until the next weekly pipeline run.
+- `handlePostOverride` and `handlePostEditMeta` now derive `wasPublic` from the live site manifest instead of `existingMeta.category`. Loading from `overrides/_meta.json` could be stale if a prior broken save corrupted that file without updating the manifest; reading the manifest is the right "what does the public site actually see today" signal so recovery saves still trigger the rebuild.
 
 ## [2026-04-19]
 
