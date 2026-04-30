@@ -1,0 +1,5 @@
+# One-line entries: <source> <destination> <status>
+# Use this to drop URLs from the public site faster than CF Pages' edge
+# cache TTL allows. Redirects bypass the static-asset cache entirely.
+
+/articles/features/cloudieai-call-recording-transcription-intelligence/* / 302
