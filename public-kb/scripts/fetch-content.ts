@@ -9,7 +9,7 @@
  *   R2_BUCKET — your R2 bucket name
  */
 import { S3Client, GetObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
-import { writeFileSync, mkdirSync } from "fs";
+import { writeFileSync, mkdirSync, rmSync } from "fs";
 import { dirname, join } from "path";
 
 const CONTENT_DIR = join(process.cwd(), "content", "articles");
@@ -48,6 +48,12 @@ async function main() {
   });
 
   const bucket = process.env.R2_BUCKET;
+
+  // 0. Wipe content/articles/ so we don't carry over stale files from a prior
+  //    build. CF Pages preserves gitignored dirs across builds as a build
+  //    cache; without this wipe, articles whose category flips public→internal
+  //    or get deleted would still be served from cached files of past builds.
+  rmSync(CONTENT_DIR, { recursive: true, force: true });
 
   // 1. Read site manifest
   console.log("Fetching site manifest...");
