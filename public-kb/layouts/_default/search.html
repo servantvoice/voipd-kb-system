@@ -1,0 +1,85 @@
+{{ define "main" }}
+<h1>Search</h1>
+
+<input type="search" id="search-input" placeholder="Search articles..." autofocus aria-label="Search">
+
+<p id="search-status" aria-live="polite" style="opacity:0.7;"></p>
+
+<ul id="search-results" style="list-style:none;padding:0;"></ul>
+{{ end }}
+
+{{ define "scripts" }}
+<script>
+(function () {
+  const input = document.getElementById("search-input");
+  const status = document.getElementById("search-status");
+  const results = document.getElementById("search-results");
+  let index = null;
+
+  function clearResults() {
+    while (results.firstChild) results.removeChild(results.firstChild);
+  }
+
+  function buildResultLi(entry) {
+    const li = document.createElement("li");
+    li.style.marginBottom = "1.25rem";
+
+    const link = document.createElement("a");
+    link.href = "/articles/" + entry.slug + "/";
+    const strong = document.createElement("strong");
+    strong.textContent = entry.title;
+    link.appendChild(strong);
+    li.appendChild(link);
+
+    if (entry.excerpt) {
+      const div = document.createElement("div");
+      div.style.opacity = "0.75";
+      div.textContent = entry.excerpt;
+      li.appendChild(div);
+    }
+    return li;
+  }
+
+  function render(query) {
+    if (!index) return;
+    const q = query.trim().toLowerCase();
+    clearResults();
+    if (!q) {
+      status.textContent = "";
+      return;
+    }
+    const matches = index
+      .filter(e => e.title.toLowerCase().includes(q) || (e.excerpt || "").toLowerCase().includes(q))
+      .slice(0, 50);
+    status.textContent = matches.length
+      ? matches.length + " result" + (matches.length === 1 ? "" : "s")
+      : "No results.";
+    for (const m of matches) results.appendChild(buildResultLi(m));
+  }
+
+  status.textContent = "Loading…";
+  fetch("/js/search-index.json")
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(data => {
+      index = data;
+      status.textContent = "";
+      const url = new URL(window.location.href);
+      const q = url.searchParams.get("q");
+      if (q) {
+        input.value = q;
+        render(q);
+      }
+    })
+    .catch(err => {
+      status.textContent = "Search index failed to load.";
+      console.error("Search index error:", err);
+    });
+
+  let timer;
+  input.addEventListener("input", () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => render(input.value), 80);
+  });
+})();
+</script>
+{{ end }}
