@@ -837,6 +837,7 @@ export async function handleReviewQueue(
             ${item.firstSeen ? `<small style="opacity:0.6;margin-left:0.5rem;">first seen: ${escapeHtml(item.firstSeen)}</small>` : ""}
             <div style="margin-top:0.3rem;">
               <button type="button" style="font-size:0.85rem;" onclick="fetch('/api/admin/approve-review/${encodeURIComponent(item.slug)}',{method:'POST'}).then(r=>r.ok?location.reload():alert('Approval failed'))">Approve (keep as ${item.category})</button>
+              <button type="button" class="outline" style="font-size:0.85rem;" onclick="fetch('/api/admin/approve-review/${encodeURIComponent(item.slug)}',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({category:'${item.category === "public" ? "internal" : "public"}'})}).then(r=>r.ok?location.reload():alert('Approval failed'))">Approve as ${item.category === "public" ? "Internal" : "Public"}</button>
               <a href="/.admin/edit-meta/${encodeURIComponent(item.slug)}" role="button" class="outline" style="font-size:0.85rem;">Edit Metadata</a>
               <a href="/.admin/override/${encodeURIComponent(item.slug)}" role="button" class="outline secondary" style="font-size:0.85rem;">Edit Content</a>
             </div>
@@ -864,11 +865,23 @@ export async function handleReviewQueue(
 
 export async function handlePostApproveReview(
   slug: string,
+  request: Request,
   env: Env,
   user: UserContext,
 ): Promise<Response> {
   if (user.role !== "admin") {
     return new Response("Forbidden", { status: 403 });
+  }
+
+  // Optional category override — used by "Approve as Internal/Public" buttons
+  let categoryOverride: "public" | "internal" | null = null;
+  if (request.headers.get("content-type")?.includes("application/json")) {
+    try {
+      const body = (await request.json()) as { category?: string };
+      if (body.category === "public" || body.category === "internal") {
+        categoryOverride = body.category;
+      }
+    } catch { /* ignore — body is optional */ }
   }
 
   // Load existing meta (prefer override, fall back to processed)
@@ -884,6 +897,9 @@ export async function handlePostApproveReview(
     return new Response("Article not found", { status: 404 });
   }
 
+  if (categoryOverride) {
+    meta.category = categoryOverride;
+  }
   meta.status = "approved";
   meta.updatedAt = new Date().toISOString();
   const metaJson = JSON.stringify(meta, null, 2);

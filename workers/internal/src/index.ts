@@ -137,7 +137,7 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
 
   if (path.startsWith("/.admin/override/") && method === "GET") {
     if (user.role !== "admin" && user.role !== "editor") return forbidden();
-    const slug = path.replace("/.admin/override/", "");
+    const slug = decodeURIComponent(path.replace("/.admin/override/", ""));
     return handleGetOverrideEditor(slug, env, user);
   }
 
@@ -157,7 +157,7 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
 
   if (path.startsWith("/.admin/edit-meta/") && method === "GET") {
     if (user.role !== "admin") return forbidden();
-    const slug = path.replace("/.admin/edit-meta/", "");
+    const slug = decodeURIComponent(path.replace("/.admin/edit-meta/", ""));
     return handleGetEditMeta(slug, env, user);
   }
 
@@ -167,26 +167,26 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
 
   if (path.startsWith("/api/admin/override/") && method === "POST") {
     if (user.role !== "admin" && user.role !== "editor") return forbidden();
-    const slug = path.replace("/api/admin/override/", "");
+    const slug = decodeURIComponent(path.replace("/api/admin/override/", ""));
     return handlePostOverride(slug, request, env, user);
   }
 
   if (path.startsWith("/api/admin/override/") && method === "DELETE") {
     if (user.role !== "admin") return forbidden();
-    const slug = path.replace("/api/admin/override/", "");
+    const slug = decodeURIComponent(path.replace("/api/admin/override/", ""));
     return handleDeleteOverride(slug, env, user);
   }
 
   if (path.startsWith("/api/admin/custom/") && method === "POST") {
     if (user.role !== "admin" && user.role !== "editor") return forbidden();
-    const slug = path.replace("/api/admin/custom/", "");
+    const slug = decodeURIComponent(path.replace("/api/admin/custom/", ""));
     return handlePostCustom(slug, request, env, user);
   }
 
   if (path.startsWith("/api/admin/approve-review/") && method === "POST") {
     if (user.role !== "admin") return forbidden();
     const slug = decodeURIComponent(path.replace("/api/admin/approve-review/", ""));
-    return handlePostApproveReview(slug, env, user);
+    return handlePostApproveReview(slug, request, env, user);
   }
 
   if (path.startsWith("/api/admin/approve/") && method === "POST") {
