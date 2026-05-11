@@ -16,5 +16,8 @@
     "deploy:all": "npm run deploy:images && npm run deploy:pipeline && npm run deploy:internal && npm run deploy:crawl",
     "build:site": "cd public-kb && npm run build",
     "dev:site": "cd public-kb && npm run dev"
+  },
+  "devDependencies": {
+    "wrangler": "^4.90.0"
   }
 }
