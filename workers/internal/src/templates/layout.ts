@@ -25,14 +25,15 @@ export function renderLayout(opts: LayoutOptions): string {
     user?.role === "admin"
       ? `
         <li><a href="/.admin/"${activePath === "/.admin/" ? ' aria-current="page"' : ""}>Admin</a></li>
-        <li><a href="/.admin/pending"${activePath === "/.admin/pending" ? ' aria-current="page"' : ""}>Pending Review</a></li>
+        <li><a href="/.admin/review"${activePath === "/.admin/review" ? ' aria-current="page"' : ""}>Needs Review</a></li>
+        <li><a href="/.admin/pending"${activePath === "/.admin/pending" ? ' aria-current="page"' : ""}>Pending Updates</a></li>
         <li><a href="/.admin/custom/new"${activePath === "/.admin/custom/new" ? ' aria-current="page"' : ""}>New Article</a></li>`
       : "";
 
   const editorNav =
     user?.role === "editor"
       ? `
-        <li><a href="/.admin/pending"${activePath === "/.admin/pending" ? ' aria-current="page"' : ""}>Pending Review</a></li>
+        <li><a href="/.admin/pending"${activePath === "/.admin/pending" ? ' aria-current="page"' : ""}>Pending Updates</a></li>
         <li><a href="/.admin/custom/new"${activePath === "/.admin/custom/new" ? ' aria-current="page"' : ""}>New Article</a></li>`
       : "";
 

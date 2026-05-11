@@ -514,12 +514,13 @@ export async function handleGetPending(
           .join("\n");
 
   const content = `
-    <h1>Pending Review</h1>
+    <h1>Pending Updates</h1>
+    <p>Edits and new articles submitted by editors for admin approval. For newly-crawled articles awaiting review, see <a href="/.admin/review">Needs Review</a>.</p>
     ${rows}`;
 
   return htmlResponse(
     renderLayout({
-      title: "Pending Review",
+      title: "Pending Updates",
       content,
       user,
       activePath: "/.admin/pending",
