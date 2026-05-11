@@ -3,7 +3,12 @@
     <li><a href="/">{{ .Site.Title | default "Docs" }}</a></li>
     {{ with .Params.categories }}
       {{ range . }}
-        <li><a href="/categories/{{ . | urlize }}/">{{ . }}</a></li>
+        {{ $term := . }}
+        {{ with site.GetPage (printf "/categories/%s" $term) }}
+          <li><a href="{{ .RelPermalink }}">{{ $term }}</a></li>
+        {{ else }}
+          <li>{{ $term }}</li>
+        {{ end }}
       {{ end }}
     {{ end }}
   </ul>
