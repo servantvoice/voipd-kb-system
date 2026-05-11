@@ -11,3 +11,4 @@ public-kb/content/articles/
 public-kb/public/
 public-kb/resources/
 public-kb/static/js/search-index.json
+.vscode/settings.json
