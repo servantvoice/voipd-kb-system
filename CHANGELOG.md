@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [2026-05-29]
+
 ### Added
 - **Vendor email/domain swaps in `transformMarkdown`.** `support@oit.co` is replaced with the bare word `support`; standalone `oit.co` and `oitvoip.com` mentions are rewritten to `BRAND_DOMAIN` (new env var on the pipeline worker). Order matters: the email rule runs before the domain rule so the email's domain isn't rewritten before the email pattern can match.
 - `BRAND_DOMAIN` env var added to `SystemConfig` (`shared/config.ts`), `.env.private`, `workers/pipeline/.dev.vars{,.example}`, and `scripts/setup-env.sh` distribution.
