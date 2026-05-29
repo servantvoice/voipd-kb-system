@@ -22,12 +22,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 - Slugs containing `/` (e.g. `hosted-voice/professional-services-migration-projects`) broke the review-queue links to Edit Metadata and Edit Content. The queue UI URL-encoded the slash to `%2F`, but the GET handlers for `/.admin/override/`, `/.admin/edit-meta/`, and the matching `/api/admin/override/` (POST/DELETE) and `/api/admin/custom/` (POST) routes did a plain `path.replace()` without `decodeURIComponent`, so R2 lookups ran against literal `%2F` keys and returned not-found / empty forms. All five routes now decode before looking up the article.
+- Breadcrumb links to category pages broke for category names containing `&` (and any other characters `urlize` mangles). `public-kb/layouts/partials/breadcrumbs.html` now resolves each category through `site.GetPage` and uses its real `RelPermalink`, falling back to plain unlinked text when no category page exists, instead of constructing the href with `urlize`.
 
 ## [2026-04-30]
 
 ### Added
 - **Vendor email/domain swaps in `transformMarkdown`.** `support@oit.co` is replaced with the bare word `support`; standalone `oit.co` and `oitvoip.com` mentions are rewritten to `BRAND_DOMAIN` (new env var on the pipeline worker). Order matters: the email rule runs before the domain rule so the email's domain isn't rewritten before the email pattern can match.
 - `BRAND_DOMAIN` env var added to `SystemConfig` (`shared/config.ts`), `.env.private`, `workers/pipeline/.dev.vars{,.example}`, and `scripts/setup-env.sh` distribution.
+- **Client-side search page (`public-kb/layouts/_default/search.html`).** `/search/` loads `_search-index.json` and filters by title and excerpt in the browser, rendering links to matching articles. The 404 page already linked here; the 404 copy was also reworded to point users at search/support.
 
 ### Fixed
 - `workers/internal/src/admin.ts` `handlePostOverride` (override editor save) now (1) writes `processed/{slug}/_meta.json` in addition to `index.md`, (2) calls `updateSiteManifest` so Hugo's `category === "public"` filter sees the new state, and (3) fires `PAGES_DEPLOY_HOOK` whenever the article was or is public — covering public→internal transitions where the public site needs to drop the article. Previously, saving an override never triggered a Pages rebuild and never updated the manifest, so category changes silently stayed visible on the public site until the next weekly pipeline run.
