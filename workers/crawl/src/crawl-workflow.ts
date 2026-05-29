@@ -1,5 +1,6 @@
 import { WorkflowEntrypoint, WorkflowStep, WorkflowEvent } from "cloudflare:workers";
 import { EXCLUDE_PREFIXES } from "../../../shared/categorization";
+import { isManifestCollapse, MANIFEST_FLOOR, MANIFEST_COLLAPSE_RATIO } from "../../../shared/config";
 
 export interface CrawlParams {
   url?: string;
@@ -288,6 +289,52 @@ export class CrawlWorkflow extends WorkflowEntrypoint<Env, CrawlParams> {
         (manifest.crawlTruncated ? " [TRUNCATED]" : "")
       );
     });
+
+    // Step 5b: Collapse gate. If this crawl produced far fewer pages than the last
+    // published manifest, treat it as a failed crawl: do NOT notify the pipeline (a
+    // near-empty crawl would clobber the live site), and send a failure email instead.
+    const health = await step.do("crawl-collapse-gate", async () => {
+      const obj = await this.env.KB_BUCKET.get("processed/_site-manifest.json");
+      let previousCount = 0;
+      if (obj) {
+        try {
+          previousCount = (JSON.parse(await obj.text()) as unknown[]).length;
+        } catch {
+          previousCount = 0;
+        }
+      }
+      const written = writtenUrlSet.size;
+      const collapsed = isManifestCollapse(written, previousCount);
+      console.log(
+        `Collapse gate: written=${written} previousManifest=${previousCount} ` +
+        `(floor ${MANIFEST_FLOOR}, ratio ${MANIFEST_COLLAPSE_RATIO}) collapsed=${collapsed}`
+      );
+      return { collapsed, written, previousCount };
+    });
+
+    if (health.collapsed) {
+      await step.do("notify-collapse", { retries: { limit: 2, delay: "30 seconds" } }, async () => {
+        await notifyFailure(
+          this.env,
+          params,
+          `Crawl collapse guard tripped: only ${health.written} pages crawled vs ${health.previousCount} ` +
+          `in the last published manifest (floor ${MANIFEST_FLOOR}, ratio ${MANIFEST_COLLAPSE_RATIO}). ` +
+          `The pipeline was NOT notified, so the live KB is unchanged. The crawl snapshot is saved at ` +
+          `crawls/${datePrefix}/. Likely a Browser Rendering or upstream failure — investigate and re-trigger.`
+        );
+      });
+      console.error(`Crawl collapse — pipeline not notified (${health.written}/${health.previousCount}).`);
+      return {
+        success: false,
+        aborted: "crawl-collapse",
+        jobId,
+        sitemapTotal: sitemapResult.totalUrls,
+        filteredTotal: sitemapResult.filteredCount,
+        pagesWritten: health.written,
+        previousManifestCount: health.previousCount,
+        crawlDatePrefix: datePrefix,
+      };
+    }
 
     // Step 6: Notify downstream — prefer service binding > PIPELINE_URL
     const notifyPayload = {

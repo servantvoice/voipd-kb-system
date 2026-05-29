@@ -2,7 +2,7 @@ import { WorkflowEntrypoint, WorkflowStep, WorkflowEvent } from "cloudflare:work
 import { buildConfig } from "../../../shared/config";
 import { buildBrandingConfig } from "../../../shared/branding";
 import { categorizeUrl } from "../../../shared/categorization";
-import { R2_PREFIXES } from "../../../shared/config";
+import { R2_PREFIXES, isManifestCollapse, MANIFEST_FLOOR, MANIFEST_COLLAPSE_RATIO } from "../../../shared/config";
 import { transformMarkdown, extractTitle, buildBreadcrumb } from "../../../shared/transforms";
 import { stripPageChrome } from "../../../shared/strip-chrome";
 import type { ArticleMeta, SearchIndexEntry } from "../../../shared/types";
@@ -273,6 +273,37 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
 
       // TODO: In future, also scan custom-articles/ and include them
 
+      // Collapse guard: refuse to overwrite a healthy manifest with a near-empty one
+      // (e.g. after a failed crawl). A fresh run with no prior manifest still proceeds.
+      const previousCount = previousMeta.knownSlugs.length;
+      if (isManifestCollapse(siteManifest.length, previousCount)) {
+        console.error(
+          `Manifest collapse guard: built ${siteManifest.length} articles vs ${previousCount} ` +
+          `previously (floor ${MANIFEST_FLOOR}, ratio ${MANIFEST_COLLAPSE_RATIO}) — refusing to overwrite.`
+        );
+        return {
+          aborted: true as const,
+          builtCount: siteManifest.length,
+          previousCount,
+          totalCount: 0,
+          publicCount: 0,
+          internalCount: 0,
+          pendingReviewCount: 0,
+          newlyPendingSlugs: [] as string[],
+        };
+      }
+
+      // Back up the current aggregates before overwriting them (R2 has no versioning).
+      for (const name of ["_site-manifest.json", "_search-index.json"]) {
+        const cur = await this.env.KB_BUCKET.get(`${R2_PREFIXES.processed}${name}`);
+        if (cur) {
+          await this.env.KB_BUCKET.put(
+            `${R2_PREFIXES.processed}_backups/${crawlDatePrefix}/${name}`,
+            await cur.arrayBuffer()
+          );
+        }
+      }
+
       await this.env.KB_BUCKET.put(
         `${R2_PREFIXES.processed}_site-manifest.json`,
         JSON.stringify(siteManifest, null, 2)
@@ -297,6 +328,9 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
       }
 
       return {
+        aborted: false as const,
+        builtCount: siteManifest.length,
+        previousCount,
         totalCount: siteManifest.length,
         publicCount,
         internalCount,
@@ -304,6 +338,35 @@ export class PipelineWorkflow extends WorkflowEntrypoint<Env, PipelineParams> {
         newlyPendingSlugs,
       };
     });
+
+    // Controlled refusal: the collapse guard left the live manifest untouched. Alert
+    // and stop — do NOT trigger the Pages rebuild or image sync.
+    if (manifestStats.aborted) {
+      await sendEmail(
+        this.env,
+        `KB Pipeline ABORTED (manifest collapse) — ${crawlDatePrefix}`,
+        `
+        <h2 style="color:#c00;">Pipeline refused to publish a near-empty manifest</h2>
+        <p>Crawl date: <strong>${crawlDatePrefix}</strong></p>
+        <p>This run produced <strong>${manifestStats.builtCount}</strong> articles versus
+        <strong>${manifestStats.previousCount}</strong> in the previous manifest
+        (floor ${MANIFEST_FLOOR}, ratio ${MANIFEST_COLLAPSE_RATIO}). To avoid taking the
+        public and internal KBs dark, the site manifest was <strong>left unchanged</strong>
+        and the Pages rebuild / image sync were skipped.</p>
+        <p>This almost always means the crawl failed (e.g. Browser Rendering returned empty
+        for most pages). Check the crawl for <code>${crawlDatePrefix}</code>, then re-trigger
+        once it is healthy.</p>
+        `.trim()
+      );
+      console.error(`Pipeline aborted (manifest collapse): ${manifestStats.builtCount}/${manifestStats.previousCount}.`);
+      return {
+        success: false,
+        aborted: "manifest-collapse",
+        crawlDatePrefix,
+        builtCount: manifestStats.builtCount,
+        previousCount: manifestStats.previousCount,
+      };
+    }
 
     // Step 4: Trigger CF Pages deploy + fire image sync (fire-and-forget)
     await step.do("trigger-downstream", async () => {
