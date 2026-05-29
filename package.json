@@ -18,6 +18,6 @@
     "dev:site": "cd public-kb && npm run dev"
   },
   "devDependencies": {
-    "wrangler": "^4.90.0"
+    "wrangler": "^4.95.0"
   }
 }
