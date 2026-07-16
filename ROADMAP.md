@@ -72,6 +72,11 @@ Open content-review items, planned feature enhancements, and a changelog of comp
 
 - [ ] **Pipeline: scan custom-articles/ for site manifest** — `workers/pipeline/src/pipeline-workflow.ts` has a TODO to also scan `custom-articles/` and include them in the site manifest and search index. Currently only crawled + override content is indexed.
 
+- [ ] **Pipeline: stop persisting article markdown in Workflow state** — each `process-chunk-{i}` step in `workers/pipeline/src/pipeline-workflow.ts` returns `{ path, markdown, meta }` per article, and Workflows persists every step's return value as instance state. The same markdown was already written to R2 (`processed/{path}/index.md`) a few lines earlier, so it's stored twice — on the order of tens of MB of redundant state per run at ~550 articles, and it grows with the article count.
+  - Fix: return `{ path, meta }` from the chunk steps and have `build-manifests` read the markdown back from R2 for the articles it needs (it already has the paths). The search index is the main consumer.
+  - Not urgent — CF bills Workflows storage at $0.20/GB-month above a 1 GB-month included allowance, and current usage is nowhere near it. Worth doing before the article count grows a lot.
+  - Context: CF added per-step Workflow billing on 2026-07-07; step + storage billing starts no earlier than 2026-08-10 (500,000 steps/month included, then $0.80 per additional 100,000). Steps are a non-issue for us (~23 per weekly run across `cf-crawl` + `cf-pipeline`, vs. 500k included) because the crawl polls inline inside one `step.do` rather than using `step.sleep`/`waitForEvent`. Storage is the only dimension worth tidying.
+
 - [ ] Add diff view to pending review queue (show changes vs current article using jsdiff/diff2html)
 
 - [ ] **Admin dashboard: All Overrides view** — add an admin page listing every article that has any entry under `overrides/{slug}/`, regardless of whether a pipeline run has touched it recently. Each row should show:
