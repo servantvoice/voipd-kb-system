@@ -12,3 +12,6 @@ public-kb/public/
 public-kb/resources/
 public-kb/static/js/search-index.json
 .vscode/settings.json
+
+# Crawl exports (npm run export:crawl)
+exports/

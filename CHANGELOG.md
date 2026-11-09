@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+- **`npm run export:crawl` (`scripts/export-crawl.ts`).** Downloads one crawl (latest by default, or `--date`) from `crawls/{date}/` through the Cloudflare R2 REST API and writes two zips to `./exports`: the raw objects plus `_manifest.json`, and a copy run through `stripPageChrome` with upstream names and links left intact, for feeding the upstream docs to a review agent. Skips pages the crawler captured behind a login wall and warns when the crawl was incremental. Needs `CLOUDFLARE_API_TOKEN` with Workers R2 Storage Read, `CF_ACCOUNT_ID` and `R2_BUCKET`; runs on Node's native TypeScript support with no extra dependencies.
+
 ## [2026-05-29]
 
 ### Added

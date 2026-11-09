@@ -14,6 +14,9 @@ npm run deploy:crawl            # deploy crawl worker only
 npm run deploy:pipeline         # deploy pipeline worker only
 npm run deploy:internal         # deploy internal KB worker only
 npm run deploy:images           # deploy image sync worker only
+npm run export:crawl            # zip latest crawl's raw + chrome-stripped markdown into ./exports
+                                # needs CLOUDFLARE_API_TOKEN (R2 read), CF_ACCOUNT_ID, R2_BUCKET
+                                # options: -- --date YYYY-MM-DD --out DIR
 ```
 
 Per-worker dev:
