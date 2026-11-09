@@ -15,3 +15,6 @@ public-kb/static/js/search-index.json
 
 # Crawl exports (npm run export:crawl)
 exports/
+
+# Claude Code per-user files: they can hold tokens copied from approved commands
+**/CLAUDE.local.md
